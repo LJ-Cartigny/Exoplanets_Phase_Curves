@@ -191,8 +191,27 @@ def main():
     flux_c = flux_planet(flux_star_c)
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
-    # print(L_b/L_star)
-    # print(L_c/L_star)
+    
+    #For TRAPPIST-1 d (using NASA Exoplanet Archive)
+
+    a_d = 38.85 * R_star # in m (from Ducrot et al. 2020)
+    P_d = 4.04978035 # in days (from Ducrot et al. 2020)
+    i_d = np.radians(89.65) # in rad (from Ducrot et al. 2020)
+    omega_d = np.radians(-8.73) # in rad (from Grimm et al. 2018)
+    e_d = 0.00837 # (from Grimm et al. 2018)
+
+    R_d = 0.784 * R_Earth # in m (from Grimm et al. 2018)
+
+    nu_d = compute_true_anomaly(0,e_d,P_d,t)
+    alpha_d = phase_angle(omega_d,nu_d,i_d)
+    phase_d = phase_function(alpha_d)
+
+    r_d = star_planet_separation(a_d,e_d,nu_d)
+
+    flux_star_d = flux_star(L_star,r_d)
+    flux_d = flux_planet(flux_star_d)
+    L_d = luminosity_planet_dayside(flux_d,R_d)
+
 
     # Plot
 
@@ -202,10 +221,11 @@ def main():
     #plt.plot(t, flux_c/flux_star_c*phase_c, label="c")
     plt.plot(t,L_b/L_star * phase_b * 10**6,label="b")
     plt.plot(t,L_c/L_star * phase_c * 10**6,label="c")
+    plt.plot(t,L_d/L_star * phase_d * 10**6,label="d")
     #plt.xlabel("True anomaly $\\nu$ (rad)")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
-    plt.title("Phase curves of TRAPPIST-1 b and c as black bodies")
+    plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
     plt.legend()
     plt.grid()
     plt.show()
