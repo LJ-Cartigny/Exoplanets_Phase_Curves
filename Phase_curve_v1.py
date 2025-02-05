@@ -129,6 +129,27 @@ def luminosity_planet_dayside(F_planet,R_planet):
     return L_planet
 
 
+def phase_curve(L_star, L_planet, phase_planet):
+    """
+    Determines the phase curve of a planet from its luminosity, its star's luminosity and its phase function expressed as the ratio between the planet and star's luminosities in ppm.
+
+    :param L_star: the star luminosity (in W)
+    :type L_star: float
+
+    :param L_planet: the planet luminosity (in W)
+    :type L_planet: float
+
+    :param phase_planet: the phase function of the planet
+    :type phase_planet: float
+
+    :return: curve
+    :rtype: float
+    """
+
+    curve = L_planet/L_star*phase_planet*10**6
+    return curve
+
+
 def main():
     # Constants
     L_Sun = 3.83E26 # Solar luminosity in W (from Wikipedia)
@@ -154,14 +175,10 @@ def main():
 
     R_b = 1.017 * R_Earth # in m (from Grimm et al. 2018)
 
-    #nu_b = np.linspace(0,8*np.pi,10000) # in rad
     nu_b = compute_true_anomaly(0,e_b,P_b,t)
-    #print(nu_b.shape)
 
     alpha_b = phase_angle(omega_b,nu_b,i_b)
-    #print(nu_b.shape)
     phase_b = phase_function(alpha_b)
-    #print(phase_b.shape)
 
     r_b = star_planet_separation(a_b,e_b,nu_b)
 
@@ -169,6 +186,7 @@ def main():
     flux_b = flux_planet(flux_star_b)
     L_b = luminosity_planet_dayside(flux_b,R_b)
 
+    phase_curve_b = phase_curve(L_star,L_b,phase_b)
 
 
     #For TRAPPIST-1 c (using NASA Exoplanet Archive)
@@ -191,6 +209,8 @@ def main():
     flux_c = flux_planet(flux_star_c)
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
+    phase_curve_c = phase_curve(L_star,L_c,phase_c)
+
     
     #For TRAPPIST-1 d (using NASA Exoplanet Archive)
 
@@ -212,17 +232,39 @@ def main():
     flux_d = flux_planet(flux_star_d)
     L_d = luminosity_planet_dayside(flux_d,R_d)
 
+    phase_curve_d = phase_curve(L_star,L_d,phase_d)
+
+
+    #For TRAPPIST-1 e (using NASA Exoplanet Archive)
+
+    a_e = 51.0 * R_star # in m (from Ducrot et al. 2020)
+    P_e = 6.09956479 # in days (from Ducrot et al. 2020)
+    i_e = np.radians(89.663) # in rad (from Ducrot et al. 2020)
+    omega_e = np.radians(108.37) # in rad (from Grimm et al. 2018)
+    e_e = 0.000510 # (from Grimm et al. 2018)
+
+    R_e = 0.910 * R_Earth # in m (from Grimm et al. 2018)
+
+    nu_e = compute_true_anomaly(0,e_e,P_e,t)
+    alpha_e = phase_angle(omega_e,nu_e,i_e)
+    phase_e = phase_function(alpha_e)
+
+    r_e = star_planet_separation(a_e,e_e,nu_e)
+
+    flux_star_e = flux_star(L_star,r_e)
+    flux_e = flux_planet(flux_star_e)
+    L_e = luminosity_planet_dayside(flux_e,R_e)
+
+    phase_curve_e = phase_curve(L_star,L_e,phase_e)
+
 
     # Plot
 
     plt.figure()
-    #plt.plot(nu_b, flux_b/flux_star_b*phase_b)
-    #plt.plot(t, flux_b/flux_star_b*phase_b, label="b")
-    #plt.plot(t, flux_c/flux_star_c*phase_c, label="c")
-    plt.plot(t,L_b/L_star * phase_b * 10**6,label="b")
-    plt.plot(t,L_c/L_star * phase_c * 10**6,label="c")
-    plt.plot(t,L_d/L_star * phase_d * 10**6,label="d")
-    #plt.xlabel("True anomaly $\\nu$ (rad)")
+    plt.plot(t,phase_curve_b,label="b")
+    plt.plot(t,phase_curve_c,label="c")
+    plt.plot(t,phase_curve_d,label="d")
+    plt.plot(t,phase_curve_e,label="e")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
     plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
