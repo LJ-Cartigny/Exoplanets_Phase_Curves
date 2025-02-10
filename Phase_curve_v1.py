@@ -152,8 +152,12 @@ def main():
     M_Sun = 2E30 # Solar mass in kg (from Wikipedia)
     R_Sun = 6.96E8 # Solar radius in m (from Wikipedia)
     R_Earth = 6378E3 # Earth radius in m (from Wikipedia)
+    
 
-    t = np.linspace(0,30,10000) # time in days
+    t_end = 30 # simulation duration in days
+    nb_points = 10000 # number of points in the time array
+
+    t = np.linspace(0,t_end,nb_points) # time array in days
 
 
     # For TRAPPIST-1 (using NASA Exoplanet Archive)
@@ -306,7 +310,7 @@ def main():
     P_h = 18.76727450 # in days (from Ducrot et al. 2020)
     i_h = np.radians(89.763) # in rad (from Ducrot et al. 2020)
     omega_h = np.radians(338.92) # in rad (from Grimm et al. 2018)
-    e_h = 0.00567 # (from Grimm et al
+    e_h = 0.00567 # (from Grimm et al. 2018)
 
     R_h = 0.773 * R_Earth # in m (from Grimm et al. 2018)
 
@@ -323,6 +327,9 @@ def main():
     phase_curve_h = phase_curve(L_star,L_h,phase_h)
 
 
+    phase_curve_total = phase_curve_b + phase_curve_c + phase_curve_d + phase_curve_e + phase_curve_f + phase_curve_g + phase_curve_h
+
+
     # Plot
 
     plt.figure()
@@ -333,6 +340,7 @@ def main():
     plt.plot(t,phase_curve_f,label="f")
     plt.plot(t,phase_curve_g,label="g")
     plt.plot(t,phase_curve_h,label="h")
+    #plt.plot(t,phase_curve_total,label="Total")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
     plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
