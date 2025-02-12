@@ -91,7 +91,7 @@ def flux_planet(F_star):
     :rtype: float
     """
 
-    F_planet = F_star/4
+    F_planet = F_star*2/3
     return F_planet
 
 def surface(R):
@@ -340,7 +340,7 @@ def main():
     plt.plot(t,phase_curve_f,label="f")
     plt.plot(t,phase_curve_g,label="g")
     plt.plot(t,phase_curve_h,label="h")
-    #plt.plot(t,phase_curve_total,label="Total")
+    # plt.plot(t,phase_curve_total,label="Total")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
     plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
