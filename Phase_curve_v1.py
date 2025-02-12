@@ -8,6 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Orbital_motion import compute_true_anomaly
+from TRAPPIST1_parameters import *
 
 def phase_angle(omega, nu, i):
     """
@@ -94,7 +95,7 @@ def flux_planet(F_star):
     F_planet = F_star*2/3
     return F_planet
 
-def surface(R):
+def surface_sphere(R):
     """
     Determines the surface of a sphere of radius R.
 
@@ -122,7 +123,7 @@ def luminosity_planet_dayside(F_planet,R_planet):
     :rtype: float
     """
 
-    L_planet = F_planet * surface(R_planet)/2
+    L_planet = F_planet * surface_sphere(R_planet)/2
     return L_planet
 
 def phase_curve(L_star, L_planet, phase_planet):
@@ -147,34 +148,15 @@ def phase_curve(L_star, L_planet, phase_planet):
 
 
 def main():
-    # Constants
-    L_Sun = 3.83E26 # Solar luminosity in W (from Wikipedia)
-    M_Sun = 2E30 # Solar mass in kg (from Wikipedia)
-    R_Sun = 6.96E8 # Solar radius in m (from Wikipedia)
-    R_Earth = 6378E3 # Earth radius in m (from Wikipedia)
     
-
     t_end = 30 # simulation duration in days
     nb_points = 10000 # number of points in the time array
 
     t = np.linspace(0,t_end,nb_points) # time array in days
 
 
-    # For TRAPPIST-1 (using NASA Exoplanet Archive)
-    T_eff_star = 2520 # in K (from Ducrot et al. 2020)
-    R_star = 0.1234 * R_Sun # in m (from Ducrot et al. 2020)
-    M_star = 0.0898 * M_Sun # in kg (from Ducrot et al. 2020)
-    L_star = 10**(-3.26)*L_Sun # in W (from Ducrot et al. 2020)
-
-    # For TRAPPIST-1 b (using NASA Exoplanet Archive)
-    a_b = 20.13 * R_star # in m (from Ducrot et al. 2020)
-    P_b = 1.51088432 # in days (from Ducrot et al. 2020)
-    i_b = 89.28 * np.pi/180 # in rad (from Ducrot et al. 2020)
-    omega_b = 336.86 * np.pi/180 # in rad (from Grimm et al. 2018)
-    e_b = 0.00622 # (from Grimm et al. 2018)
-
-    R_b = 1.017 * R_Earth # in m (from Grimm et al. 2018)
-
+    # For TRAPPIST-1 b
+    
     nu_b = compute_true_anomaly(0,e_b,P_b,t)
 
     alpha_b = phase_angle(omega_b,nu_b,i_b)
@@ -189,15 +171,7 @@ def main():
     phase_curve_b = phase_curve(L_star,L_b,phase_b)
 
 
-    #For TRAPPIST-1 c (using NASA Exoplanet Archive)
-
-    a_c = 27.57 * R_star # in m (from Ducrot et al. 2020)
-    P_c = 2.42179346 # in days (from Ducrot et al. 2020)
-    i_c = np.radians(89.47) # in rad (from Ducrot et al. 2020)
-    omega_c = np.radians(282.45) # in rad (from Grimm et al. 2018)
-    e_c = 0.00654 # (from Grimm et al. 2018)
-
-    R_c = 1.095 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 c
 
     nu_c = compute_true_anomaly(0,e_c,P_c,t)
     alpha_c = phase_angle(omega_c,nu_c,i_c)
@@ -212,15 +186,7 @@ def main():
     phase_curve_c = phase_curve(L_star,L_c,phase_c)
 
     
-    #For TRAPPIST-1 d (using NASA Exoplanet Archive)
-
-    a_d = 38.85 * R_star # in m (from Ducrot et al. 2020)
-    P_d = 4.04978035 # in days (from Ducrot et al. 2020)
-    i_d = np.radians(89.65) # in rad (from Ducrot et al. 2020)
-    omega_d = np.radians(-8.73) # in rad (from Grimm et al. 2018)
-    e_d = 0.00837 # (from Grimm et al. 2018)
-
-    R_d = 0.784 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 d
 
     nu_d = compute_true_anomaly(0,e_d,P_d,t)
     alpha_d = phase_angle(omega_d,nu_d,i_d)
@@ -235,15 +201,7 @@ def main():
     phase_curve_d = phase_curve(L_star,L_d,phase_d)
 
 
-    #For TRAPPIST-1 e (using NASA Exoplanet Archive)
-
-    a_e = 51.0 * R_star # in m (from Ducrot et al. 2020)
-    P_e = 6.09956479 # in days (from Ducrot et al. 2020)
-    i_e = np.radians(89.663) # in rad (from Ducrot et al. 2020)
-    omega_e = np.radians(108.37) # in rad (from Grimm et al. 2018)
-    e_e = 0.000510 # (from Grimm et al. 2018)
-
-    R_e = 0.910 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 e
 
     nu_e = compute_true_anomaly(0,e_e,P_e,t)
     alpha_e = phase_angle(omega_e,nu_e,i_e)
@@ -258,15 +216,7 @@ def main():
     phase_curve_e = phase_curve(L_star,L_e,phase_e)
 
 
-    #For TRAPPIST-1 f (using NASA Exoplanet Archive)
-
-    a_f = 67.10 * R_star # in m (from Ducrot et al. 2020)
-    P_f = 9.20659399 # in days (from Ducrot et al. 2020)
-    i_f = np.radians(89.666) # in rad (from Ducrot et al. 2020)
-    omega_f = np.radians(368.81) # in rad (from Grimm et al. 2018)
-    e_f = 0.01007 # (from Grimm et al. 2018)
-
-    R_f = 1.046 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 f
 
     nu_f = compute_true_anomaly(0,e_f,P_f,t)
     alpha_f = phase_angle(omega_f,nu_f,i_f)
@@ -281,15 +231,7 @@ def main():
     phase_curve_f = phase_curve(L_star,L_f,phase_f)
 
 
-    #For TRAPPIST-1 g (using NASA Exoplanet Archive)
-
-    a_g = 81.7 * R_star # in m (from Ducrot et al. 2020)
-    P_g = 12.35355570 # in days (from Ducrot et al. 2020)
-    i_g = np.radians(89.698) # in rad (from Ducrot et al. 2020)
-    omega_g = np.radians(191.34) # in rad (from Grimm et al. 2018)
-    e_g = 0.00208 # (from Grimm et al. 2018)
-
-    R_g = 1.148 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 g
 
     nu_g = compute_true_anomaly(0,e_g,P_g,t)
     alpha_g = phase_angle(omega_g,nu_g,i_g)
@@ -304,15 +246,7 @@ def main():
     phase_curve_g = phase_curve(L_star,L_g,phase_g)
 
 
-    #For TRAPPIST-1 h (using NASA Exoplanet Archive)
-
-    a_h = 107.9 * R_star # in m (from Ducrot et al. 2020)
-    P_h = 18.76727450 # in days (from Ducrot et al. 2020)
-    i_h = np.radians(89.763) # in rad (from Ducrot et al. 2020)
-    omega_h = np.radians(338.92) # in rad (from Grimm et al. 2018)
-    e_h = 0.00567 # (from Grimm et al. 2018)
-
-    R_h = 0.773 * R_Earth # in m (from Grimm et al. 2018)
+    #For TRAPPIST-1 h
 
     nu_h = compute_true_anomaly(0,e_h,P_h,t)
     alpha_h = phase_angle(omega_h,nu_h,i_h)
@@ -340,7 +274,7 @@ def main():
     plt.plot(t,phase_curve_f,label="f")
     plt.plot(t,phase_curve_g,label="g")
     plt.plot(t,phase_curve_h,label="h")
-    # plt.plot(t,phase_curve_total,label="Total")
+    plt.plot(t,phase_curve_total,label="Total")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
     plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
