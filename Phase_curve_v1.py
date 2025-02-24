@@ -126,7 +126,7 @@ def luminosity_planet_dayside(F_planet,R_planet):
     L_planet = F_planet * surface_sphere(R_planet)/2
     return L_planet
 
-def phase_curve(L_star, L_planet, phase_planet):
+def phase_curve(L_star, L_planet, R_star, R_planet, phase_planet):
     """
     Determines the phase curve of a planet from its luminosity, its star's luminosity and its phase function expressed as the ratio between the planet and star's luminosities in ppm.
 
@@ -136,6 +136,12 @@ def phase_curve(L_star, L_planet, phase_planet):
     :param L_planet: the planet luminosity (in W)
     :type L_planet: float
 
+    :param R_star: the star radius (in m)
+    :type R_star: float
+
+    :param R_planet: the planet radius (in m)
+    :type R_planet: float
+
     :param phase_planet: the phase function of the planet
     :type phase_planet: float
 
@@ -143,7 +149,7 @@ def phase_curve(L_star, L_planet, phase_planet):
     :rtype: float
     """
 
-    curve = L_planet/L_star*phase_planet*10**6
+    curve = L_planet/L_star*phase_planet/(R_planet/R_star)**2*10**6
     return curve
 
 
@@ -168,8 +174,7 @@ def main():
     flux_b = flux_planet(flux_star_b)
     L_b = luminosity_planet_dayside(flux_b,R_b)
 
-    phase_curve_b = phase_curve(L_star,L_b,phase_b)
-
+    phase_curve_b = phase_curve(L_star,L_b,R_star,R_b,phase_b)
 
     #For TRAPPIST-1 c
 
@@ -183,7 +188,7 @@ def main():
     flux_c = flux_planet(flux_star_c)
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
-    phase_curve_c = phase_curve(L_star,L_c,phase_c)
+    phase_curve_c = phase_curve(L_star,L_c,R_star,R_c,phase_c)
 
     
     #For TRAPPIST-1 d
@@ -198,7 +203,7 @@ def main():
     flux_d = flux_planet(flux_star_d)
     L_d = luminosity_planet_dayside(flux_d,R_d)
 
-    phase_curve_d = phase_curve(L_star,L_d,phase_d)
+    phase_curve_d = phase_curve(L_star,L_d,R_star,R_d,phase_d)
 
 
     #For TRAPPIST-1 e
@@ -213,7 +218,7 @@ def main():
     flux_e = flux_planet(flux_star_e)
     L_e = luminosity_planet_dayside(flux_e,R_e)
 
-    phase_curve_e = phase_curve(L_star,L_e,phase_e)
+    phase_curve_e = phase_curve(L_star,L_e,R_star,R_e,phase_e)
 
 
     #For TRAPPIST-1 f
@@ -228,7 +233,7 @@ def main():
     flux_f = flux_planet(flux_star_f)
     L_f = luminosity_planet_dayside(flux_f,R_f)
 
-    phase_curve_f = phase_curve(L_star,L_f,phase_f)
+    phase_curve_f = phase_curve(L_star,L_f,R_star,R_f,phase_f)
 
 
     #For TRAPPIST-1 g
@@ -243,7 +248,7 @@ def main():
     flux_g = flux_planet(flux_star_g)
     L_g = luminosity_planet_dayside(flux_g,R_g)
 
-    phase_curve_g = phase_curve(L_star,L_g,phase_g)
+    phase_curve_g = phase_curve(L_star,L_g,R_star,R_g,phase_g)
 
 
     #For TRAPPIST-1 h
@@ -258,7 +263,7 @@ def main():
     flux_h = flux_planet(flux_star_h)
     L_h = luminosity_planet_dayside(flux_h,R_h)
 
-    phase_curve_h = phase_curve(L_star,L_h,phase_h)
+    phase_curve_h = phase_curve(L_star,L_h,R_star,R_h,phase_h)
 
 
     phase_curve_total = phase_curve_b + phase_curve_c + phase_curve_d + phase_curve_e + phase_curve_f + phase_curve_g + phase_curve_h

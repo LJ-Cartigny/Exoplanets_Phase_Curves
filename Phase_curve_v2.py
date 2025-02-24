@@ -64,10 +64,17 @@ def fraction_ring(lat_in,phase):
     :rtype: float
     """
 
-    if np.abs(np.tan(lat_in) * np.tan(phase))<1:
-        f = 1/np.pi * np.arccos(-np.tan(lat_in) * np.tan(phase))
-    else:
-        f = 0
+    f = []
+    for theta in phase:
+        if np.abs(np.tan(lat_in) * np.tan(theta))<1:
+            f.append(1/np.pi * np.arccos(-np.tan(lat_in) * np.tan(theta)))
+        else:
+            f.append(0)
+
+    # if np.abs(np.tan(lat_in) * np.tan(phase))<1:
+    #     f = 1/np.pi * np.arccos(-np.tan(lat_in) * np.tan(phase))
+    # else:
+    #     f = 0
     
     return f
 
@@ -85,15 +92,23 @@ def fraction_disk(lat_out,phase):
     :return: f
     :rtype: float
     """
+    f = []
+    for theta in phase:
+        if lat_out<theta:
+            f.append(1)
+        elif np.abs(np.tan(lat_out) * np.tan(theta))<1:
+            f.append(1/np.pi * np.arccos(-np.tan(lat_out) * np.tan(theta)))
+        else:
+            f.append(0)
+
+    # if lat_out<phase:
+    #     f = 1
+    # elif np.abs(np.tan(lat_out) * np.tan(phase))<1:
+    #     f = 1/np.pi * np.arccos(-np.tan(lat_out) * np.tan(phase))
+    # else:
+    #     f = 0
     
-    if lat_out<phase:
-        f=1
-    elif np.abs(np.tan(lat_out) * np.tan(phase))<1:
-        f = 1/np.pi * np.arccos(-np.tan(lat_out) * np.tan(phase))
-    else:
-        f = 0
-    
-    return f
+    return np.array(f)
 
 
 def area_ring(r_in,r_out):
@@ -155,7 +170,7 @@ def luminosity_planet_eyeball(F_planet,R_planet,n,phase):
     A_disk = area_disk(r_disk)
     f_disk = fraction_disk(lat[1],phase)
 
-    L_disk = F_planet(0)*A_disk*f_disk
+    L_disk = F_planet[0]*A_disk*f_disk
 
     L_rings = 0
     for i in range(2,n):
@@ -202,10 +217,14 @@ def main():
     # Plot
 
     plt.figure()
+    plt.plot(t,phase_b,label="b")
+    plt.show()
+
+    plt.figure()
     plt.plot(t,phase_curve_b,label="b")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
-    plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
+    plt.title("Phase curves of planets of TRAPPIST-1 as eyeball black bodies")
     plt.legend()
     plt.grid()
     plt.show()
