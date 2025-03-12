@@ -105,7 +105,7 @@ def eclipse_phase(P, a, R_star, R_planet, i):
     :rtype: float
     """
 
-    t_eclipse = (total_transit_duration(P, a, R_star, R_planet, i)+flat_transit_duration(P, a, R_star, R_planet, i))/2
+    t_eclipse = total_transit_duration(P, a, R_star, R_planet, i)#+flat_transit_duration(P, a, R_star, R_planet, i))/2
     phase_eclipse_start = 1-t_eclipse/(2*P)
     phase_eclipse_end = t_eclipse/(2*P)
 
@@ -147,8 +147,8 @@ def eclipse(P, a, R_star, R_planet, i, phase):
 def main():
     phase_b = np.array([0, 0.25, 0.5, 0.75, 1])
     print(transit_depth(R_b, R_star)*100, '%')
-    print(total_transit_duration(P_b*24*3600, a_b, R_star, R_b, i_b), 's')
-    print(flat_transit_duration(P_b*24*3600, a_b, R_star, R_b, i_b), 's')
+    print("Total transit duration:",total_transit_duration(P_b*24, a_b, R_star, R_b, i_b), 'h')
+    print("Flat transit duration:",flat_transit_duration(P_b*24, a_b, R_star, R_b, i_b), 'h')
     print(eclipse_phase(P_b*24*3600, a_b, R_star, R_b, i_b))
     print(eclipse(P_b*24*3600, a_b, R_star, R_b, i_b, phase_b))
 

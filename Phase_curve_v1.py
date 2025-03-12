@@ -180,7 +180,7 @@ def main():
     L_b = luminosity_planet_dayside(flux_b,R_b)
 
     phase_curve_b = phase_curve(L_star,L_b,R_star,R_b,phase_b,eclipse_b)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_b.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_b.reshape(nb_points,1)),axis=1))
+    np.savetxt("Phase_curve_v1_output/phase_curve_b_bis.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_b.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 c
@@ -197,7 +197,7 @@ def main():
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
     phase_curve_c = phase_curve(L_star,L_c,R_star,R_c,phase_c,eclipse_c)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_c.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
+    np.savetxt("Phase_curve_v1_output/phase_curve_c_bis.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
 
     
     #For TRAPPIST-1 d
