@@ -31,19 +31,39 @@ def phase_angle(omega, nu, i):
     alpha = np.arccos(np.sin(omega+nu)*np.sin(i))
     return alpha
 
-def phase_function(alpha):
+# def phase_function(alpha):
+#     """
+#     Determines the phase function of a Lambert sphere.
+
+#     :param alpha: the phase angle (in rad)
+#     :type alpha: float
+
+#     :return: g
+#     :rtype: float
+#     """
+
+#     g = (np.sin(alpha)+(np.pi-alpha)*np.cos(alpha))/np.pi
+#     return g
+
+def phase_planet(t,P,t0=0):
     """
-    Determines the phase function of a Lambert sphere.
+    Determines the phase of a planet at a given time.
 
-    :param alpha: the phase angle (in rad)
-    :type alpha: float
+    :param t: the time (in days)
+    :type t: float
 
-    :return: g
+    :param P: the orbital period (in days)
+    :type P: float
+
+    :param t0: the reference time (in days)
+    :type t0: float
+
+    :return: phase
     :rtype: float
     """
 
-    g = (np.sin(alpha)+(np.pi-alpha)*np.cos(alpha))/np.pi
-    return g
+    phase = np.sin(((t+t0)/P)*2*np.pi)/2+0.5
+    return phase
 
 def star_planet_separation(a,e,nu):
     """
@@ -168,9 +188,10 @@ def main():
     # For TRAPPIST-1 b
     
     nu_b = compute_true_anomaly(0,e_b,P_b,t)
-
-    alpha_b = phase_angle(omega_b,nu_b,i_b)
-    phase_b = phase_function(alpha_b)
+    # alpha_b = phase_angle(omega_b,nu_b,i_b)
+    # phase_b = phase_function(alpha_b)
+    t0_b = omega_b/(2*np.pi)*P_b
+    phase_b = phase_planet(t,P_b,t0_b)
     b_b = eclipse_impact_parameter(a_b,i_b,e_b,R_star,omega_b)
     eclipse_b = eclipse(P_b,a_b,R_star,R_b,i_b,phase_b,e_b,omega_b,b_b)
 
@@ -187,8 +208,10 @@ def main():
     #For TRAPPIST-1 c
 
     nu_c = compute_true_anomaly(0,e_c,P_c,t)
-    alpha_c = phase_angle(omega_c,nu_c,i_c)
-    phase_c = phase_function(alpha_c)
+    # alpha_c = phase_angle(omega_c,nu_c,i_c)
+    # phase_c = phase_function(alpha_c)
+    t0_c = omega_c/(2*np.pi)*P_c
+    phase_c = phase_planet(t,P_c,t0_c)
     b_c = eclipse_impact_parameter(a_c,i_c,e_c,R_star,omega_c)
     eclipse_c = eclipse(P_c,a_c,R_star,R_c,i_c,phase_c,e_c,omega_c,b_c)
 
@@ -199,14 +222,16 @@ def main():
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
     phase_curve_c = phase_curve(L_star,L_c,R_star,R_c,phase_c,eclipse_c)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_c_ter.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_c_ter.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
 
     
     #For TRAPPIST-1 d
 
     nu_d = compute_true_anomaly(0,e_d,P_d,t)
-    alpha_d = phase_angle(omega_d,nu_d,i_d)
-    phase_d = phase_function(alpha_d)
+    # alpha_d = phase_angle(omega_d,nu_d,i_d)
+    # phase_d = phase_function(alpha_d)
+    t0_d = omega_d/(2*np.pi)*P_d
+    phase_d = phase_planet(t,P_d,t0_d)
     b_d = eclipse_impact_parameter(a_d,i_d,e_d,R_star,omega_d)
     eclipse_d = eclipse(P_d,a_d,R_star,R_d,i_d,phase_d, e_d, omega_d, b_d)
 
@@ -223,8 +248,10 @@ def main():
     #For TRAPPIST-1 e
 
     nu_e = compute_true_anomaly(0,e_e,P_e,t)
-    alpha_e = phase_angle(omega_e,nu_e,i_e)
-    phase_e = phase_function(alpha_e)
+    # alpha_e = phase_angle(omega_e,nu_e,i_e)
+    # phase_e = phase_function(alpha_e)
+    t0_e = omega_e/(2*np.pi)*P_e
+    phase_e = phase_planet(t,P_e,t0_e)
     b_e = eclipse_impact_parameter(a_e,i_e,e_e,R_star,omega_e)
     eclipse_e = eclipse(P_e,a_e,R_star,R_e,i_e,phase_e, e_e, omega_e, b_e)
 
@@ -241,8 +268,10 @@ def main():
     #For TRAPPIST-1 f
 
     nu_f = compute_true_anomaly(0,e_f,P_f,t)
-    alpha_f = phase_angle(omega_f,nu_f,i_f)
-    phase_f = phase_function(alpha_f)
+    # alpha_f = phase_angle(omega_f,nu_f,i_f)
+    # phase_f = phase_function(alpha_f)
+    t0_f = omega_f/(2*np.pi)*P_f
+    phase_f = phase_planet(t,P_f,t0_f)
     b_f = eclipse_impact_parameter(a_f,i_f,e_f,R_star,omega_f)
     eclipse_f = eclipse(P_f,a_f,R_star,R_f,i_f,phase_f, e_f, omega_f, b_f)
 
@@ -259,8 +288,10 @@ def main():
     #For TRAPPIST-1 g
 
     nu_g = compute_true_anomaly(0,e_g,P_g,t)
-    alpha_g = phase_angle(omega_g,nu_g,i_g)
-    phase_g = phase_function(alpha_g)
+    # alpha_g = phase_angle(omega_g,nu_g,i_g)
+    # phase_g = phase_function(alpha_g)
+    t0_g = omega_g/(2*np.pi)*P_g
+    phase_g = phase_planet(t,P_g,t0_g)
     b_g = eclipse_impact_parameter(a_g,i_g,e_g,R_star,omega_g)
     eclipse_g = eclipse(P_g,a_g,R_star,R_g,i_g,phase_g, e_g, omega_g, b_g)
 
@@ -277,8 +308,10 @@ def main():
     #For TRAPPIST-1 h
 
     nu_h = compute_true_anomaly(0,e_h,P_h,t)
-    alpha_h = phase_angle(omega_h,nu_h,i_h)
-    phase_h = phase_function(alpha_h)
+    # alpha_h = phase_angle(omega_h,nu_h,i_h)
+    # phase_h = phase_function(alpha_h)
+    t0_h = omega_h/(2*np.pi)*P_h
+    phase_h = phase_planet(t,P_h,t0_h)
     b_h = eclipse_impact_parameter(a_h,i_h,e_h,R_star,omega_h)
     eclipse_h = eclipse(P_h,a_h,R_star,R_h,i_h,phase_h, e_h, omega_h, b_h)
     
@@ -299,15 +332,25 @@ def main():
 
     # Plot
 
+    # plt.figure()
+    # plt.plot(t,phase_b,label="b")
+    # plt.plot(t,phase_c,label="c")
+    # plt.xlabel("Time (days)")
+    # plt.ylabel("Phase")
+    # plt.title("Phase of planets of TRAPPIST-1")
+    # plt.legend()
+    # plt.grid()
+    # plt.show()
+
     plt.figure()
     plt.plot(t,phase_curve_b,label="b")
     plt.plot(t,phase_curve_c,label="c")
-    # plt.plot(t,phase_curve_d,label="d")
-    # plt.plot(t,phase_curve_e,label="e")
-    # plt.plot(t,phase_curve_f,label="f")
-    # plt.plot(t,phase_curve_g,label="g")
-    # plt.plot(t,phase_curve_h,label="h")
-    # plt.plot(t,phase_curve_total,label="Total")
+    plt.plot(t,phase_curve_d,label="d")
+    plt.plot(t,phase_curve_e,label="e")
+    plt.plot(t,phase_curve_f,label="f")
+    plt.plot(t,phase_curve_g,label="g")
+    plt.plot(t,phase_curve_h,label="h")
+    plt.plot(t,phase_curve_total,label="Total")
     plt.xlabel("Time (days)")
     plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
     plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
