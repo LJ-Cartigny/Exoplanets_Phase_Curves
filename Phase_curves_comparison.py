@@ -12,7 +12,7 @@ from TRAPPIST1_parameters import *
 
 
 def main():
-    simu_file_b = "Phase_curve_v1_output/phase_curve_b_ter.txt"
+    simu_file_b = "Phase_curve_v1_output/phase_curve_b.txt"
     # simu_phase_b, simu_flux_b = np.loadtxt(simu_file_b, unpack=True)
     # simu_phase_b=simu_phase_b/P_b+omega_b/(2*np.pi)-0.75
 
@@ -24,7 +24,7 @@ def main():
     ref_flux_b = (ref_flux_b-1)*1e6
 
 
-    simu_file_c = "Phase_curve_v1_output/phase_curve_c_ter.txt"
+    simu_file_c = "Phase_curve_v1_output/phase_curve_c.txt"
     # simu_phase_c, simu_flux_c = np.loadtxt(simu_file_c, unpack=True)
     # simu_phase_c=simu_phase_c/P_c+omega_c/(2*np.pi)-0.75
 

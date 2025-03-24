@@ -193,7 +193,7 @@ def main():
     t0_b = omega_b/(2*np.pi)*P_b
     phase_b = phase_planet(t,P_b,t0_b)
     b_b = eclipse_impact_parameter(a_b,i_b,e_b,R_star,omega_b)
-    eclipse_b = eclipse(P_b,a_b,R_star,R_b,i_b,phase_b,e_b,omega_b,b_b)
+    eclipse_b = eclipse(P_b,a_b,R_star,R_b,i_b,np.arccos(phase_b)/(2*np.pi),e_b,omega_b,b_b)
 
     r_b = star_planet_separation(a_b,e_b,nu_b)
 
@@ -202,7 +202,7 @@ def main():
     L_b = luminosity_planet_dayside(flux_b,R_b)
 
     phase_curve_b = phase_curve(L_star,L_b,R_star,R_b,phase_b,eclipse_b)
-    # np.savetxt("Phase_curve_v1_output/phase_curve_b_ter.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_b.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_b.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_b.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 c
@@ -213,7 +213,7 @@ def main():
     t0_c = omega_c/(2*np.pi)*P_c
     phase_c = phase_planet(t,P_c,t0_c)
     b_c = eclipse_impact_parameter(a_c,i_c,e_c,R_star,omega_c)
-    eclipse_c = eclipse(P_c,a_c,R_star,R_c,i_c,phase_c,e_c,omega_c,b_c)
+    eclipse_c = eclipse(P_c,a_c,R_star,R_c,i_c,np.arccos(phase_c)/(2*np.pi),e_c,omega_c,b_c)
 
     r_c = star_planet_separation(a_c,e_c,nu_c)
 
@@ -222,10 +222,10 @@ def main():
     L_c = luminosity_planet_dayside(flux_c,R_c)
 
     phase_curve_c = phase_curve(L_star,L_c,R_star,R_c,phase_c,eclipse_c)
-    # np.savetxt("Phase_curve_v1_output/phase_curve_c_ter.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_c.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_c.reshape(nb_points,1)),axis=1))
 
     
-    #For TRAPPIST-1 d
+    # #For TRAPPIST-1 d
 
     nu_d = compute_true_anomaly(0,e_d,P_d,t)
     # alpha_d = phase_angle(omega_d,nu_d,i_d)
@@ -233,7 +233,7 @@ def main():
     t0_d = omega_d/(2*np.pi)*P_d
     phase_d = phase_planet(t,P_d,t0_d)
     b_d = eclipse_impact_parameter(a_d,i_d,e_d,R_star,omega_d)
-    eclipse_d = eclipse(P_d,a_d,R_star,R_d,i_d,phase_d, e_d, omega_d, b_d)
+    eclipse_d = eclipse(P_d,a_d,R_star,R_d,i_d,np.arccos(phase_d)/(2*np.pi), e_d, omega_d, b_d)
 
     r_d = star_planet_separation(a_d,e_d,nu_d)
 
@@ -242,7 +242,7 @@ def main():
     L_d = luminosity_planet_dayside(flux_d,R_d)
 
     phase_curve_d = phase_curve(L_star,L_d,R_star,R_d,phase_d,eclipse_d)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_d.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_d.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_d.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_d.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 e
@@ -253,7 +253,7 @@ def main():
     t0_e = omega_e/(2*np.pi)*P_e
     phase_e = phase_planet(t,P_e,t0_e)
     b_e = eclipse_impact_parameter(a_e,i_e,e_e,R_star,omega_e)
-    eclipse_e = eclipse(P_e,a_e,R_star,R_e,i_e,phase_e, e_e, omega_e, b_e)
+    eclipse_e = eclipse(P_e,a_e,R_star,R_e,i_e,np.arccos(phase_e)/(2*np.pi), e_e, omega_e, b_e)
 
     r_e = star_planet_separation(a_e,e_e,nu_e)
 
@@ -262,7 +262,7 @@ def main():
     L_e = luminosity_planet_dayside(flux_e,R_e)
 
     phase_curve_e = phase_curve(L_star,L_e,R_star,R_e,phase_e,eclipse_e)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_e.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_e.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_e.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_e.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 f
@@ -273,7 +273,7 @@ def main():
     t0_f = omega_f/(2*np.pi)*P_f
     phase_f = phase_planet(t,P_f,t0_f)
     b_f = eclipse_impact_parameter(a_f,i_f,e_f,R_star,omega_f)
-    eclipse_f = eclipse(P_f,a_f,R_star,R_f,i_f,phase_f, e_f, omega_f, b_f)
+    eclipse_f = eclipse(P_f,a_f,R_star,R_f,i_f,np.arccos(phase_f)/(2*np.pi), e_f, omega_f, b_f)
 
     r_f = star_planet_separation(a_f,e_f,nu_f)
 
@@ -282,7 +282,7 @@ def main():
     L_f = luminosity_planet_dayside(flux_f,R_f)
 
     phase_curve_f = phase_curve(L_star,L_f,R_star,R_f,phase_f,eclipse_f)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_f.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_f.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_f.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_f.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 g
@@ -293,7 +293,7 @@ def main():
     t0_g = omega_g/(2*np.pi)*P_g
     phase_g = phase_planet(t,P_g,t0_g)
     b_g = eclipse_impact_parameter(a_g,i_g,e_g,R_star,omega_g)
-    eclipse_g = eclipse(P_g,a_g,R_star,R_g,i_g,phase_g, e_g, omega_g, b_g)
+    eclipse_g = eclipse(P_g,a_g,R_star,R_g,i_g,np.arccos(phase_g)/(2*np.pi), e_g, omega_g, b_g)
 
     r_g = star_planet_separation(a_g,e_g,nu_g)
 
@@ -302,7 +302,7 @@ def main():
     L_g = luminosity_planet_dayside(flux_g,R_g)
 
     phase_curve_g = phase_curve(L_star,L_g,R_star,R_g,phase_g,eclipse_g)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_g.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_g.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_g.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_g.reshape(nb_points,1)),axis=1))
 
 
     #For TRAPPIST-1 h
@@ -313,7 +313,7 @@ def main():
     t0_h = omega_h/(2*np.pi)*P_h
     phase_h = phase_planet(t,P_h,t0_h)
     b_h = eclipse_impact_parameter(a_h,i_h,e_h,R_star,omega_h)
-    eclipse_h = eclipse(P_h,a_h,R_star,R_h,i_h,phase_h, e_h, omega_h, b_h)
+    eclipse_h = eclipse(P_h,a_h,R_star,R_h,i_h,np.arccos(phase_h)/(2*np.pi), e_h, omega_h, b_h)
     
     r_h = star_planet_separation(a_h,e_h,nu_h)
 
@@ -322,11 +322,11 @@ def main():
     L_h = luminosity_planet_dayside(flux_h,R_h)
 
     phase_curve_h = phase_curve(L_star,L_h,R_star,R_h,phase_h,eclipse_h)
-    #np.savetxt("Phase_curve_v1_output/phase_curve_h.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_h.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_h.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_h.reshape(nb_points,1)),axis=1))
 
 
     phase_curve_total = phase_curve_b + phase_curve_c + phase_curve_d + phase_curve_e + phase_curve_f + phase_curve_g + phase_curve_h
-    #np.savetxt("Phase_curve_v1_output/phase_curve_total.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_total.reshape(nb_points,1)),axis=1))
+    # np.savetxt("Phase_curve_v1_output/phase_curve_total.txt",np.concatenate((t.reshape(nb_points,1),phase_curve_total.reshape(nb_points,1)),axis=1))
 
 
 
