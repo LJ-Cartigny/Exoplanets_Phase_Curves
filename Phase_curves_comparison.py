@@ -12,11 +12,14 @@ from TRAPPIST1_parameters import *
 
 
 def main():
-    simu_file_b = "Phase_curve_v1_output/phase_curve_b.txt"
+    simu_file_b_elliptical = "Phase_curve_v1_output/phase_curve_b.txt"
     # simu_phase_b, simu_flux_b = np.loadtxt(simu_file_b, unpack=True)
     # simu_phase_b=simu_phase_b/P_b+omega_b/(2*np.pi)-0.75
 
-    simu_time_b, simu_flux_b = np.loadtxt(simu_file_b, unpack=True)
+    simu_time_b_elliptical, simu_flux_b_elliptical = np.loadtxt(simu_file_b_elliptical, unpack=True)
+
+    simu_file_b_circular = "Phase_curve_v1_output/phase_curve_b_circular.txt"
+    simu_time_b_circular, simu_flux_b_circular = np.loadtxt(simu_file_b_circular, unpack=True)
 
     ref_file_b = "References_b_and_c/lc_michael_bestfit_model_b.dat"
     ref_phase_b, ref_flux_b = np.loadtxt(ref_file_b, usecols=(0,1), unpack=True)
@@ -24,11 +27,14 @@ def main():
     ref_flux_b = (ref_flux_b-1)*1e6
 
 
-    simu_file_c = "Phase_curve_v1_output/phase_curve_c.txt"
+    simu_file_c_elliptical = "Phase_curve_v1_output/phase_curve_c.txt"
     # simu_phase_c, simu_flux_c = np.loadtxt(simu_file_c, unpack=True)
     # simu_phase_c=simu_phase_c/P_c+omega_c/(2*np.pi)-0.75
 
-    simu_time_c, simu_flux_c = np.loadtxt(simu_file_c, unpack=True)
+    simu_time_c_elliptical, simu_flux_c_elliptical = np.loadtxt(simu_file_c_elliptical, unpack=True)
+
+    simu_file_c_circular = "Phase_curve_v1_output/phase_curve_c_circular.txt"
+    simu_time_c_circular, simu_flux_c_circular = np.loadtxt(simu_file_c_circular, unpack=True)
 
     ref_file_c = "References_b_and_c/lc_michael_bestfit_model_c.dat"
     ref_phase_c, ref_flux_c = np.loadtxt(ref_file_c, usecols=(0,1), unpack=True)
@@ -41,7 +47,8 @@ def main():
     plt.subplot(121)
     # plt.plot(simu_phase_b-1, simu_flux_b, label="Simulation")
     # plt.plot(ref_phase_b, ref_flux_b, label="Reference")
-    plt.plot(simu_time_b*24, simu_flux_b, label="Simulation")
+    plt.plot(simu_time_b_elliptical*24, simu_flux_b_elliptical, label="Simulation (elliptical)")
+    plt.plot(simu_time_b_circular*24, simu_flux_b_circular,'--', label="Simulation (circular)")
     plt.plot(ref_time_b*24, ref_flux_b, label="Reference")
     # plt.xlabel("Phase")
     plt.xlabel("Time (h)")
@@ -56,7 +63,8 @@ def main():
     plt.subplot(122)
     # plt.plot(simu_phase_c-1, simu_flux_c, label="Simulation")
     # plt.plot(ref_phase_c, ref_flux_c, label="Reference")
-    plt.plot(simu_time_c*24, simu_flux_c, label="Simulation")
+    plt.plot(simu_time_c_elliptical*24, simu_flux_c_elliptical, label="Simulation (elliptical)")
+    plt.plot(simu_time_c_circular*24, simu_flux_c_circular,'--', label="Simulation (circular)")
     plt.plot(ref_time_c*24, ref_flux_c, label="Reference")
     # plt.xlabel("Phase")
     plt.xlabel("Time (h)")
