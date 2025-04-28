@@ -29,4 +29,4 @@ t_start -= 2450000
 t_end -= 2450000
 
 for i in range(len(t_start)):
-    phase_curve_simulation(t_start[i], nb_days[i],save_plot=True,save_txt=True)
+    phase_curve_simulation(t_start[i], nb_days[i],plot=False,save_plot=True,save_txt=True)

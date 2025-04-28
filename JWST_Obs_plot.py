@@ -25,15 +25,15 @@ t_end = t_end.jd
 t_start -= 2450000
 t_end -= 2450000
 
-nb_days = t_end[-1] - t_start[0] + 1
-t0 = t_start[0]-0.5
+nb_days = np.max(t_end) - np.min(t_start) + 1
+t0 = np.min(t_start)-0.5
 
-# phase_curve_simulation(t0, nb_days,plot=False,save_plot=True,save_txt=True) # Uncomment if the simulation is not done yet
+phase_curve_simulation(t0, nb_days,plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
 
 
 # Plot
 
-plt.figure(figsize=(16, 9))
+plt.figure(figsize=(32, 18))
 
 for p in "bcdefgh":  # Comment to not plot the individual planets
     t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_TTV_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
@@ -41,18 +41,28 @@ for p in "bcdefgh":  # Comment to not plot the individual planets
 
 t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_TTV_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 
+colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
+j = -1
+
 plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label="Total flux")
 
 
 for i in range(len(t_start)):
     t0 = t_start[i]
     t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_TTV_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
-    plt.plot(t_visit, phase_curve_total_visit, label=program_ID[i]+' visit '+visit[i] , linewidth=3)
+    if i == 0 or program_ID[i] != program_ID[i-1]:
+        j+=1
+        plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
+    else:
+        plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
+    x_text = np.mean(t_visit)
+    y_text = np.max(phase_curve_total_visit)
+    plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j])
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
 plt.title("JWST Observations over the phase curves of TRAPPIST-1")
 plt.legend()
 plt.grid()
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_GTO1177.png", dpi=300, bbox_inches='tight')
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct-Nov2022.png", dpi=300, bbox_inches='tight')
 plt.show()
