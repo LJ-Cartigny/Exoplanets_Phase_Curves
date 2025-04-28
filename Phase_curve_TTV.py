@@ -240,6 +240,7 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
 
     # Total signal
+
     if total:
         phase_curve_total = np.zeros(nb_points)
         if 'b' in planets:
@@ -257,15 +258,14 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
         if 'h' in planets:
             phase_curve_total += phase_curve_h_TTV
 
-    #phase_curve_total = phase_curve_b_TTV + phase_curve_c_TTV + phase_curve_d_TTV + phase_curve_e_TTV + phase_curve_f_TTV + phase_curve_g_TTV + phase_curve_h_TTV
-
     if save_txt:
         np.savetxt("Phase_curve_TTV_output/phase_curve_total_TTV_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), L_total/L_star (ppm)', comments='')
 
 
     # Plotting the phase curves
+    
     if plot:
-        plt.figure()
+        plt.figure(figsize=(16,9))
         if 'b' in planets:
             plt.plot(t_b_TTV,phase_curve_b_TTV,label="b")
         if 'c' in planets:
@@ -289,7 +289,7 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
         plt.grid()
 
         if save_plot:
-            plt.savefig("Phase_curve_TTV_output/phase_curve_TTV"+planets+"_"+str(t0)+".png")
+            plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+str(t0)+".png")
 
         # Show the plot
         plt.show()
