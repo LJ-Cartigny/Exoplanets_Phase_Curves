@@ -57,7 +57,7 @@ def phase_TTV(P_TTV,t0,t_end,transit_peaks,nb_points):
 
 def main():
     
-    t0 = 7260 # starting time in BJD_TBD - 2450000
+    t0 = 9785 # starting time in BJD_TBD - 2450000
     nb_days = 30 # simulation duration in days
     t_end = t0 + nb_days
 
