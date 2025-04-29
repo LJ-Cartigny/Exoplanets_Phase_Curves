@@ -7,6 +7,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from matplotlib.ticker import MultipleLocator
 from astropy.time import Time
 
 from Phase_curve_TTV import phase_curve_simulation
@@ -25,11 +27,11 @@ t_end = t_end.jd
 t_start -= 2450000
 t_end -= 2450000
 
-nb_days = np.max(t_end) - np.min(t_start) + 1
-t0 = np.min(t_start)-0.5
+nb_days = np.max(t_end) - np.min(t_start) + 3
+t0 = np.min(t_start)-1.5
 
 print("t0 = ", t0)
-print("t_end = ", np.max(t_end))
+print("t_end = ", t0+nb_days)
 print("nb_days = ", nb_days)
 
 nb_points = 100000
@@ -63,28 +65,37 @@ for i in range(len(t_start)):
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
     x_text = np.mean(t_visit)
     y_text = np.max(phase_curve_total_visit)
-    plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j])
+    plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
 plt.title("JWST Observations over the phase curves of TRAPPIST-1 from Oct 2022 to Dec 2024")
-plt.legend(loc='upper right', ncol = 2)
+plt.legend(loc='lower right', ncol = 2)
 plt.grid()
 # plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024.png", bbox_inches='tight')
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
+ax_orig = plt.gca()
 plt.show()
 
 
 
 # Close-up on the observations
 
-xlims = [(9880,9920),(10130,10150),(10270,10275),(10610,np.max(t_end))] # Values found after looking at the first plot
+xlims = [(9879,9920),(10130,10150),(10270,10275),(10610,10651)] # Values found after looking at the first plot
+widths = [xmax-xmin for (xmin, xmax) in xlims]
+fig = plt.figure(figsize=(32, 18))
+gs = gridspec.GridSpec(1, len(xlims), width_ratios=widths, wspace=0.05)
 
+axes = []
+for i in range(len(xlims)):
+    if i == 0:
+        ax = fig.add_subplot(gs[i])
+    else:
+        ax = fig.add_subplot(gs[i], sharey=axes[0])
+    axes.append(ax)
 
-fig, axes = plt.subplots(1, len(xlims), figsize=(32, 18), sharey=True)
-
-for ax, (xmin, xmax) in zip(axes, xlims):
+for i, (ax, (xmin, xmax)) in enumerate(zip(axes, xlims)):
     for line in lines:
         x_data = line.get_xdata()
         y_data = line.get_ydata()
@@ -94,18 +105,23 @@ for ax, (xmin, xmax) in zip(axes, xlims):
     for txt in texts:
         x_txt, y_txt = txt.get_position()
         if xmin <= x_txt <= xmax:
-            ax.text(x_txt, y_txt, txt.get_text(), fontsize=txt.get_fontsize(), fontstyle=txt.get_fontstyle(), ha='center', va='bottom', color=txt.get_color())
+            ax.text(x_txt, y_txt, txt.get_text(), fontsize=txt.get_fontsize(), fontstyle=txt.get_fontstyle(), ha='center', va='bottom', color=txt.get_color(), bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
     ax.set_xlim(xmin, xmax)
-    ax.set_xticks(np.linspace(xmin, xmax, num=5))
-    ax.ticklabel_format(style='plain', axis='x')
+    ax.xaxis.set_major_locator(MultipleLocator(2.5))
+    ax.ticklabel_format(style='plain', axis='x',useOffset=False)
+    ax.xaxis.set_major_formatter(plt.FormatStrFormatter('%.1f'))
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
-    ax.tick_params(labelleft=False, left=False)
+    ax.tick_params(labelleft=False, left=False, labelrotation=45)
     ax.grid(True)
 
 axes[0].spines['left'].set_visible(True)
 axes[0].tick_params(labelleft=True, left=True)
+
+ysticks = axes[0].get_yticks()
+for ax in axes[1:]:
+    ax.set_yticks(ysticks)
 
 d = .015
 for i in range(len(axes)-1):
@@ -124,8 +140,8 @@ fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
 fig.text(0.04, 0.5, r"$L_{planet}/L_{star}$ (ppm)", va="center", rotation="vertical")
 plt.subplots_adjust(wspace=0.05)
 plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 from Oct 2022 to Dec 2024", fontsize=20)
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
-
 
 plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
+
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
 plt.show()
