@@ -28,12 +28,18 @@ t_end -= 2450000
 nb_days = np.max(t_end) - np.min(t_start) + 1
 t0 = np.min(t_start)-0.5
 
-phase_curve_simulation(t0, nb_days,plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
+print("t0 = ", t0)
+print("t_end = ", np.max(t_end))
+print("nb_days = ", nb_days)
+
+nb_points = 100000
+
+phase_curve_simulation(t0, nb_days, nb_points=nb_points, plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
 
 
-# Plot
+# Overall plot
 
-plt.figure(figsize=(32, 18))
+fig_overall = plt.figure(figsize=(32, 18))
 
 for p in "bcdefgh":  # Comment to not plot the individual planets
     t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_TTV_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
@@ -44,7 +50,7 @@ t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
 
-plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label="Total flux")
+line, = plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label="Total flux")
 
 
 for i in range(len(t_start)):
@@ -61,8 +67,65 @@ for i in range(len(t_start)):
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
-plt.title("JWST Observations over the phase curves of TRAPPIST-1")
-plt.legend()
+plt.title("JWST Observations over the phase curves of TRAPPIST-1 from Oct 2022 to Dec 2024")
+plt.legend(loc='upper right', ncol = 2)
 plt.grid()
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct-Nov2022.png", dpi=300, bbox_inches='tight')
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024.png", bbox_inches='tight')
+lines = plt.gca().get_lines()
+texts = plt.gca().texts
+plt.show()
+
+
+
+# Close-up on the observations
+
+xlims = [(9880,9920),(10130,10150),(10270,10275),(10610,np.max(t_end))] # Values found after looking at the first plot
+
+
+fig, axes = plt.subplots(1, len(xlims), figsize=(32, 18), sharey=True)
+
+for ax, (xmin, xmax) in zip(axes, xlims):
+    for line in lines:
+        x_data = line.get_xdata()
+        y_data = line.get_ydata()
+        mask = (x_data >= xmin) & (x_data <= xmax)
+        ax.plot(x_data[mask], y_data[mask],color=line.get_color(), linewidth=line.get_linewidth(), linestyle=line.get_linestyle(),label=line.get_label())
+
+    for txt in texts:
+        x_txt, y_txt = txt.get_position()
+        if xmin <= x_txt <= xmax:
+            ax.text(x_txt, y_txt, txt.get_text(), fontsize=txt.get_fontsize(), fontstyle=txt.get_fontstyle(), ha='center', va='bottom', color=txt.get_color())
+
+    ax.set_xlim(xmin, xmax)
+    ax.set_xticks(np.linspace(xmin, xmax, num=5))
+    ax.ticklabel_format(style='plain', axis='x')
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.tick_params(labelleft=False, left=False)
+    ax.grid(True)
+
+axes[0].spines['left'].set_visible(True)
+axes[0].tick_params(labelleft=True, left=True)
+
+d = .015
+for i in range(len(axes)-1):
+    kwargs = dict(transform=axes[i].transAxes, color='k', clip_on=False)
+    axes[i].plot((1-d, 1+d), (-d, +d), **kwargs)
+    axes[i].plot((1-d, 1+d), (1-d, 1+d), **kwargs)
+
+    kwargs.update(transform=axes[i+1].transAxes)
+    axes[i+1].plot((-d, +d), (-d, +d), **kwargs)
+    axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
+
+handles, labels = axes[0].get_legend_handles_labels()
+fig.legend(handles, labels, loc='upper right', ncol = 2)
+
+fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
+fig.text(0.04, 0.5, r"$L_{planet}/L_{star}$ (ppm)", va="center", rotation="vertical")
+plt.subplots_adjust(wspace=0.05)
+plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 from Oct 2022 to Dec 2024", fontsize=20)
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+
+
+plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 plt.show()
