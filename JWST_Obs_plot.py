@@ -35,8 +35,9 @@ print("t_end = ", t0+nb_days)
 print("nb_days = ", nb_days)
 
 nb_points = 100000
+Keplerian = True
 
-phase_curve_simulation(t0, nb_days, nb_points=nb_points, plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
+phase_curve_simulation(t0, nb_days, nb_points=nb_points, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
 
 
 # Overall plot
@@ -72,7 +73,7 @@ plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
 plt.title("JWST Observations over the phase curves of TRAPPIST-1 from Oct 2022 to Dec 2024")
 plt.legend(loc='lower right', ncol = 2)
 plt.grid()
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024.png", bbox_inches='tight')
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024.png", bbox_inches='tight') # Uncomment to save the figure
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
 ax_orig = plt.gca()
@@ -143,5 +144,5 @@ plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 
 
 plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # Uncomment to save the figure
 plt.show()

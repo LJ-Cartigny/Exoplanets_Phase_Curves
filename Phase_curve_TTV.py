@@ -42,10 +42,18 @@ def phase_TTV(P_TTV,t0,t_end,transit_peaks,nb_points):
 
     if np.abs(t0 - transit_peaks[i]) < np.abs(t0 - transit_peaks[i-1]):
         t_first_transit = transit_peaks[i]
-        P = P_TTV[i]
+        if type(P_TTV) == np.ndarray:
+            P = P_TTV[i]
+        else:
+            P = P_TTV
+        # P = P_TTV[i]
     else:
         t_first_transit = transit_peaks[i-1]
-        P = P_TTV[i-1]
+        if type(P_TTV) == np.ndarray:
+            P = P_TTV[i]
+        else:
+            P = P_TTV
+        # P = P_TTV[i-1]
     
     t = np.linspace(t0, t_end, nb_points)
 
@@ -55,7 +63,7 @@ def phase_TTV(P_TTV,t0,t_end,transit_peaks,nb_points):
     return phases_TTV, t
 
 
-def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', total=True, plot=True, save_plot=False, save_txt=False):
+def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', Keplerian=False, total=True, plot=True, save_plot=False, save_txt=False):
     """
     Simulates the phase curves of the planets of TRAPPIST-1 for a given number of days starting from t0 taking into account the modified periods due to TTVs.
     We assume circular orbits as otherwise the code does not manage to solve the Kepler equation to compute the true anomaly due to the modified periods.
@@ -71,6 +79,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
     :param planets: the planets to simulate (default: 'bcdefgh')
     :type planets: str
+
+    :param Keplerian: whether to use the Keplerian periods or not (default: False)
+    :type Keplerian: bool
 
     :param total: whether to plot the total phase curve or not (default: True)
     :type total: bool
@@ -98,6 +109,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
         P_b_TTV, transit_peaks_b = np.loadtxt("Files_TTV/TTV_b.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         
+        if Keplerian:
+            P_b_TTV = P_b
+        
         r_b = a_b
         flux_star_b = flux_star(L_star,r_b)
         flux_b = flux_planet(flux_star_b)
@@ -118,6 +132,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
     if 'c' in planets:
 
         P_c_TTV, transit_peaks_c = np.loadtxt("Files_TTV/TTV_c.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+
+        if Keplerian:
+            P_c_TTV = P_c
 
         r_c = a_c
         flux_star_c = flux_star(L_star,r_c)
@@ -140,6 +157,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
         P_d_TTV, transit_peaks_d = np.loadtxt("Files_TTV/TTV_d.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
+        if Keplerian:
+            P_d_TTV = P_d
+
         r_d = a_d
         flux_star_d = flux_star(L_star,r_d)
         flux_d = flux_planet(flux_star_d)
@@ -160,6 +180,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
     if 'e' in planets:
 
         P_e_TTV, transit_peaks_e = np.loadtxt("Files_TTV/TTV_e.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+
+        if Keplerian:
+            P_e_TTV = P_e
 
         r_e = a_e
         flux_star_e = flux_star(L_star,r_e)
@@ -182,6 +205,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
         P_f_TTV, transit_peaks_f = np.loadtxt("Files_TTV/TTV_f.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
+        if Keplerian:
+            P_f_TTV = P_f
+
         r_f = a_f
         flux_star_f = flux_star(L_star,r_f)
         flux_f = flux_planet(flux_star_f)
@@ -203,6 +229,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
         P_g_TTV, transit_peaks_g = np.loadtxt("Files_TTV/TTV_g.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
+        if Keplerian:
+            P_g_TTV = P_g
+
         r_g = a_g
         flux_star_g = flux_star(L_star,r_g)
         flux_g = flux_planet(flux_star_g)
@@ -223,6 +252,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
     if 'h' in planets:
 
         P_h_TTV, transit_peaks_h = np.loadtxt("Files_TTV/TTV_h.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+
+        if Keplerian:
+            P_h_TTV = P_h
 
         r_h = a_h
         flux_star_h = flux_star(L_star,r_h)
@@ -263,7 +295,7 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', tota
 
 
     # Plotting the phase curves
-    
+
     if plot:
         plt.figure(figsize=(16,9))
         if 'b' in planets:

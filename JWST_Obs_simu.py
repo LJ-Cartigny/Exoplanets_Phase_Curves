@@ -3,7 +3,7 @@
 
 # Louis-Julien Cartigny
 # April 2025
-# Simulations of the phase curves during JWST observations of TRAPPIST-1b
+# Simulations of the phase curves during JWST observations of TRAPPIST-1
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,5 +28,9 @@ nb_days = nb_days.jd
 t_start -= 2450000
 t_end -= 2450000
 
+nb_points = 100000
+
+Keplerian = True
+
 for i in range(len(t_start)):
-    phase_curve_simulation(t_start[i], nb_days[i],plot=False,save_plot=True,save_txt=True)
+    phase_curve_simulation(t_start[i], nb_days[i],nb_points=nb_points,Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
