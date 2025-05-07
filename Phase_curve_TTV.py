@@ -291,7 +291,7 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', Kepl
             phase_curve_total += phase_curve_h_TTV
 
     if save_txt:
-        np.savetxt("Phase_curve_TTV_output/phase_curve_total_TTV_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), L_total/L_star (ppm)', comments='')
+        np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_TTV_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), L_total/L_star (ppm)', comments='')
 
 
     # Plotting the phase curves

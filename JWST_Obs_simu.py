@@ -28,9 +28,9 @@ nb_days = nb_days.jd
 t_start -= 2450000
 t_end -= 2450000
 
-nb_points = 100000
-
+nb_points = 10000
+planets='bcdefgh'
 Keplerian = True
 
 for i in range(len(t_start)):
-    phase_curve_simulation(t_start[i], nb_days[i],nb_points=nb_points,Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+    phase_curve_simulation(t_start[i], nb_days[i],nb_points=nb_points,planets=planets,Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
