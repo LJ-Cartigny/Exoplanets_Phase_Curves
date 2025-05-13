@@ -8,12 +8,20 @@
 from Solar_System_constants import *
 import numpy as np
 
+
+# Distance between the TRAPPIST-1 system and the Solar system
+
+dist_system = 12.429888806540756 * 3.086e16 # in m (from NASA Exoplanet Archive)
+
 # For star TRAPPIST-1 (using NASA Exoplanet Archive)
 
 T_eff_star = 2520 # in K (from Ducrot et al. 2020)
 R_star = 0.1234 * R_Sun # in m (from Ducrot et al. 2020)
 M_star = 0.0898 * M_Sun # in kg (from Ducrot et al. 2020)
 L_star = 10**(-3.26)*L_Sun # in W (from Ducrot et al. 2020)
+
+wavelengths_T1_sphinx, flux_T1_sphinx = np.loadtxt("sphinx_spectrum_T-1_aisha.txt", unpack=True, skiprows=1)
+wavelengths_T1_sphinx *= 1e-6 # Convert to m
 
 
 #For TRAPPIST-1 b (using NASA Exoplanet Archive)
