@@ -15,8 +15,8 @@ dist_system = 12.429888806540756 * 3.086e16 # in m (from NASA Exoplanet Archive)
 
 # For star TRAPPIST-1 (using NASA Exoplanet Archive)
 
-T_eff_star = 2520 # in K (from Ducrot et al. 2020)
-R_star = 0.1234 * R_Sun # in m (from Ducrot et al. 2020)
+T_eff_star = 2566 # in K (from Agol et al. 2021)
+R_star = 	0.1192 * R_Sun # in m (from Agol et al. 2021)
 M_star = 0.0898 * M_Sun # in kg (from Ducrot et al. 2020)
 L_star = 10**(-3.26)*L_Sun # in W (from Ducrot et al. 2020)
 
@@ -32,7 +32,7 @@ i_b = 89.28 * np.pi/180 # in rad (from Ducrot et al. 2020)
 #i_b = 89.73 * np.pi/180 # in rad (from Agol et al. 2021)
 omega_b = 336.86 * np.pi/180 # in rad (from Grimm et al. 2018)
 e_b = 0.00622 # (from Grimm et al. 2018)
-R_b = 1.017 * R_Earth # in m (from Grimm et al. 2018)
+R_b = 1.116 * R_Earth # in m (from Agol et al. 2021)
 
 
 #For TRAPPIST-1 c (using NASA Exoplanet Archive)

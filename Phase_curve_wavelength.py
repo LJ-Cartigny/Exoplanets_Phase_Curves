@@ -168,6 +168,47 @@ def flux_mJy(F, lambda_min, lambda_max, dist, R):
     return F_mJy
 
 
+def flux_mJy_array(F_array, lambda_vals, lambda_min, lambda_max, dist, R):
+    """
+    Compute the integrated flux of an object in mJy over a given wavelength range.
+
+    :param F_array: Array of flux densities (in W/m^2/m)
+    :type F_array: array-like
+
+    :param lambda_vals: Corresponding wavelengths for F_array (in m)
+    :type lambda_vals: array-like
+
+    :param lambda_min: Minimum wavelength for integration (in m)
+    :type lambda_min: float
+
+    :param lambda_max: Maximum wavelength for integration (in m)
+    :type lambda_max: float
+
+    :param dist: Distance to the object (in m)
+    :type dist: float
+
+    :param R: Radius of the object (in m)
+    :type R: float
+
+    :return: Integrated flux in mJy
+    :rtype: float
+    """
+    print(f"Interpolating between {lambda_min} and {lambda_max}")
+    print(f"Wavelength range: {np.min(lambda_vals)} – {np.max(lambda_vals)}")
+
+    # Interpolate the flux over wavelength
+    flux_interp = interp1d(lambda_vals, F_array, bounds_error=False, fill_value=0)
+
+    # Define scalar integrand using the interpolated flux
+    def integrand(l):
+        return conversion_IS_to_mJy(flux_interp(l), l, dist, R)
+
+    # Perform the integration
+    F_mJy = quad(integrand, lambda_min, lambda_max)[0]
+
+    return F_mJy
+
+
 def conversion_mJy_to_IS(F_mJy, wavelength, dist, R):
     """
     Converts the flux density (in mJy) to W/m^2/m.
