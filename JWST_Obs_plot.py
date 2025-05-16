@@ -37,8 +37,14 @@ print("nb_days = ", nb_days)
 nb_points = 100000
 Keplerian = True
 planets = 'bcdefgh'
+filter = 'F1500W'
 
-phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True) # Comment if the simulation is already done
+save_plot = False # Write True if you want to save the plots
+
+do_simulation = False # Write True if the simulation hasn't been done yet 
+
+if do_simulation:
+    phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, filter=filter, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
 
 
 # Overall plot
@@ -46,10 +52,16 @@ phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, Kepler
 fig_overall = plt.figure(figsize=(32, 18))
 
 for p in "bcdefgh":  # Comment to not plot the individual planets
-    t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_TTV_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+    if filter == None:
+        t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_bolometric_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+    else:
+        t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
     plt.plot(t_simu, phase_simu, '--', label=p, linewidth=0.5)
 
-t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_TTV_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+if filter == None:
+    t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+else:
+    t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
@@ -59,7 +71,13 @@ line, = plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label
 
 for i in range(len(t_start)):
     t0 = t_start[i]
-    t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_TTV_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+
+    if filter == None:
+        t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+    else:
+        t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+
+    # t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_TTV_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
@@ -71,10 +89,21 @@ for i in range(len(t_start)):
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
-plt.title("JWST Observations over the phase curves of TRAPPIST-1 outer planets from Oct 2022 to Dec 2024")
+
+if filter == None:
+    plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
+else:
+    plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+
 plt.legend(loc='lower right', ncol = 2)
 plt.grid()
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_outer_Oct2022-Dec2024.png", bbox_inches='tight') # Uncomment to save the figure
+
+if save_plot:
+    if filter == None:
+        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
+    else:    
+        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
+
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
 ax_orig = plt.gca()
@@ -139,11 +168,20 @@ handles, labels = axes[0].get_legend_handles_labels()
 fig.legend(handles, labels, loc='upper right', ncol = 2)
 
 fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
-fig.text(0.1, 0.5, r"$L_{planet}/L_{star}$ (ppm)", va="center", rotation="vertical")
+fig.text(0.1, 0.5, r"$F_{planet}/F_{star}$ (ppm)", va="center", rotation="vertical")
 plt.subplots_adjust(wspace=0.05)
-plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 outer planets from Oct 2022 to Dec 2024", fontsize=20)
+
+if filter == None:
+    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
+else:
+    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
 
 plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
-# plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_outer_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # Uncomment to save the figure
+if save_plot:
+    if filter == None:
+        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+    else:
+        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+
 plt.show()
