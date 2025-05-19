@@ -37,17 +37,25 @@ print("nb_days = ", nb_days)
 nb_points = 100000
 Keplerian = True
 planets = 'defgh'
-redistribution = 1
+redistribution = 1 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison)
 filter = 'F1500W'
 
-save_plots = False # Write True if you want to save the plots
+save_plots = True # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
-plot_individual_planets = False # Write True if you want to plot the individual planets
+plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
+
+comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
+
+if comparison:
+    redistribution = 0
 
 if do_simulation:
     phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+    
+    if comparison:
+        phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=1, filter=filter, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
 
 
 # Overall plot
@@ -63,7 +71,7 @@ if plot_individual_planets:
                 t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
             else:
                 t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
-        plt.plot(t_simu, phase_simu, '--', label=p, linewidth=0.5)
+        plt.plot(t_simu, phase_simu, '--', label=p+" (bare rock)", linewidth=0.5)
 
 if filter == None:
     t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
@@ -72,6 +80,10 @@ else:
         t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
     else:
         t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+
+if comparison:
+    t_total_simu_atm, phase_curve_total_simu_atm = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+    plt.plot(t_total_simu_atm, phase_curve_total_simu_atm, color='black', label="Total (atmospheres)")
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
@@ -100,12 +112,14 @@ for i in range(len(t_start)):
     plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
-plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
+plt.ylabel(r"$F_{planet}/F_{star}$ (ppm)")
 
 if filter == None:
     plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
 else:
-    if redistribution == 0:
+    if comparison:
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+    elif redistribution == 0:
         plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
     else:
         plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
@@ -117,7 +131,9 @@ if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
     else:
-        if redistribution == 0:
+        if comparison:
+            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
+        elif redistribution == 0:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
         else:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
@@ -192,7 +208,9 @@ plt.subplots_adjust(wspace=0.05)
 if filter == None:
     plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
 else:
-    if redistribution == 0:
+    if comparison:
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+    elif redistribution == 0:
         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
     else:
         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
@@ -203,7 +221,9 @@ if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
-        if redistribution == 0:
+        if comparison:
+            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+        elif redistribution == 0:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         else:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
