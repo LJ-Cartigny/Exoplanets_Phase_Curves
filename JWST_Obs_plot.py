@@ -36,32 +36,42 @@ print("nb_days = ", nb_days)
 
 nb_points = 100000
 Keplerian = True
-planets = 'bcdefgh'
+planets = 'defgh'
+redistribution = 1
 filter = 'F1500W'
 
-save_plot = False # Write True if you want to save the plots
+save_plots = False # Write True if you want to save the plots
 
-do_simulation = False # Write True if the simulation hasn't been done yet 
+do_simulation = False # Write True if the simulation hasn't been done yet
+
+plot_individual_planets = False # Write True if you want to plot the individual planets
 
 if do_simulation:
-    phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, filter=filter, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+    phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
 
 
 # Overall plot
 
 fig_overall = plt.figure(figsize=(32, 18))
 
-for p in "bcdefgh":  # Comment to not plot the individual planets
-    if filter == None:
-        t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_bolometric_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
-    else:
-        t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
-    plt.plot(t_simu, phase_simu, '--', label=p, linewidth=0.5)
+if plot_individual_planets:
+    for p in planets:
+        if filter == None:
+            t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_bolometric_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+        else:
+            if redistribution == 0:
+                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+            else:
+                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+        plt.plot(t_simu, phase_simu, '--', label=p, linewidth=0.5)
 
 if filter == None:
     t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 else:
-    t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+    if redistribution == 0:
+        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+    else:
+        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
@@ -75,9 +85,11 @@ for i in range(len(t_start)):
     if filter == None:
         t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
     else:
-        t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+        if redistribution == 0:
+            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+        else:
+            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
 
-    # t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_TTV_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
@@ -93,16 +105,22 @@ plt.ylabel(r"$L_{planet}/L_{star}$ (ppm)")
 if filter == None:
     plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
 else:
-    plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+    if redistribution == 0:
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+    else:
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
 
 plt.legend(loc='lower right', ncol = 2)
 plt.grid()
 
-if save_plot:
+if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
-    else:    
-        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
+    else:
+        if redistribution == 0:
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
+        else:
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
@@ -174,14 +192,20 @@ plt.subplots_adjust(wspace=0.05)
 if filter == None:
     plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
 else:
-    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
+    if redistribution == 0:
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
+    else:
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
 
 plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
-if save_plot:
+if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
-        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+        if redistribution == 0:
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+        else:
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
 
 plt.show()

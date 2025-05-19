@@ -63,9 +63,9 @@ def flux_black_body(lambda_min, lambda_max,T):
     return F
 
 
-def planet_equilibirium_temperature(T_star, R_star, d, albedo=0):
+def planet_equilibirium_temperature(T_star, R_star, d, albedo=0., redistribution=0.):
     """
-    Determines the equilibrium temperature of the day side of a tidally locked planet (in K) without any redistribution.
+    Determines the equilibrium temperature of the day side of a tidally locked planet (in K).
 
     :param T_star: the effective temperature of the star (in K)
     :type T_star: float
@@ -79,11 +79,14 @@ def planet_equilibirium_temperature(T_star, R_star, d, albedo=0):
     :param albedo: the albedo of the planet (default: 0)
     :type albedo: float
 
+    :param redistribution: the redistribution efficiency between the day side and night side (default: 0)
+    :type redistribution: float
+
     :return: T_eq
     :rtype: float
     """
 
-    T_eq = T_star * (R_star / d)**0.5 * (2/3 * (1-albedo))**0.25
+    T_eq = T_star * (R_star / d)**0.5 * ((2/3 - 5/12 * redistribution) * (1-albedo))**0.25
 
     return T_eq
 
@@ -487,6 +490,28 @@ def main():
 
     flux_ratio_miri_c = flux_ratio_miri("F1500W", R_c, R_star, T_eq_c)
     print("F_ratio_c = ", flux_ratio_miri_c, "ppm (F1500W MIRI filter)")
+
+
+    # For TRAPPIST-1 d
+
+    print("\nFor planet TRAPPIST-1 d (without atmosphere):")
+
+    T_eq_d = planet_equilibirium_temperature(T_eff_star, R_star, a_d)
+    print("T_eq_d = ", T_eq_d, "K")
+    F_d_miri = flux_planet_miri("F1500W", T_eq_d)
+    print("F_d = ", F_d_miri, "W/m^2 (F1500W MIRI filter)")
+
+    flux_ratio_miri_d = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d)
+    print("F_ratio_d = ", flux_ratio_miri_d, "ppm (F1500W MIRI filter)")
+
+    print("\nFor planet TRAPPIST-1 d (with atmosphere):")
+    T_eq_d_atm = planet_equilibirium_temperature(T_eff_star, R_star, a_d, redistribution = 1)
+    print("T_eq_d_atm = ", T_eq_d_atm, "K")
+    F_d_miri_atm = flux_planet_miri("F1500W", T_eq_d_atm)
+    print("F_d_atm = ", F_d_miri_atm, "W/m^2 (F1500W MIRI filter)")
+
+    flux_ratio_miri_d_atm = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d_atm)
+    print("F_ratio_d_atm = ", flux_ratio_miri_d_atm, "ppm (F1500W MIRI filter)")
 
 
 if __name__ == "__main__":
