@@ -18,6 +18,25 @@ from Transits import eclipse
 from Phase_curve_v1 import star_planet_separation, flux_star, flux_planet, luminosity_planet_dayside, phase_curve
 from TRAPPIST1_parameters import *
 
+def flux_sphinx_interp(l):
+    """
+    Interpolates the flux of TRAPPIST-1 et a given wavelength from the SPHINX model.
+
+    :param l: the wavelength (in m)
+    :type l: float
+
+    :return: F
+    :rtype: float
+    """
+
+    # Interpolate the flux over wavelength
+    flux_interp = interp1d(wavelengths_T1_sphinx, flux_T1_sphinx, bounds_error=False, fill_value=0)
+
+    # Compute the flux at the given wavelength
+    F = flux_interp(l)
+
+    return F
+
 def Planck_law(wavelength, T):
     """
     Determines the spectral radiance of a black body (in W/m^2 m^-1 sr^-1).
@@ -240,7 +259,7 @@ def conversion_mJy_to_IS(F_mJy, wavelength, dist, R):
 
 def flux_Wm2(F_mJy, lambda_min, lambda_max, dist, R):
     """
-    Compute the flux of an object in W/m^2/m over a range of wavelengths.
+    Compute the flux of an object in W/m^2 over a range of wavelengths.
 
     :param F_mJy: the flux density (in mJy)
     :type F_mJy: float
@@ -332,12 +351,15 @@ def quantum_efficiency(filter_name, wavelength):
     return QE
 
 
-def flux_star_miri(filter_name):
+def flux_star_miri(filter_name, unit="W/m^2"):
     """
-    Returns the flux of the star TRAPPIST-1 (in W/m^2) in the specified MIRI filter band.
+    Returns the flux of the star TRAPPIST-1 in the specified MIRI filter band.
 
     :param filter_name: the name of the filter
     :type filter_name: str
+
+    :param unit: the unit of the returned flux: W/m^2 or mJy (default: "W/m^2")
+    :type unit: str
 
     :return: F_star
     :rtype: float
@@ -347,7 +369,7 @@ def flux_star_miri(filter_name):
     wavelengths_filter = filter_band[0,:]*1e-6 # Convert to m
     QE = filter_band[1,:]/np.max(filter_band[1,:])
     
-    # The two arrays are not covering the same wevelength range so we need to deterùine the common range
+    # The two arrays are not covering the same wavelength range so we need to determine the common range
     lambda_min_common = np.max([np.min(wavelengths_T1_sphinx), np.min(wavelengths_filter)])
     lambda_max_common = np.min([np.max(wavelengths_T1_sphinx), np.max(wavelengths_filter)])
 
@@ -355,24 +377,49 @@ def flux_star_miri(filter_name):
     wavelengths_T1_sphinx_cut = wavelengths_T1_sphinx[mask_common]
     flux_T1_sphinx_cut = flux_T1_sphinx[mask_common]
 
+    if unit == "mJy":
+        # Convert the flux density to mJy
+        flux_T1_sphinx_cut_mJy = conversion_IS_to_mJy(flux_T1_sphinx_cut, wavelengths_T1_sphinx_cut, dist_system, R_star)
+        flux_T1_sphinx_cut = flux_T1_sphinx_cut_mJy
+
     # Interpolate the QE values to match the wavelengths of the SPHINX spectrum
     interp_filter = interp1d(wavelengths_filter, QE, bounds_error=False, fill_value=0)
     QE_interp = interp_filter(wavelengths_T1_sphinx_cut)
 
     F_star = np.trapz(flux_T1_sphinx_cut * QE_interp, wavelengths_T1_sphinx_cut)
 
+    if unit == "mJy":
+        l_eff_F1500 = 14.79e-6 # in m
+        F_measured = 2.589 # in mJy
+        plt.figure(figsize=(16,9))
+        plt.plot(wavelengths_T1_sphinx_cut, flux_T1_sphinx_cut, label="SPHINX")
+        plt.scatter(l_eff_F1500, F_measured, color='red', label="Measured flux", zorder=5)
+        #plt.plot(wavelengths_T1_sphinx_cut, QE_interp*flux_T1_sphinx_cut, label="MIRI filter")
+        plt.xlabel(r"Wavelength ($m$)")
+        plt.ylabel(r"Flux ($mJy$)")
+        plt.xscale("log")
+        plt.yscale("log")
+        plt.xlim(np.min(wavelengths_T1_sphinx_cut), np.max(wavelengths_T1_sphinx_cut))
+        plt.title("Flux of TRAPPIST-1 in mJy")
+        plt.legend()
+        plt.grid()
+        plt.show()
+
     return F_star
 
 
-def flux_planet_miri(filter_name, T_planet):
+def flux_planet_miri(filter_name, T_planet, unit="W/m^2"):
     """
-    Returns the flux of the planet (in W/m^2) in the specified MIRI filter band.
+    Returns the flux of the planet in the specified MIRI filter band.
 
     :param filter_name: the name of the filter
     :type filter_name: str
 
     :param T_planet: the temperature of the planet (in K)
     :type T_planet: float
+
+    :param unit: the unit of the returned flux: W/m^2 or mJy (default: "W/m^2")
+    :type unit: str
 
     :return: F_planet_miri
     :rtype: float
@@ -384,7 +431,12 @@ def flux_planet_miri(filter_name, T_planet):
 
     F_planet = np.pi*Planck_law(wavelengths_filter, T_planet) # in W/m^2/m
 
-    F_planet_miri = np.trapz(F_planet*QE, wavelengths_filter) # in W/m^2
+    if unit == "mJy":
+        # Convert the flux to mJy
+        F_planet_mJy = conversion_IS_to_mJy(F_planet, wavelengths_filter, dist_system, R_b)
+        F_planet = F_planet_mJy
+
+    F_planet_miri = np.trapz(F_planet*QE, wavelengths_filter)
 
     return F_planet_miri
 
@@ -416,10 +468,78 @@ def flux_ratio_miri(filter_name, R_planet, R_star, T_planet):
 
     return F_ratio_miri
 
+def integrate_flux_sphinx(filter_name, unit="W/m^2"):
+    """
+    Integrates the flux of the SPHINX model over the specified MIRI filter band.
+
+    :param filter_name: the name of the filter
+    :type filter_name: str
+
+    :param unit: the unit of the returned flux: W/m^2 or mJy (default: "W/m^2")
+    :type unit: str
+
+    :return: F_sphinx_miri
+    :rtype: float
+    """
+
+    filter_band = filter(filter_name)
+    
+    spectrum_filter = flux_sphinx_interp(filter_band[0,:]*1e-6) / 1.07
+
+    if unit == "mJy":
+        # Convert the flux density to mJy
+        spectrum_filter_mJy = conversion_IS_to_mJy(spectrum_filter, filter_band[0,:]*1e-6, dist_system, R_star)
+        spectrum_filter = spectrum_filter_mJy
+
+    F_sphinx_miri = 0
+    norm_filter = 0
+
+    for i in range(1, len(filter_band[0,:]), 1):
+        norm_filter += filter_band[1,i] * (1./filter_band[0,i] - 1./filter_band[0,i-1])
+        F_sphinx_miri += spectrum_filter[i] * filter_band[1,i] * (1./filter_band[0,i] - 1./filter_band[0,i-1])
+
+    # Normalize the flux
+    F_sphinx_miri /= norm_filter
+    
+
+    return F_sphinx_miri
+
+
+# def flux_mJy_miri(filter_name, T, R, d=dist_system):
+#     """
+#     Returns the flux of an object (as a black body) in mJy in the specified MIRI filter band.
+    
+#     :param filter_name: the name of the filter
+#     :type filter_name: str
+    
+#     :param T: the temperature of the object (in K)
+#     :type T: float
+
+#     :param R: the radius of the object (in m)
+#     :type R: float
+
+#     :param d: the distance of the object (in m) (default: dist_system)
+#     :type d: float
+
+#     :return: F_mJy
+#     :rtype: float
+#     """
+#     filter_band = filter(filter_name)
+#     wavelengths_filter = filter_band[0,:]*1e-6 # Convert to m
+#     QE = filter_band[1,:]/np.max(filter_band[1,:])
+
+#     F = np.pi*Planck_law(wavelengths_filter, T) # in W/m^2/m
+
+#     # Convert the flux to mJy
+#     F_mJy = conversion_IS_to_mJy(F, wavelengths_filter, dist_system, R_star)
+
+#     F_mJy_miri = np.trapz(F_mJy*QE, wavelengths_filter)
+
+#     return F_mJy_miri
+
+
 
 def main():
-
-    # nb_points = 10000
 
     # Comparison of the SPHINX and black body spectra of TRAPPIST-1
 
@@ -438,11 +558,17 @@ def main():
     # plt.grid()
     # plt.savefig("Comparison_sphinx_black_body.png", bbox_inches='tight')
     # plt.show()
+
+    # Convert the SPHINX spectrum to mJy
+
+    flux_T1_sphinx_mJy = conversion_IS_to_mJy(flux_T1_sphinx, wavelengths_T1_sphinx, dist_system, R_star)
     
     # Define MIRI 15 micron filter band
 
     lambda_min_F1500 = 13e-6 # in m
     lambda_max_F1500 = 17.3e-6 # in m
+
+    l_eff_F1500 = 14.79e-6 # in m
 
 
     # Flux of star TRAPPIST-1 in the MIRI 15 micron filter band
@@ -453,65 +579,82 @@ def main():
     print("F_star = ", F_star_Planck, "W/m^2 (as a black body)")
 
     F_star_obs_mJy = 2.528
+    print("F_star_obs_mJy = ", F_star_obs_mJy, "mJy (seen from Earth)")
     F_star_obs_Wm2 = flux_Wm2(F_star_obs_mJy, lambda_min_F1500, lambda_max_F1500, dist_system, R_star)
     print("F_star_obs = ", F_star_obs_Wm2, "W/m^2 (seen from Earth)")
+    # print("F_star_obs_mJy = ", flux_mJy(F_star_obs_Wm2, lambda_min_F1500, lambda_max_F1500, dist_system, R_star), "mJy (seen from Earth)")
+    
 
-    F_star_sphinx = flux_star_miri("F1500W")
-    print("F_star_sphinx = ", F_star_sphinx, "W/m^2 (using the SPHINX spectrum with MIRI F1500W filter)")
+    # F_star_sphinx_Wm2 = flux_star_miri("F1500W")
+    # print("F_star_sphinx = ", F_star_sphinx_Wm2, "W/m^2 (using the SPHINX spectrum with MIRI F1500W filter)")
+    # F_star_sphinx_mJy = flux_star_miri("F1500W", unit="mJy")
+    # print("F_star_sphinx = ", F_star_sphinx_mJy, "mJy (using the SPHINX spectrum with MIRI F1500W filter)")
+    # print("F_star_mJy = ", flux_mJy_array(flux_T1_sphinx, wavelengths_T1_sphinx, lambda_min_F1500, lambda_max_F1500, dist_system, R_star), "mJy (using the SPHINX spectrum)")
 
+    F_star_sphinx_miri_F1500_Wm2 = integrate_flux_sphinx("F1500W")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_Wm2, "W/m^2 (using the SPHINX spectrum with MIRI F1500W filter)")
 
-    # For TRAPPIST-1 b
-    print("\nFor planet TRAPPIST-1 b:")
+    F_star_sphinx_miri_F1500_mJy = integrate_flux_sphinx("F1500W", unit="mJy")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_mJy, "mJy (using the SPHINX spectrum with MIRI F1500W filter)")
 
-    T_eq_b = planet_equilibirium_temperature(T_eff_star, R_star, a_b)
-    print("T_eq_b = ", T_eq_b, "K")
-
-    F_b_miri = flux_planet_miri("F1500W", T_eq_b)
-    print("F_b = ", F_b_miri, "W/m^2 (F1500W MIRI filter)")
-
-    flux_ratio_miri_b = flux_ratio_miri("F1500W", R_b, R_star, T_eq_b)
-    print("F_ratio_b = ", flux_ratio_miri_b, "ppm (F1500W MIRI filter)")
-
-    F_b_miri_bis = flux_planet_miri("F1280W", T_eq_b)
-    print("F_b_bis = ", F_b_miri_bis, "W/m^2 (F1280W MIRI filter)")
-    flux_ratio_miri_b_bis = flux_ratio_miri("F1280W", R_b, R_star, T_eq_b)
-    print("F_ratio_b_bis = ", flux_ratio_miri_b_bis, "ppm (F1280W MIRI filter)")
+    F_star_sphinx_miri_F1280_Wm2 = integrate_flux_sphinx("F1280W")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_Wm2, "W/m^2 (using the SPHINX spectrum with MIRI F1280W filter)")
+    F_star_sphinx_miri_F1280_mJy = integrate_flux_sphinx("F1280W", unit="mJy")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_mJy, "mJy (using the SPHINX spectrum with MIRI F1280W filter)")
 
 
-    # For TRAPPIST-1 c
+    # # For TRAPPIST-1 b
+    # print("\nFor planet TRAPPIST-1 b:")
 
-    print("\nFor planet TRAPPIST-1 c:")
+    # T_eq_b = planet_equilibirium_temperature(T_eff_star, R_star, a_b)
+    # print("T_eq_b = ", T_eq_b, "K")
 
-    T_eq_c = planet_equilibirium_temperature(T_eff_star, R_star, a_c)
-    print("T_eq_c = ", T_eq_c, "K")
+    # F_b_miri = flux_planet_miri("F1500W", T_eq_b)
+    # print("F_b = ", F_b_miri, "W/m^2 (F1500W MIRI filter)")
 
-    F_c_miri = flux_planet_miri("F1500W", T_eq_c)
-    print("F_c = ", F_c_miri, "W/m^2 (F1500W MIRI filter)")
+    # flux_ratio_miri_b = flux_ratio_miri("F1500W", R_b, R_star, T_eq_b)
+    # print("F_ratio_b = ", flux_ratio_miri_b, "ppm (F1500W MIRI filter)")
 
-    flux_ratio_miri_c = flux_ratio_miri("F1500W", R_c, R_star, T_eq_c)
-    print("F_ratio_c = ", flux_ratio_miri_c, "ppm (F1500W MIRI filter)")
+    # F_b_miri_bis = flux_planet_miri("F1280W", T_eq_b)
+    # print("F_b_bis = ", F_b_miri_bis, "W/m^2 (F1280W MIRI filter)")
+    # flux_ratio_miri_b_bis = flux_ratio_miri("F1280W", R_b, R_star, T_eq_b)
+    # print("F_ratio_b_bis = ", flux_ratio_miri_b_bis, "ppm (F1280W MIRI filter)")
 
 
-    # For TRAPPIST-1 d
+    # # For TRAPPIST-1 c
 
-    print("\nFor planet TRAPPIST-1 d (without atmosphere):")
+    # print("\nFor planet TRAPPIST-1 c:")
 
-    T_eq_d = planet_equilibirium_temperature(T_eff_star, R_star, a_d)
-    print("T_eq_d = ", T_eq_d, "K")
-    F_d_miri = flux_planet_miri("F1500W", T_eq_d)
-    print("F_d = ", F_d_miri, "W/m^2 (F1500W MIRI filter)")
+    # T_eq_c = planet_equilibirium_temperature(T_eff_star, R_star, a_c)
+    # print("T_eq_c = ", T_eq_c, "K")
 
-    flux_ratio_miri_d = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d)
-    print("F_ratio_d = ", flux_ratio_miri_d, "ppm (F1500W MIRI filter)")
+    # F_c_miri = flux_planet_miri("F1500W", T_eq_c)
+    # print("F_c = ", F_c_miri, "W/m^2 (F1500W MIRI filter)")
 
-    print("\nFor planet TRAPPIST-1 d (with atmosphere):")
-    T_eq_d_atm = planet_equilibirium_temperature(T_eff_star, R_star, a_d, redistribution = 1)
-    print("T_eq_d_atm = ", T_eq_d_atm, "K")
-    F_d_miri_atm = flux_planet_miri("F1500W", T_eq_d_atm)
-    print("F_d_atm = ", F_d_miri_atm, "W/m^2 (F1500W MIRI filter)")
+    # flux_ratio_miri_c = flux_ratio_miri("F1500W", R_c, R_star, T_eq_c)
+    # print("F_ratio_c = ", flux_ratio_miri_c, "ppm (F1500W MIRI filter)")
 
-    flux_ratio_miri_d_atm = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d_atm)
-    print("F_ratio_d_atm = ", flux_ratio_miri_d_atm, "ppm (F1500W MIRI filter)")
+
+    # # For TRAPPIST-1 d
+
+    # print("\nFor planet TRAPPIST-1 d (without atmosphere):")
+
+    # T_eq_d = planet_equilibirium_temperature(T_eff_star, R_star, a_d)
+    # print("T_eq_d = ", T_eq_d, "K")
+    # F_d_miri = flux_planet_miri("F1500W", T_eq_d)
+    # print("F_d = ", F_d_miri, "W/m^2 (F1500W MIRI filter)")
+
+    # flux_ratio_miri_d = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d)
+    # print("F_ratio_d = ", flux_ratio_miri_d, "ppm (F1500W MIRI filter)")
+
+    # print("\nFor planet TRAPPIST-1 d (with atmosphere):")
+    # T_eq_d_atm = planet_equilibirium_temperature(T_eff_star, R_star, a_d, redistribution = 1)
+    # print("T_eq_d_atm = ", T_eq_d_atm, "K")
+    # F_d_miri_atm = flux_planet_miri("F1500W", T_eq_d_atm)
+    # print("F_d_atm = ", F_d_miri_atm, "W/m^2 (F1500W MIRI filter)")
+
+    # flux_ratio_miri_d_atm = flux_ratio_miri("F1500W", R_d, R_star, T_eq_d_atm)
+    # print("F_ratio_d_atm = ", flux_ratio_miri_d_atm, "ppm (F1500W MIRI filter)")
 
 
 if __name__ == "__main__":

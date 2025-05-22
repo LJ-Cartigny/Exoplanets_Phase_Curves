@@ -40,7 +40,7 @@ planets = 'defgh'
 redistribution = 1 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison)
 filter = 'F1500W'
 
-save_plots = True # Write True if you want to save the plots
+save_plots = False # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
