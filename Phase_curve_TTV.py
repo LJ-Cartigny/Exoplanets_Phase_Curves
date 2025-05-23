@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from TRAPPIST1_parameters import *
 from Phase_curve_v1 import star_planet_separation, flux_star, flux_planet, luminosity_planet_dayside, phase_curve
-from Flux_wavelength import flux_ratio_miri, planet_equilibirium_temperature, flux_planet_miri
+from Flux_wavelength import flux_ratio_miri, planet_equilibirium_temperature, flux_planet_miri, integrate_flux_sphinx_mJy
 from Transits import eclipse, eclipse_impact_parameter
 from Orbital_motion import compute_true_anomaly
 
@@ -111,6 +111,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
     t_end = t0 + nb_days
 
     t = np.linspace(t0, t_end, nb_points)
+
+    if unit == 'mJy':
+        flux_star_mJy = integrate_flux_sphinx_mJy(filter) # Compute the flux of the star in mJy
     
 
     # For TRAPPIST-1 b
@@ -139,29 +142,41 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_b = planet_equilibirium_temperature(T_eff_star, R_star, a_b, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_b = flux_ratio_miri(filter, R_b, R_star, T_b) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_b = flux_ratio_miri(filter, R_b, R_star, T_b) 
+                if redistribution == 0:
+                    phase_curve_b_TTV = flux_ratio_b * phase_b_TTV * (-1*eclipse_b+1)
+                else:
+                    phase_curve_b_TTV = flux_ratio_b * (-1*eclipse_b+1)
             
-            elif unit == 'mJy':
-                flux_ratio_b = flux_planet_miri(filter, T_b, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_b = flux_ratio_miri(filter, R_b, R_star, T_b)*1e-6
+                if redistribution == 0:
+                    phase_curve_b_TTV = (flux_ratio_b * phase_b_TTV * (-1*eclipse_b+1) +1) * flux_star_mJy
+                else:
+                    phase_curve_b_TTV = (flux_ratio_b * (-1*eclipse_b+1) +1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_b_TTV = flux_ratio_b * phase_b_TTV * (-1*eclipse_b+1)
-            else:
-                phase_curve_b_TTV = flux_ratio_b * (-1*eclipse_b+1)
+            # if redistribution == 0:
+            #     phase_curve_b_TTV = flux_ratio_b * phase_b_TTV * (-1*eclipse_b+1)
+            # else:
+            #     phase_curve_b_TTV = flux_ratio_b * (-1*eclipse_b+1)
                 
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_b_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_b/F_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_b ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_b/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_b ('+unit+')', comments='')
+                    header_flux = "F_star + F_b (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 c
@@ -190,28 +205,36 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_c = planet_equilibirium_temperature(T_eff_star, R_star, a_c, redistribution=redistribution)
             
-            if unit == 'ppm':
-                flux_ratio_c = flux_ratio_miri(filter, R_c, R_star, T_c) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_c = flux_ratio_miri(filter, R_c, R_star, T_c)
+                if redistribution == 0:
+                    phase_curve_c_TTV = flux_ratio_c * phase_c_TTV * (-1*eclipse_c+1)
+                else:
+                    phase_curve_c_TTV = flux_ratio_c * (-1*eclipse_c+1)
             
-            elif unit == 'mJy':
-                flux_ratio_c = flux_planet_miri(filter, T_c, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_c = flux_ratio_miri(filter, R_c, R_star, T_c)*1e-6
+                if redistribution == 0:
+                    phase_curve_c_TTV = (flux_ratio_c * phase_c_TTV * (-1*eclipse_c+1) + 1) * flux_star_mJy 
+                else:
+                    phase_curve_c_TTV = (flux_ratio_c * (-1*eclipse_c+1) + 1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_c_TTV = flux_ratio_c * phase_c_TTV * (-1*eclipse_c+1)
-            else:
-                phase_curve_c_TTV = flux_ratio_c * (-1*eclipse_c+1)
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_c_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_c/F_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_c ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_c/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_c ('+unit+')', comments='')
+                    header_flux = "F_star + F_c (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
       
 
     # For TRAPPIST-1 d
@@ -240,28 +263,36 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_d = planet_equilibirium_temperature(T_eff_star, R_star, a_d, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_d = flux_ratio_miri(filter, R_d, R_star, T_d) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_d = flux_ratio_miri(filter, R_d, R_star, T_d)
+                if redistribution == 0:
+                    phase_curve_d_TTV = flux_ratio_d * phase_d_TTV * (-1*eclipse_d+1)
+                else:
+                    phase_curve_d_TTV = flux_ratio_d * (-1*eclipse_d+1)
             
-            elif unit == 'mJy':
-                flux_ratio_d = flux_planet_miri(filter, T_d, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_d = flux_ratio_miri(filter, R_d, R_star, T_d)*1e-6
+                if redistribution == 0:
+                    phase_curve_d_TTV = (flux_ratio_d * phase_d_TTV * (-1*eclipse_d+1) + 1) * flux_star_mJy
+                else:
+                    phase_curve_d_TTV = (flux_ratio_d * (-1*eclipse_d+1) + 1) * flux_star_mJy
             
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_d_TTV = flux_ratio_d * phase_d_TTV * (-1*eclipse_d+1)
-            else:
-                phase_curve_d_TTV = flux_ratio_d * (-1*eclipse_d+1)
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_d_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_d/F_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_d ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_d/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_d ('+unit+')', comments='')
+                    header_flux = "F_star + F_d (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
      
 
     # For TRAPPIST-1 e
@@ -290,28 +321,36 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_e = planet_equilibirium_temperature(T_eff_star, R_star, a_e, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_e = flux_ratio_miri(filter, R_e, R_star, T_e) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_e = flux_ratio_miri(filter, R_e, R_star, T_e) 
+                if redistribution == 0:
+                    phase_curve_e_TTV = flux_ratio_e * phase_e_TTV * (-1*eclipse_e+1)
+                else:
+                    phase_curve_e_TTV = flux_ratio_e * (-1*eclipse_e+1)
             
-            elif unit == 'mJy':
-                flux_ratio_e = flux_planet_miri(filter, T_e, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_e = flux_ratio_miri(filter, R_e, R_star, T_e)*1e-6
+                if redistribution == 0:
+                    phase_curve_e_TTV = (flux_ratio_e * phase_e_TTV * (-1*eclipse_e+1) + 1) * flux_star_mJy 
+                else:
+                    phase_curve_e_TTV = (flux_ratio_e * (-1*eclipse_e+1) + 1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_e_TTV = flux_ratio_e * phase_e_TTV * (-1*eclipse_e+1)
-            else:
-                phase_curve_e_TTV = flux_ratio_e * (-1*eclipse_e+1)
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_e_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_e/F_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_e ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_e/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_e ('+unit+')', comments='')
+                    header_flux = "F_star + F_e (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 f
@@ -340,28 +379,37 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_f = planet_equilibirium_temperature(T_eff_star, R_star, a_f, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_f = flux_ratio_miri(filter, R_f, R_star, T_f) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_f = flux_ratio_miri(filter, R_f, R_star, T_f)
+                if redistribution == 0:
+                    phase_curve_f_TTV = flux_ratio_f * phase_f_TTV * (-1*eclipse_f+1)
+                else:
+                    phase_curve_f_TTV = flux_ratio_f * (-1*eclipse_f+1)
 
-            elif unit == 'mJy':
-                flux_ratio_f = flux_planet_miri(filter, T_f, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_f = flux_ratio_miri(filter, R_f, R_star, T_f)*1e-6
+                if redistribution == 0:
+                    phase_curve_f_TTV = (flux_ratio_f * phase_f_TTV * (-1*eclipse_f+1) + 1) * flux_star_mJy
+                else:
+                    phase_curve_f_TTV = (flux_ratio_f * (-1*eclipse_f+1) + 1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_f_TTV = flux_ratio_f * phase_f_TTV * (-1*eclipse_f+1)
-            else:
-                phase_curve_f_TTV = flux_ratio_f * (-1*eclipse_f+1)
+            
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_f_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_f/F_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_f ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_f/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_f ('+unit+')', comments='')
+                    header_flux = "F_star + F_f (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 g
@@ -390,28 +438,36 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_g = planet_equilibirium_temperature(T_eff_star, R_star, a_g, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_g = flux_ratio_miri(filter, R_g, R_star, T_g) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_g = flux_ratio_miri(filter, R_g, R_star, T_g)
+                if redistribution == 0:
+                    phase_curve_g_TTV = flux_ratio_g * phase_g_TTV * (-1*eclipse_g+1)
+                else:
+                    phase_curve_g_TTV = flux_ratio_g * (-1*eclipse_g+1)
 
-            elif unit == 'mJy':
-                flux_ratio_g = flux_planet_miri(filter, T_g, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_g = flux_ratio_miri(filter, R_g, R_star, T_g)*1e-6
+                if redistribution == 0:
+                    phase_curve_g_TTV = (flux_ratio_g * phase_g_TTV * (-1*eclipse_g+1) + 1) * flux_star_mJy
+                else:
+                    phase_curve_g_TTV = (flux_ratio_g * (-1*eclipse_g+1) + 1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_g_TTV = flux_ratio_g * phase_g_TTV * (-1*eclipse_g+1)
-            else:
-                phase_curve_g_TTV = flux_ratio_g * (-1*eclipse_g+1)
 
         if save_txt:
                 if filter==None:
                     np.savetxt("Phase_curve_TTV_output/phase_curve_g_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_g/F_star (ppm)', comments='')
                 else:
-                    if redistribution==0:
-                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_g ('+unit+')', comments='')
+                    if unit == "ppm":
+                        header_flux = "F_g/F_star (ppm)"
                     else:
-                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_g ('+unit+')', comments='')
+                        header_flux = "F_star + F_g (mJy)"
+                    if redistribution==0:
+                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    else:
+                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 h
@@ -440,28 +496,36 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         else:
             T_h = planet_equilibirium_temperature(T_eff_star, R_star, a_h, redistribution=redistribution)
 
-            if unit == 'ppm':
-                flux_ratio_h = flux_ratio_miri(filter, R_h, R_star, T_h) # Compute the flux relatively to the star in ppm
+            if unit == 'ppm': # Compute the flux relatively to the star in ppm
+                flux_ratio_h = flux_ratio_miri(filter, R_h, R_star, T_h)
+                if redistribution == 0:
+                    phase_curve_h_TTV = flux_ratio_h * phase_h_TTV * (-1*eclipse_h+1)
+                else:
+                    phase_curve_h_TTV = flux_ratio_h * (-1*eclipse_h+1)
 
-            elif unit == 'mJy':
-                flux_ratio_h = flux_planet_miri(filter, T_h, unit='mJy') # Compute the flux in absolute value in mJy
+            elif unit == 'mJy': # Compute the flux in absolute value in mJy
+                flux_ratio_h = flux_ratio_miri(filter, R_h, R_star, T_h)*1e-6
+                if redistribution == 0:
+                    phase_curve_h_TTV = (flux_ratio_h * phase_h_TTV * (-1*eclipse_h+1) + 1) * flux_star_mJy
+                else:
+                    phase_curve_h_TTV = (flux_ratio_h * (-1*eclipse_h+1) + 1) * flux_star_mJy
 
             else:
                 raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
-            if redistribution == 0:
-                phase_curve_h_TTV = flux_ratio_h * phase_h_TTV * (-1*eclipse_h+1)
-            else:
-                phase_curve_h_TTV = flux_ratio_h * (-1*eclipse_h+1)
 
         if save_txt:
             if filter==None:
                 np.savetxt("Phase_curve_TTV_output/phase_curve_h_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_h/L_star (ppm)', comments='')
             else:
-                if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_h ('+unit+')', comments='')
+                if unit == "ppm":
+                    header_flux = "F_h/F_star (ppm)"
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), Flux_h ('+unit+')', comments='')
+                    header_flux = "F_star + F_h (mJy)"
+                if redistribution==0:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                else:
+                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
     
 
     # Total signal
@@ -482,15 +546,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
             phase_curve_total += phase_curve_g_TTV
         if 'h' in planets:
             phase_curve_total += phase_curve_h_TTV
+        
+        if unit == 'mJy':
+            if len(planets)>1:
+             phase_curve_total -= flux_star_mJy*(len(planets)-1)
 
     if save_txt:
         if filter==None:
             np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), F_total/F_star (ppm)', comments='')
         else:
-            if redistribution==0:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), F_total/F_star (ppm)', comments='')
+            if unit == "ppm":
+                header_flux = "F_planets/F_star (ppm)"
             else:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), F_total/F_star (ppm)', comments='')
+                header_flux = "F_star + F_planets (mJy)"
+            if redistribution==0:
+                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+            else:
+                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
         
 
     # Plotting the phase curves
@@ -514,7 +586,12 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         if total:
             plt.plot(t,phase_curve_total,'--',color='grey',label="Total")
         plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
-        plt.ylabel(r"$F_{planet}/F_{star}$ (ppm)")
+        if unit == 'ppm':
+            plt.ylabel(r"$F_{planet}/F_{star}$ (ppm)")
+        elif unit == 'mJy':
+            plt.ylabel(r"$F_{star} + F_{planet}$ (mJy)")
+        else:
+            raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
         if filter==None:
             plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
@@ -531,9 +608,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
                 plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_bolometric_"+str(t0)+".png", bbox_inches='tight')
             else:
                 if redistribution==0:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+filter+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
                 else:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_atm_"+filter+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
 
         if plot:
             plt.show()
