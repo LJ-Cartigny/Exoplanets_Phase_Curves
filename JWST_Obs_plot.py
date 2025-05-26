@@ -9,11 +9,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator
+from matplotlib import container
 from astropy.time import Time
 
 from Phase_curve_TTV import phase_curve_simulation
 
-program_ID, visit, t_start, t_end = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+
+flux_obs = flux_obs.astype(float)
+err_obs = err_obs.astype(float)
 
 t_start = Time(t_start, format='isot', scale='tdb')
 t_end = Time(t_end, format='isot', scale='tdb')
@@ -37,9 +41,9 @@ print("nb_days = ", nb_days)
 nb_points = 100000
 Keplerian = True
 planets = 'defgh'
-redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison)
+redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 filter = 'F1500W'
-unit = 'mJy' # 'ppm' or 'mJy'
+unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True)
 
 save_plots = False # Write True if you want to save the plots
 
@@ -49,8 +53,13 @@ plot_individual_planets = True # Write True if you want to plot the individual p
 
 comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
 
+plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
+
 if comparison:
     redistribution = 0
+
+if plot_individual_planets:
+    unit = 'mJy' # If we plot the observed fluxes, we use mJy as unit
 
 if do_simulation:
     phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
@@ -108,11 +117,16 @@ for i in range(len(t_start)):
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
+        if plot_obs_points and filter_obs[i]==filter:
+            plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)
     else:
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
+        if plot_obs_points and filter_obs[i]==filter:
+            plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)
     x_text = np.mean(t_visit)
     y_text = np.max(phase_curve_total_visit)
-    plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+    plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+    # plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 if unit == 'ppm':
@@ -145,6 +159,7 @@ if save_plots:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
 lines = plt.gca().get_lines()
+errorbars = [child for child in plt.gca().get_children() if isinstance(child, container.ErrorbarContainer)]
 texts = plt.gca().texts
 ax_orig = plt.gca()
 plt.show()
@@ -172,6 +187,24 @@ for i, (ax, (xmin, xmax)) in enumerate(zip(axes, xlims)):
         y_data = line.get_ydata()
         mask = (x_data >= xmin) & (x_data <= xmax)
         ax.plot(x_data[mask], y_data[mask],color=line.get_color(), linewidth=line.get_linewidth(), linestyle=line.get_linestyle(),label=line.get_label())
+
+    for err in errorbars:
+        line = err.lines[0]
+        bars = err.lines[1:]
+
+        x_data = line.get_xdata()
+        y_data = line.get_ydata()
+        mask = (x_data >= xmin) & (x_data <= xmax)
+
+        if bars:
+            try:
+                yerr = np.abs(bars[0].get_ydata()[1::2]-y_data)
+            except Exception:
+                yerr = None
+        else:
+            yerr = None
+
+        ax.errorbar(x_data[mask], y_data[mask], yerr=yerr[mask] if yerr is not None else None, fmt=line.get_marker() or 'o', linestyle='none' if line.get_linestyle() == 'None' else line.get_linestyle(), color=line.get_color(), markersize=line.get_markersize(), elinewidth=2, capsize=5, label=line.get_label(), zorder=10)
 
     for txt in texts:
         x_txt, y_txt = txt.get_position()

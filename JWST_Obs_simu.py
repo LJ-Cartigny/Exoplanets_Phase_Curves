@@ -11,7 +11,7 @@ from astropy.time import Time
 
 from Phase_curve_TTV import phase_curve_simulation
 
-program_ID, visit, t_start, t_end = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+program_ID, visit, t_start, t_end = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, usecols=(0,1,2,3), unpack=True,dtype=str)
 
 t_start = Time(t_start, format='isot', scale='tdb')
 t_end = Time(t_end, format='isot', scale='tdb')
@@ -32,8 +32,8 @@ nb_points = 10000
 planets='defgh'
 redistribution = 0
 Keplerian = True
-filter = 'F1500W'
-unit = 'ppm'
+filter = 'F1280W'
+unit = 'mJy'
 
 for i in range(len(t_start)):
     phase_curve_simulation(t_start[i], nb_days[i],nb_points=nb_points,planets=planets, redistribution=redistribution,filter=filter, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
