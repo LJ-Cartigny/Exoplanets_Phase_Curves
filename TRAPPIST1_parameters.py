@@ -23,6 +23,9 @@ L_star = 10**(-3.26)*L_Sun # in W (from Ducrot et al. 2020)
 wavelengths_T1_sphinx, flux_T1_sphinx = np.loadtxt("sphinx_spectrum_T-1_aisha.txt", unpack=True, skiprows=1)
 wavelengths_T1_sphinx *= 1e-6 # Convert to m
 
+wavelengths_T1_phoenix, flux_T1_phoenix_mJy = np.loadtxt("TRAPPIST1_Phoenix_model.txt", unpack=True, skiprows=1)
+wavelengths_T1_phoenix *= 1e-6 # Convert to m
+
 
 #For TRAPPIST-1 b (using NASA Exoplanet Archive)
 

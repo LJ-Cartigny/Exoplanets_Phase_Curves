@@ -18,19 +18,29 @@ from Transits import eclipse
 from Phase_curve_v1 import star_planet_separation, flux_star, flux_planet, luminosity_planet_dayside, phase_curve
 from TRAPPIST1_parameters import *
 
-def flux_sphinx_interp(l):
+def flux_model_interp(l,model='sphinx'):
     """
-    Interpolates the flux of TRAPPIST-1 et a given wavelength from the SPHINX model.
+    Interpolates the flux of TRAPPIST-1 at a given wavelength from the SPHINX or PHOENIX model.
 
     :param l: the wavelength (in m)
     :type l: float
+
+    :param model: the model to use: 'sphinx' or 'phoenix' (default: 'sphinx')
+    :type model: str
 
     :return: F
     :rtype: float
     """
 
     # Interpolate the flux over wavelength
-    flux_interp = interp1d(wavelengths_T1_sphinx, flux_T1_sphinx, bounds_error=False, fill_value=0)
+    if model == 'sphinx':
+        flux_interp = interp1d(wavelengths_T1_sphinx, flux_T1_sphinx, bounds_error=False, fill_value=0)
+    
+    elif model == 'phoenix':
+        flux_interp = interp1d(wavelengths_T1_phoenix, flux_T1_phoenix_mJy, bounds_error=False, fill_value=0)
+    
+    else:
+        raise ValueError("Invalid model. Choose 'sphinx' or 'phoenix'.")
 
     # Compute the flux at the given wavelength
     F = flux_interp(l)
@@ -353,7 +363,7 @@ def quantum_efficiency(filter_name, wavelength):
 
 def flux_star_miri(filter_name):
     """
-    Returns the flux of the star TRAPPIST-1 in the specified MIRI filter band.
+    Returns the flux of the star TRAPPIST-1 in the specified MIRI filter band using the SPHINX model.
 
     :param filter_name: the name of the filter
     :type filter_name: str
@@ -379,23 +389,6 @@ def flux_star_miri(filter_name):
     QE_interp = interp_filter(wavelengths_T1_sphinx_cut)
 
     F_star = np.trapz(flux_T1_sphinx_cut * QE_interp, wavelengths_T1_sphinx_cut)
-
-    # if unit == "mJy":
-    #     l_eff_F1500 = 14.79e-6 # in m
-    #     F_measured = 2.589 # in mJy
-    #     plt.figure(figsize=(16,9))
-    #     plt.plot(wavelengths_T1_sphinx_cut, flux_T1_sphinx_cut, label="SPHINX")
-    #     plt.scatter(l_eff_F1500, F_measured, color='red', label="Measured flux", zorder=5)
-    #     plt.plot(wavelengths_T1_sphinx_cut, QE_interp*flux_T1_sphinx_cut, label="MIRI filter")
-    #     plt.xlabel(r"Wavelength ($m$)")
-    #     plt.ylabel(r"Flux ($mJy$)")
-    #     plt.xscale("log")
-    #     plt.yscale("log")
-    #     plt.xlim(np.min(wavelengths_T1_sphinx_cut), np.max(wavelengths_T1_sphinx_cut))
-    #     plt.title("Flux of TRAPPIST-1 in mJy")
-    #     plt.legend()
-    #     plt.grid()
-    #     plt.show()
 
     return F_star
 
@@ -453,40 +446,72 @@ def flux_ratio_miri(filter_name, R_planet, R_star, T_planet):
     return F_ratio_miri
 
 
-def integrate_flux_sphinx_mJy(filter_name):
+def integrate_flux_model_mJy(filter_name,model='sphinx'):
     """
-    Integrates the flux (in mJy) of the SPHINX model over the specified MIRI filter band.
+    Integrates the flux (in mJy) of the SPHINX or PHOENIX model over the specified MIRI filter band.
 
     :param filter_name: the name of the filter
     :type filter_name: str
 
-    :return: F_sphinx_miri
+    :param model: the model to use: 'sphinx' or 'phoenix' (default: 'sphinx')
+    :type model: str
+
+    :return: F_miri
     :rtype: float
     """
 
     filter_band = filter(filter_name)
     
-    spectrum_filter = flux_sphinx_interp(filter_band[0,:]*1e-6) / 1.07
+    spectrum_filter = flux_model_interp(filter_band[0,:]*1e-6,model=model)
 
-    # Convert the flux density to mJy
+    # Convert the flux density to mJy if necessary
+    if model == 'sphinx':
+        spectrum_filter_mJy = conversion_IS_to_mJy(spectrum_filter / 1.07, filter_band[0,:]*1e-6, dist_system, R_star)
+        spectrum_filter = spectrum_filter_mJy
 
-    spectrum_filter_mJy = conversion_IS_to_mJy(spectrum_filter, filter_band[0,:]*1e-6, dist_system, R_star)
-    spectrum_filter = spectrum_filter_mJy
-
-    F_sphinx_miri = 0
+    F_miri = 0
     norm_filter = 0
 
     for i in range(1, len(filter_band[0,:]), 1):
         norm_filter += filter_band[1,i] * (1./filter_band[0,i] - 1./filter_band[0,i-1])
-        F_sphinx_miri += spectrum_filter[i] * filter_band[1,i] * (1./filter_band[0,i] - 1./filter_band[0,i-1])
+        F_miri += spectrum_filter[i] * filter_band[1,i] * (1./filter_band[0,i] - 1./filter_band[0,i-1])
 
     # Normalize the flux
-    F_sphinx_miri /= norm_filter
+    F_miri /= norm_filter
     
+    return F_miri
 
-    return F_sphinx_miri
+def fast_binning(x, y, bins, error=None, std=False): # Made by Elsa Ducrot
+    bins = np.arange(np.min(x), np.max(x), bins)
+    d = np.digitize(x, bins)
 
+    n = np.max(d) + 2
 
+    binned_x = np.empty(n)
+    binned_y = np.empty(n)
+    binned_error = np.empty(n)
+
+    binned_x[:] = -np.pi
+    binned_y[:] = -np.pi
+    binned_error[:] = -np.pi
+
+    for i in range(0, n):
+        s = np.where(d == i)
+        if len(s[0]) > 0:
+            s = s[0]
+            binned_y[i] = np.mean(y[s])
+            binned_x[i] = np.mean(x[s])
+            binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
+
+            if error is not None:
+                err = error[s]
+                binned_error[i] = np.sqrt(np.sum(np.power(err, 2))) / len(err)
+            else:
+                binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
+
+    nans = binned_x == -np.pi
+
+    return binned_x[~nans], binned_y[~nans], binned_error[~nans]
 
 
 
@@ -529,20 +554,25 @@ def main():
     # y_model_sphinx = flux_T1_sphinx_mJy  # Already in mJy
     # f_model_sphinx = interp1d(x_model_sphinx, y_model_sphinx, bounds_error=False, fill_value=0)
 
+    # l_T1_SPHINX, flux_T1_SPHINX_corrected = fast_binning(wavelengths_T1_sphinx, flux_T1_sphinx_mJy/1.07, 0.01)[0:2]
+    # print("Number of points in the SPHINX spectrum:", len(l_T1_SPHINX))
+    # print("Number of points in the binned SPHINX spectrum:", len(flux_T1_SPHINX_corrected))
+    # print(fast_binning(wavelengths_T1_sphinx, flux_T1_sphinx_mJy/1.07, 0.01))
+
     plt.figure(figsize=(16,9))
-    plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy, color='blue', alpha=0.4, label="Sphinx model")
+    plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy/1.07, color='blue', alpha=0.4, label="SPHINX model")
+    plt.plot(wavelengths_T1_phoenix*1e6, flux_T1_phoenix_mJy, color='red', alpha=0.4, label="PHOENIX model")
+    # plt.plot(l_T1_SPHINX*1e6, flux_T1_SPHINX_corrected, color='blue', alpha=0.4, label="Sphinx model")
     plt.scatter(l_eff_F1500, flux_measured_15, marker='x', color='green', label="Measured flux", zorder=5)
     plt.scatter(l_eff_F1280, flux_measured_12, marker='x', color='orange', label="Measured flux", zorder=5)
-    plt.scatter(l_eff_F1500,integrate_flux_sphinx_mJy('F1500W'),color='green',label='Simulation')
-    plt.scatter(l_eff_F1280,integrate_flux_sphinx_mJy('F1280W'),color='orange',label='Simulation')
+    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W'),color='green',label='Simulation (SPHINX)')
+    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W'),color='orange',label='Simulation (SPHINX)')
     plt.plot(l*1e6,quantum_efficiency('F1500W',l), color='green',label='F1500W filter')
     plt.fill_between(l*1e6, quantum_efficiency('F1500W', l), color='green', alpha=0.2)  # Fill under F1500W filter
     plt.plot(l*1e6,quantum_efficiency('F1280W',l), color ='orange', label='F1280W filter')
     plt.fill_between(l*1e6, quantum_efficiency('F1280W', l), color='orange', alpha=0.2)  # Fill under F1280W filter
     plt.xlabel(r"Wavelength ($\mu m$)")
     plt.ylabel(r"Flux ($mJy$)")
-    # plt.xscale("log")
-    # plt.yscale("log")
     plt.xlim(10,20)
     plt.ylim(0,5)
     plt.title("Flux of TRAPPIST-1 in mJy")
@@ -566,10 +596,10 @@ def main():
     # print("F_star_obs_mJy = ", flux_mJy(F_star_obs_Wm2, lambda_min_F1500, lambda_max_F1500, dist_system, R_star), "mJy (seen from Earth)")
     
 
-    F_star_sphinx_miri_F1500_mJy = integrate_flux_sphinx_mJy("F1500W")
+    F_star_sphinx_miri_F1500_mJy = integrate_flux_model_mJy("F1500W")
     print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_mJy, "mJy (using the SPHINX spectrum with MIRI F1500W filter)")
 
-    F_star_sphinx_miri_F1280_mJy = integrate_flux_sphinx_mJy("F1280W")
+    F_star_sphinx_miri_F1280_mJy = integrate_flux_model_mJy("F1280W")
     print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_mJy, "mJy (using the SPHINX spectrum with MIRI F1280W filter)")
 
 

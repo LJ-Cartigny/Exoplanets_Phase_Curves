@@ -43,7 +43,7 @@ Keplerian = True
 planets = 'defgh'
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 filter = 'F1500W'
-unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True)
+unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
 save_plots = False # Write True if you want to save the plots
 
@@ -55,17 +55,19 @@ comparison = True # Write True if you want to compare the bare rock and thick at
 
 plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
 
+model = 'phoenix' # 'phoenix' or 'sphinx'
+
 if comparison:
     redistribution = 0
 
-if plot_individual_planets:
-    unit = 'mJy' # If we plot the observed fluxes, we use mJy as unit
+if plot_individual_planets or model:
+    unit = 'mJy' # If we plot the observed fluxes or use the PHOENIX model, we use mJy as unit
 
 if do_simulation:
-    phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+    phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, model=model, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
     
     if comparison:
-        phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=1, filter=filter, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+        phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=1, filter=filter, model=model, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
 
 if plot_obs_points:
     errorbar_data = []
@@ -81,21 +83,21 @@ if plot_individual_planets:
             t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_bolometric_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
         else:
             if redistribution == 0:
-                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
             else:
-                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
+                t_simu, phase_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_"+p+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",", skiprows=1, unpack=True)
         plt.plot(t_simu, phase_simu, '--', label=p+" (bare rock)", linewidth=0.5)
 
 if filter == None:
     t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 else:
     if redistribution == 0:
-        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
     else:
-        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+        t_total_simu, phase_curve_total_simu = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
 
 if comparison:
-    t_total_simu_atm, phase_curve_total_simu_atm = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
+    t_total_simu_atm, phase_curve_total_simu_atm = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
     plt.plot(t_total_simu_atm, phase_curve_total_simu_atm, color='black', label="Total (atmospheres)")
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
@@ -113,9 +115,9 @@ for i in range(len(t_start)):
         t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
     else:
         if redistribution == 0:
-            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
         else:
-            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
+            t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
 
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
