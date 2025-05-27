@@ -29,7 +29,7 @@ t_start -= 2450000
 t_end -= 2450000
 
 nb_points = 10000
-planets='defgh'
+planets='bcdefgh'
 redistribution = 0
 Keplerian = True
 filter = 'F1280W'

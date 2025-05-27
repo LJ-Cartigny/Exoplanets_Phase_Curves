@@ -386,7 +386,7 @@ def flux_star_miri(filter_name):
     #     plt.figure(figsize=(16,9))
     #     plt.plot(wavelengths_T1_sphinx_cut, flux_T1_sphinx_cut, label="SPHINX")
     #     plt.scatter(l_eff_F1500, F_measured, color='red', label="Measured flux", zorder=5)
-    #     #plt.plot(wavelengths_T1_sphinx_cut, QE_interp*flux_T1_sphinx_cut, label="MIRI filter")
+    #     plt.plot(wavelengths_T1_sphinx_cut, QE_interp*flux_T1_sphinx_cut, label="MIRI filter")
     #     plt.xlabel(r"Wavelength ($m$)")
     #     plt.ylabel(r"Flux ($mJy$)")
     #     plt.xscale("log")
@@ -516,23 +516,53 @@ def main():
     
     # Define MIRI 15 micron filter band
 
-    lambda_min_F1500 = 13e-6 # in m
-    lambda_max_F1500 = 17.3e-6 # in m
+    # lambda_min_F1500 = 13e-6 # in m
+    # lambda_max_F1500 = 17.3e-6 # in m
 
-    l_eff_F1500 = 14.79e-6 # in m
+    l_eff_F1280 = 12.62
+    l_eff_F1500 = 14.79
+    flux_measured_12 = np.mean([3.425,3.428, 3.427, 3.428])
+    flux_measured_15 = 2.589
+
+    l = np.linspace(1, 20, 10000)*1e-6  # Wavelength range from 1 to 20 microns
+    # x_model_sphinx = wavelengths_T1_sphinx
+    # y_model_sphinx = flux_T1_sphinx_mJy  # Already in mJy
+    # f_model_sphinx = interp1d(x_model_sphinx, y_model_sphinx, bounds_error=False, fill_value=0)
+
+    plt.figure(figsize=(16,9))
+    plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy, color='blue', alpha=0.4, label="Sphinx model")
+    plt.scatter(l_eff_F1500, flux_measured_15, marker='x', color='green', label="Measured flux", zorder=5)
+    plt.scatter(l_eff_F1280, flux_measured_12, marker='x', color='orange', label="Measured flux", zorder=5)
+    plt.scatter(l_eff_F1500,integrate_flux_sphinx_mJy('F1500W'),color='green',label='Simulation')
+    plt.scatter(l_eff_F1280,integrate_flux_sphinx_mJy('F1280W'),color='orange',label='Simulation')
+    plt.plot(l*1e6,quantum_efficiency('F1500W',l), color='green',label='F1500W filter')
+    plt.fill_between(l*1e6, quantum_efficiency('F1500W', l), color='green', alpha=0.2)  # Fill under F1500W filter
+    plt.plot(l*1e6,quantum_efficiency('F1280W',l), color ='orange', label='F1280W filter')
+    plt.fill_between(l*1e6, quantum_efficiency('F1280W', l), color='orange', alpha=0.2)  # Fill under F1280W filter
+    plt.xlabel(r"Wavelength ($\mu m$)")
+    plt.ylabel(r"Flux ($mJy$)")
+    # plt.xscale("log")
+    # plt.yscale("log")
+    plt.xlim(10,20)
+    plt.ylim(0,5)
+    plt.title("Flux of TRAPPIST-1 in mJy")
+    plt.legend()
+    plt.grid()
+    # plt.savefig("Flux_TRAPPIST1_mJy.png", bbox_inches='tight')
+    plt.show()
 
 
     # Flux of star TRAPPIST-1 in the MIRI 15 micron filter band
 
     print("For star TRAPPIST-1:")
 
-    F_star_Planck = flux_black_body(lambda_min_F1500, lambda_max_F1500, T_eff_star)
-    print("F_star = ", F_star_Planck, "W/m^2 (as a black body)")
+    # F_star_Planck = flux_black_body(lambda_min_F1500, lambda_max_F1500, T_eff_star)
+    # print("F_star = ", F_star_Planck, "W/m^2 (as a black body)")
 
     F_star_obs_mJy = 2.528
     print("F_star_obs_mJy = ", F_star_obs_mJy, "mJy (reference value)")
-    F_star_obs_Wm2 = flux_Wm2(F_star_obs_mJy, lambda_min_F1500, lambda_max_F1500, dist_system, R_star)
-    print("F_star_obs = ", F_star_obs_Wm2, "W/m^2 (seen from Earth)")
+    # F_star_obs_Wm2 = flux_Wm2(F_star_obs_mJy, lambda_min_F1500, lambda_max_F1500, dist_system, R_star)
+    # print("F_star_obs = ", F_star_obs_Wm2, "W/m^2 (seen from Earth)")
     # print("F_star_obs_mJy = ", flux_mJy(F_star_obs_Wm2, lambda_min_F1500, lambda_max_F1500, dist_system, R_star), "mJy (seen from Earth)")
     
 

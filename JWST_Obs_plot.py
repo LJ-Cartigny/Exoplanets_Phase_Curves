@@ -67,6 +67,9 @@ if do_simulation:
     if comparison:
         phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=1, filter=filter, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
 
+if plot_obs_points:
+    errorbar_data = []
+
 
 # Overall plot
 
@@ -117,12 +120,14 @@ for i in range(len(t_start)):
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
-        if plot_obs_points and filter_obs[i]==filter:
+        if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)
+            errorbar_data.append((np.mean(t_visit), flux_obs[i], err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)))
     else:
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
-        if plot_obs_points and filter_obs[i]==filter:
+        if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)
+            errorbar_data.append((np.mean(t_visit), flux_obs[i], err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)))
     x_text = np.mean(t_visit)
     y_text = np.max(phase_curve_total_visit)
     plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
@@ -159,7 +164,6 @@ if save_plots:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
 lines = plt.gca().get_lines()
-errorbars = [child for child in plt.gca().get_children() if isinstance(child, container.ErrorbarContainer)]
 texts = plt.gca().texts
 ax_orig = plt.gca()
 plt.show()
@@ -188,23 +192,11 @@ for i, (ax, (xmin, xmax)) in enumerate(zip(axes, xlims)):
         mask = (x_data >= xmin) & (x_data <= xmax)
         ax.plot(x_data[mask], y_data[mask],color=line.get_color(), linewidth=line.get_linewidth(), linestyle=line.get_linestyle(),label=line.get_label())
 
-    for err in errorbars:
-        line = err.lines[0]
-        bars = err.lines[1:]
-
-        x_data = line.get_xdata()
-        y_data = line.get_ydata()
-        mask = (x_data >= xmin) & (x_data <= xmax)
-
-        if bars:
-            try:
-                yerr = np.abs(bars[0].get_ydata()[1::2]-y_data)
-            except Exception:
-                yerr = None
-        else:
-            yerr = None
-
-        ax.errorbar(x_data[mask], y_data[mask], yerr=yerr[mask] if yerr is not None else None, fmt=line.get_marker() or 'o', linestyle='none' if line.get_linestyle() == 'None' else line.get_linestyle(), color=line.get_color(), markersize=line.get_markersize(), elinewidth=2, capsize=5, label=line.get_label(), zorder=10)
+    
+    if plot_obs_points:
+        for (x, y, err, fmt) in errorbar_data:
+            if xmin <= x <= xmax:
+                ax.errorbar(x, y, yerr=err, **fmt)
 
     for txt in texts:
         x_txt, y_txt = txt.get_position()
@@ -238,7 +230,7 @@ for i in range(len(axes)-1):
     axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
 
 handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='upper right', ncol = 2)
+fig.legend(handles, labels, loc='upper right', ncols = 2)
 
 fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
 if unit == 'ppm':
