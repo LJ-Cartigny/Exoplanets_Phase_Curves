@@ -121,6 +121,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
     if unit == 'mJy':
         flux_star_mJy = integrate_flux_model_mJy(filter,model=model) # Compute the flux of the star in mJy
     
+    if redistribution != 0 and redistribution != 1:
+        raise ValueError("For now the code only supports a redistribution effciency equal to 0 or 1.")
+    
 
     # For TRAPPIST-1 b
 
@@ -603,9 +606,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
             plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
         else:
             if redistribution==0:
-                plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with MIRI filter "+filter)
+                plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with MIRI "+filter+" filter using the "+model+" model")
             else:
-                plt.title("Phase curves of planets of TRAPPIST-1 with atmospheres with MIRI filter "+filter)
+                plt.title("Phase curves of planets of TRAPPIST-1 with atmospheres with MIRI "+filter+" filter using the "+model+" model")
         plt.legend()
         plt.grid()
 
@@ -614,9 +617,9 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
                 plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_bolometric_"+str(t0)+".png", bbox_inches='tight')
             else:
                 if redistribution==0:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+filter+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
                 else:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_atm_"+filter+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
 
         if plot:
             plt.show()

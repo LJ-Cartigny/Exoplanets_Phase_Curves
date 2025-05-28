@@ -466,7 +466,7 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
 
     # Convert the flux density to mJy if necessary
     if model == 'sphinx':
-        spectrum_filter_mJy = conversion_IS_to_mJy(spectrum_filter / 1.07, filter_band[0,:]*1e-6, dist_system, R_star)
+        spectrum_filter_mJy = conversion_IS_to_mJy(spectrum_filter, filter_band[0,:]*1e-6, dist_system, R_star)
         spectrum_filter = spectrum_filter_mJy
 
     F_miri = 0
@@ -481,37 +481,37 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
     
     return F_miri
 
-def fast_binning(x, y, bins, error=None, std=False): # Made by Elsa Ducrot
-    bins = np.arange(np.min(x), np.max(x), bins)
-    d = np.digitize(x, bins)
+# def fast_binning(x, y, bins, error=None, std=False): # Made by Elsa Ducrot
+#     bins = np.arange(np.min(x), np.max(x), bins)
+#     d = np.digitize(x, bins)
 
-    n = np.max(d) + 2
+#     n = np.max(d) + 2
 
-    binned_x = np.empty(n)
-    binned_y = np.empty(n)
-    binned_error = np.empty(n)
+#     binned_x = np.empty(n)
+#     binned_y = np.empty(n)
+#     binned_error = np.empty(n)
 
-    binned_x[:] = -np.pi
-    binned_y[:] = -np.pi
-    binned_error[:] = -np.pi
+#     binned_x[:] = -np.pi
+#     binned_y[:] = -np.pi
+#     binned_error[:] = -np.pi
 
-    for i in range(0, n):
-        s = np.where(d == i)
-        if len(s[0]) > 0:
-            s = s[0]
-            binned_y[i] = np.mean(y[s])
-            binned_x[i] = np.mean(x[s])
-            binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
+#     for i in range(0, n):
+#         s = np.where(d == i)
+#         if len(s[0]) > 0:
+#             s = s[0]
+#             binned_y[i] = np.mean(y[s])
+#             binned_x[i] = np.mean(x[s])
+#             binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
 
-            if error is not None:
-                err = error[s]
-                binned_error[i] = np.sqrt(np.sum(np.power(err, 2))) / len(err)
-            else:
-                binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
+#             if error is not None:
+#                 err = error[s]
+#                 binned_error[i] = np.sqrt(np.sum(np.power(err, 2))) / len(err)
+#             else:
+#                 binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
 
-    nans = binned_x == -np.pi
+#     nans = binned_x == -np.pi
 
-    return binned_x[~nans], binned_y[~nans], binned_error[~nans]
+#     return binned_x[~nans], binned_y[~nans], binned_error[~nans]
 
 
 
@@ -546,27 +546,25 @@ def main():
 
     l_eff_F1280 = 12.62
     l_eff_F1500 = 14.79
-    flux_measured_12 = np.mean([3.425,3.428, 3.427, 3.428])
-    flux_measured_15 = 2.589
+    flux_measured_12 = np.mean([3.425,3.428, 3.427, 3.428]) # From Ducrot et al. 2024
+    flux_err_12 = 0.12
+    flux_measured_15 = 2.589 # From Greene et al. 2023
+    flux_err_15 = 0.078
 
     l = np.linspace(1, 20, 10000)*1e-6  # Wavelength range from 1 to 20 microns
-    # x_model_sphinx = wavelengths_T1_sphinx
-    # y_model_sphinx = flux_T1_sphinx_mJy  # Already in mJy
-    # f_model_sphinx = interp1d(x_model_sphinx, y_model_sphinx, bounds_error=False, fill_value=0)
 
-    # l_T1_SPHINX, flux_T1_SPHINX_corrected = fast_binning(wavelengths_T1_sphinx, flux_T1_sphinx_mJy/1.07, 0.01)[0:2]
-    # print("Number of points in the SPHINX spectrum:", len(l_T1_SPHINX))
-    # print("Number of points in the binned SPHINX spectrum:", len(flux_T1_SPHINX_corrected))
-    # print(fast_binning(wavelengths_T1_sphinx, flux_T1_sphinx_mJy/1.07, 0.01))
 
     plt.figure(figsize=(16,9))
     plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy/1.07, color='blue', alpha=0.4, label="SPHINX model")
     plt.plot(wavelengths_T1_phoenix*1e6, flux_T1_phoenix_mJy, color='red', alpha=0.4, label="PHOENIX model")
-    # plt.plot(l_T1_SPHINX*1e6, flux_T1_SPHINX_corrected, color='blue', alpha=0.4, label="Sphinx model")
-    plt.scatter(l_eff_F1500, flux_measured_15, marker='x', color='green', label="Measured flux", zorder=5)
-    plt.scatter(l_eff_F1280, flux_measured_12, marker='x', color='orange', label="Measured flux", zorder=5)
-    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W'),color='green',label='Simulation (SPHINX)')
-    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W'),color='orange',label='Simulation (SPHINX)')
+    # plt.scatter(l_eff_F1500, flux_measured_15, marker='*', color='green', label="Measured flux", zorder=5)
+    plt.errorbar(l_eff_F1500, flux_measured_15, yerr=flux_err_15, fmt='.', color='green', markersize=5, elinewidth=2, capsize=5, label="Measured flux error", zorder=5)
+    # plt.scatter(l_eff_F1280, flux_measured_12, marker='*', color='orange', label="Measured flux", zorder=5)
+    plt.errorbar(l_eff_F1280, flux_measured_12, yerr=flux_err_12, fmt='.', color='orange', markersize=5, elinewidth=2, capsize=5, label="Measured flux error", zorder=5)
+    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W'),color='green',marker='s',label='Simulation (SPHINX)', zorder=5)
+    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W'),color='orange',marker='s',label='Simulation (SPHINX)', zorder=5)
+    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W',model='phoenix'),marker='x',color='green',label='Simulation (PHOENIX)', zorder=5)
+    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W',model='phoenix'),marker='x',color='orange',label='Simulation (PHOENIX)', zorder=5)
     plt.plot(l*1e6,quantum_efficiency('F1500W',l), color='green',label='F1500W filter')
     plt.fill_between(l*1e6, quantum_efficiency('F1500W', l), color='green', alpha=0.2)  # Fill under F1500W filter
     plt.plot(l*1e6,quantum_efficiency('F1280W',l), color ='orange', label='F1280W filter')
@@ -574,7 +572,7 @@ def main():
     plt.xlabel(r"Wavelength ($\mu m$)")
     plt.ylabel(r"Flux ($mJy$)")
     plt.xlim(10,20)
-    plt.ylim(0,5)
+    plt.ylim(0,4.5)
     plt.title("Flux of TRAPPIST-1 in mJy")
     plt.legend()
     plt.grid()
@@ -589,18 +587,26 @@ def main():
     # F_star_Planck = flux_black_body(lambda_min_F1500, lambda_max_F1500, T_eff_star)
     # print("F_star = ", F_star_Planck, "W/m^2 (as a black body)")
 
-    F_star_obs_mJy = 2.528
-    print("F_star_obs_mJy = ", F_star_obs_mJy, "mJy (reference value)")
+    #F_star_obs_mJy = 2.528
+    print("F_star_obs_F1500_mJy = ", flux_measured_15, "mJy (observed value with MIRI F1500W filter)")
+
+    F_star_sphinx_miri_F1500_mJy = integrate_flux_model_mJy("F1500W")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_mJy, "mJy (using the corrected SPHINX spectrum with MIRI F1500W filter)")
+
+    F_star_phoenix_miri_F1500_mJy = integrate_flux_model_mJy("F1500W", model='phoenix')
+    print("F_star_phoenix_miri = ", F_star_phoenix_miri_F1500_mJy, "mJy (using the PHOENIX spectrum with MIRI F1500W filter)")
+    
+
+    print("\nF_star_obs_F1280_mJy = ", flux_measured_12, "mJy (observed value with MIRI F1280W filter)")
     # F_star_obs_Wm2 = flux_Wm2(F_star_obs_mJy, lambda_min_F1500, lambda_max_F1500, dist_system, R_star)
     # print("F_star_obs = ", F_star_obs_Wm2, "W/m^2 (seen from Earth)")
     # print("F_star_obs_mJy = ", flux_mJy(F_star_obs_Wm2, lambda_min_F1500, lambda_max_F1500, dist_system, R_star), "mJy (seen from Earth)")
     
-
-    F_star_sphinx_miri_F1500_mJy = integrate_flux_model_mJy("F1500W")
-    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_mJy, "mJy (using the SPHINX spectrum with MIRI F1500W filter)")
-
     F_star_sphinx_miri_F1280_mJy = integrate_flux_model_mJy("F1280W")
-    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_mJy, "mJy (using the SPHINX spectrum with MIRI F1280W filter)")
+    print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_mJy, "mJy (using the corrected SPHINX spectrum with MIRI F1280W filter)")
+
+    F_star_phoenix_miri_F1280_mJy = integrate_flux_model_mJy("F1280W", model='phoenix')
+    print("F_star_phoenix_miri = ", F_star_phoenix_miri_F1280_mJy, "mJy (using the PHOENIX spectrum with MIRI F1280W filter)")
 
 
     # # For TRAPPIST-1 b

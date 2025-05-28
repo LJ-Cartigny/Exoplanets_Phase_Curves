@@ -8,6 +8,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.time import Time
+from tqdm import tqdm
+import time
 
 from Phase_curve_TTV import phase_curve_simulation
 
@@ -32,9 +34,11 @@ nb_points = 10000
 planets='defgh'
 redistribution = 0
 Keplerian = True
-filter = 'F1500W'
-model = 'sphinx'
+filter = 'F1280W'
+model = 'phoenix'
 unit = 'mJy'
 
-for i in range(len(t_start)):
+print("Simulating the phase curves during the JWST visits...")
+for i in tqdm(range(len(t_start))):
     phase_curve_simulation(t_start[i], nb_days[i], nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, model=model, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
+    time.sleep(0.1)

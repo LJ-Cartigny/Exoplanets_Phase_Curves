@@ -55,7 +55,7 @@ comparison = True # Write True if you want to compare the bare rock and thick at
 
 plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
 
-model = 'phoenix' # 'phoenix' or 'sphinx'
+model = 'sphinx' # 'phoenix' or 'sphinx'
 
 if comparison:
     redistribution = 0
@@ -103,7 +103,12 @@ if comparison:
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
 
-line, = plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label="Total flux")
+if comparison:
+    label_total = "Total (bare rocks)"
+else:
+    label_total = "Total flux"
+
+line, = plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label=label_total)
 
 
 # Plot the visits
@@ -145,11 +150,11 @@ if filter == None:
     plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
 else:
     if redistribution == 1:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024")
     elif comparison:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024")
     else:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024")
 
 plt.legend(loc='lower right', ncol = 2)
 plt.grid()
@@ -159,11 +164,11 @@ if save_plots:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
     else:
         if redistribution == 1:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
         elif comparison:
-            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
         else:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
@@ -245,11 +250,11 @@ if filter == None:
     plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
 else:
     if redistribution == 1:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024", fontsize=20)
     elif comparison:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter from Oct 2022 to Dec 2024")
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024")
     else:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter from Oct 2022 to Dec 2024", fontsize=20)
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024", fontsize=20)
 
 plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
@@ -258,10 +263,10 @@ if save_plots:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
         if redistribution == 1:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         elif comparison:
-            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         else:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
 
 plt.show()
