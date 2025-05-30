@@ -13,6 +13,37 @@ from matplotlib import container
 from astropy.time import Time
 
 from Phase_curve_TTV import phase_curve_simulation
+from JWST_Obs_simu import phase_curve_visit
+
+
+# Parameters
+
+nb_points = 100000
+
+Keplerian = True
+
+planets = 'defgh'
+
+redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
+
+filter = 'F1500W'
+
+unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
+
+save_plots = False # Write True if you want to save the plots
+
+do_simulation = True # Write True if the simulation hasn't been done yet
+
+plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
+
+comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
+
+plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
+
+model = 'sphinx' # 'phoenix' or 'sphinx'
+
+
+# Simulations
 
 program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
 
@@ -38,25 +69,6 @@ print("t0 = ", t0)
 print("t_end = ", t0+nb_days)
 print("nb_days = ", nb_days)
 
-nb_points = 100000
-Keplerian = True
-planets = 'defgh'
-redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
-filter = 'F1500W'
-unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
-
-save_plots = False # Write True if you want to save the plots
-
-do_simulation = False # Write True if the simulation hasn't been done yet
-
-plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
-
-comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
-
-plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
-
-model = 'sphinx' # 'phoenix' or 'sphinx'
-
 if comparison:
     redistribution = 0
 
@@ -64,6 +76,8 @@ if plot_individual_planets or model:
     unit = 'mJy' # If we plot the observed fluxes or use the PHOENIX model, we use mJy as unit
 
 if do_simulation:
+    phase_curve_visit(planets,redistribution,filter,model,unit,Keplerian=Keplerian)
+    print("Simulating the phase curves between t0 and t_end...")
     phase_curve_simulation(t0, nb_days, nb_points=nb_points, planets=planets, redistribution=redistribution, filter=filter, model=model, unit=unit, Keplerian=Keplerian, plot=False,save_plot=True,save_txt=True)
     
     if comparison:
@@ -237,7 +251,11 @@ for i in range(len(axes)-1):
     axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
 
 handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='upper right', ncols = 2)
+
+if plot_obs_points == False:
+    fig.legend(handles, labels, loc='upper right', ncols = 2)
+else:
+    fig.legend(handles, labels, ncols = 2)
 
 fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
 if unit == 'ppm':
@@ -256,7 +274,7 @@ else:
     else:
         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model+" model from Oct 2022 to Dec 2024", fontsize=20)
 
-plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
+# plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
 if save_plots:
     if filter == None:

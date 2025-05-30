@@ -623,6 +623,8 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if plot:
             plt.show()
+        else:
+            plt.close()
 
 
 def main():

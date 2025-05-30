@@ -478,6 +478,13 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
 
     # Normalize the flux
     F_miri /= norm_filter
+
+    # Applying correction for the PHOENIX model
+    if model == 'phoenix':
+        if filter_name=='F1280W':
+            F_miri /= 1.061
+        if filter_name=='F1500W':
+            F_miri /= 1.023
     
     return F_miri
 
@@ -592,9 +599,11 @@ def main():
 
     F_star_sphinx_miri_F1500_mJy = integrate_flux_model_mJy("F1500W")
     print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1500_mJy, "mJy (using the corrected SPHINX spectrum with MIRI F1500W filter)")
+    print("Difference in % between SPHINX and observed flux: ", (F_star_sphinx_miri_F1500_mJy - flux_measured_15) / flux_measured_15 * 100, "%")
 
     F_star_phoenix_miri_F1500_mJy = integrate_flux_model_mJy("F1500W", model='phoenix')
     print("F_star_phoenix_miri = ", F_star_phoenix_miri_F1500_mJy, "mJy (using the PHOENIX spectrum with MIRI F1500W filter)")
+    print("Difference in % between PHOENIX and observed flux: ", (F_star_phoenix_miri_F1500_mJy - flux_measured_15) / flux_measured_15 * 100, "%")
     
 
     print("\nF_star_obs_F1280_mJy = ", flux_measured_12, "mJy (observed value with MIRI F1280W filter)")
@@ -604,9 +613,11 @@ def main():
     
     F_star_sphinx_miri_F1280_mJy = integrate_flux_model_mJy("F1280W")
     print("F_star_sphinx_miri = ", F_star_sphinx_miri_F1280_mJy, "mJy (using the corrected SPHINX spectrum with MIRI F1280W filter)")
+    print("Difference in % between SPHINX and observed flux: ", (F_star_sphinx_miri_F1280_mJy - flux_measured_12) / flux_measured_12 * 100, "%")
 
     F_star_phoenix_miri_F1280_mJy = integrate_flux_model_mJy("F1280W", model='phoenix')
     print("F_star_phoenix_miri = ", F_star_phoenix_miri_F1280_mJy, "mJy (using the PHOENIX spectrum with MIRI F1280W filter)")
+    print("Difference in % between PHOENIX and observed flux: ", (F_star_phoenix_miri_F1280_mJy - flux_measured_12) / flux_measured_12 * 100, "%")
 
 
     # # For TRAPPIST-1 b
