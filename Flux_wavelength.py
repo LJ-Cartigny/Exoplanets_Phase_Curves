@@ -524,27 +524,30 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
 
 def main():
 
-    # Comparison of the SPHINX and black body spectra of TRAPPIST-1
-
-    # flux_Planck = Planck_law(wavelengths_T1_sphinx, T_eff_star)
-
-    # plt.figure(figsize=(16,9))
-    # plt.plot(wavelengths_T1_sphinx, flux_T1_sphinx, label="SPHINX",linewidth=0.5)
-    # plt.plot(wavelengths_T1_sphinx, flux_Planck, label="Black body")
-    # plt.xlabel(r"Wavelength ($m$)")
-    # plt.ylabel(r"Flux ($W/m^2/m$)")
-    # plt.xscale("log")
-    # plt.yscale("log")
-    # plt.xlim(np.min(wavelengths_T1_sphinx), np.max(wavelengths_T1_sphinx))
-    # plt.title("Comparison of the SPHINX and black body spectra of TRAPPIST-1")
-    # plt.legend()
-    # plt.grid()
-    # plt.savefig("Comparison_sphinx_black_body.png", bbox_inches='tight')
-    # plt.show()
-
     # Convert the SPHINX spectrum to mJy
 
     flux_T1_sphinx_mJy = conversion_IS_to_mJy(flux_T1_sphinx, wavelengths_T1_sphinx, dist_system, R_star)
+
+    # Comparison of the SPHINX, PHOENIX and black body spectra of TRAPPIST-1
+
+    flux_Planck = Planck_law(wavelengths_T1_sphinx, T_eff_star)
+    flux_Planck_mJy = conversion_IS_to_mJy(flux_Planck, wavelengths_T1_sphinx, dist_system, R_star)
+
+    # plt.figure(figsize=(16,9))
+    # plt.plot(wavelengths_T1_sphinx*1e6, flux_T1_sphinx_mJy, label="SPHINX", alpha=0.4, linewidth=0.5)
+    # plt.plot(wavelengths_T1_phoenix*1e6, flux_T1_phoenix_mJy, label='PHOENIX', alpha=0.4, linewidth=0.5)
+    # plt.plot(wavelengths_T1_sphinx*1e6, flux_Planck_mJy, color='black', label="Black body")
+    # plt.xlabel(r"Wavelength ($\mu m$)",size=15)
+    # plt.ylabel(r"Flux ($mJy$)",size=15)
+    # plt.xlim((10,20))
+    # plt.ylim(0,7.5)
+    # plt.title("Comparison of the SPHINX, PHOENIX and black body spectra of TRAPPIST-1",size=15)
+    # plt.legend(fontsize=13)
+    # plt.xticks(fontsize=13)
+    # plt.yticks(fontsize=13)
+    # plt.grid()
+    # plt.savefig("Comparison_spectra.png", bbox_inches='tight')
+    # plt.show()
     
     # Define MIRI 15 micron filter band
 
@@ -562,7 +565,7 @@ def main():
 
 
     plt.figure(figsize=(16,9))
-    plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy/1.07, color='blue', alpha=0.4, label="SPHINX model")
+    plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy, color='blue', alpha=0.4, label="SPHINX model")
     plt.plot(wavelengths_T1_phoenix*1e6, flux_T1_phoenix_mJy, color='red', alpha=0.4, label="PHOENIX model")
     # plt.scatter(l_eff_F1500, flux_measured_15, marker='*', color='green', label="Measured flux", zorder=5)
     plt.errorbar(l_eff_F1500, flux_measured_15, yerr=flux_err_15, fmt='.', color='green', markersize=5, elinewidth=2, capsize=5, label="Measured flux error", zorder=5)
@@ -583,7 +586,7 @@ def main():
     plt.title("Flux of TRAPPIST-1 in mJy")
     plt.legend()
     plt.grid()
-    # plt.savefig("Flux_TRAPPIST1_mJy.png", bbox_inches='tight')
+    plt.savefig("Flux_TRAPPIST1_mJy.png", bbox_inches='tight')
     plt.show()
 
 

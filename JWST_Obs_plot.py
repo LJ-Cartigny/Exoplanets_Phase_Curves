@@ -26,21 +26,21 @@ planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1280W'
+filter = 'F1500W'
 
 unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
 save_plots = False # Write True if you want to save the plots
 
-do_simulation = True # Write True if the simulation hasn't been done yet
+do_simulation = False # Write True if the simulation hasn't been done yet
 
 plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
 
 comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
 
-plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
+plot_obs_points = False # Write True if you want to plot the observations points (in mJy) on the phase curves
 
-model = 'phoenix' # 'phoenix' or 'sphinx'
+model = 'sphinx' # 'phoenix' or 'sphinx'
 
 
 # Simulations
@@ -72,7 +72,7 @@ print("nb_days = ", nb_days)
 if comparison:
     redistribution = 0
 
-if plot_individual_planets or model:
+if plot_obs_points or model=='phoenix':
     unit = 'mJy' # If we plot the observed fluxes or use the PHOENIX model, we use mJy as unit
 
 if do_simulation:
@@ -177,7 +177,9 @@ if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
     else:
-        if redistribution == 1:
+        if plot_obs_points and comparison:
+            plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight')
+        elif redistribution == 1:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
         elif comparison:
             plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
@@ -280,6 +282,8 @@ if save_plots:
     if filter == None:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
+        if plot_obs_points and comparison:
+            plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         if redistribution == 1:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         elif comparison:

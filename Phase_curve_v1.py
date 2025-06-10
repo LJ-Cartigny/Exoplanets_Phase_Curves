@@ -344,7 +344,7 @@ def main():
     # plt.grid()
     # plt.show()
 
-    plt.figure()
+    plt.figure(figsize=(16,9))
     plt.plot(t,phase_curve_b,label="b")
     plt.plot(t,phase_curve_c,label="c")
     plt.plot(t,phase_curve_d,label="d")
@@ -354,11 +354,13 @@ def main():
     plt.plot(t,phase_curve_h,label="h")
     plt.plot(t,phase_curve_total,label="Total")
     plt.xlabel("Time (days)")
-    plt.ylabel("$L_{planet}/L_{star}$ (ppm)")
-    plt.title("Phase curves of planets of TRAPPIST-1 as black bodies")
+    plt.ylabel("$F_{planet}/F_{star}$ (ppm)")
+    plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
     plt.legend()
     plt.grid()
+    plt.savefig("Phase_curve_v1_plots/Phase_curves_TRAPPIST1_bolometric.png", bbox_inches='tight')
     plt.show()
+
 
 
 if __name__ == "__main__":
