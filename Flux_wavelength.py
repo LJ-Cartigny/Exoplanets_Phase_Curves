@@ -488,38 +488,6 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
     
     return F_miri
 
-# def fast_binning(x, y, bins, error=None, std=False): # Made by Elsa Ducrot
-#     bins = np.arange(np.min(x), np.max(x), bins)
-#     d = np.digitize(x, bins)
-
-#     n = np.max(d) + 2
-
-#     binned_x = np.empty(n)
-#     binned_y = np.empty(n)
-#     binned_error = np.empty(n)
-
-#     binned_x[:] = -np.pi
-#     binned_y[:] = -np.pi
-#     binned_error[:] = -np.pi
-
-#     for i in range(0, n):
-#         s = np.where(d == i)
-#         if len(s[0]) > 0:
-#             s = s[0]
-#             binned_y[i] = np.mean(y[s])
-#             binned_x[i] = np.mean(x[s])
-#             binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
-
-#             if error is not None:
-#                 err = error[s]
-#                 binned_error[i] = np.sqrt(np.sum(np.power(err, 2))) / len(err)
-#             else:
-#                 binned_error[i] = np.std(y[s]) / np.sqrt(len(s))
-
-#     nans = binned_x == -np.pi
-
-#     return binned_x[~nans], binned_y[~nans], binned_error[~nans]
-
 
 
 def main():
@@ -568,25 +536,27 @@ def main():
     plt.plot(wavelengths_T1_sphinx*1e6,flux_T1_sphinx_mJy, color='blue', alpha=0.4, label="SPHINX model")
     plt.plot(wavelengths_T1_phoenix*1e6, flux_T1_phoenix_mJy, color='red', alpha=0.4, label="PHOENIX model")
     # plt.scatter(l_eff_F1500, flux_measured_15, marker='*', color='green', label="Measured flux", zorder=5)
-    plt.errorbar(l_eff_F1500, flux_measured_15, yerr=flux_err_15, fmt='.', color='green', markersize=5, elinewidth=2, capsize=5, label="Measured flux error", zorder=5)
+    plt.errorbar(l_eff_F1500, flux_measured_15, yerr=flux_err_15, fmt='.', color='green', markersize=5, elinewidth=2, capsize=5, label="F1500W measured flux", zorder=5)
     # plt.scatter(l_eff_F1280, flux_measured_12, marker='*', color='orange', label="Measured flux", zorder=5)
-    plt.errorbar(l_eff_F1280, flux_measured_12, yerr=flux_err_12, fmt='.', color='orange', markersize=5, elinewidth=2, capsize=5, label="Measured flux error", zorder=5)
-    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W'),color='green',marker='s',label='Simulation (SPHINX)', zorder=5)
-    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W'),color='orange',marker='s',label='Simulation (SPHINX)', zorder=5)
-    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W',model='phoenix'),marker='x',color='green',label='Simulation (PHOENIX)', zorder=5)
-    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W',model='phoenix'),marker='x',color='orange',label='Simulation (PHOENIX)', zorder=5)
-    plt.plot(l*1e6,quantum_efficiency('F1500W',l), color='green',label='F1500W filter')
-    plt.fill_between(l*1e6, quantum_efficiency('F1500W', l), color='green', alpha=0.2)  # Fill under F1500W filter
-    plt.plot(l*1e6,quantum_efficiency('F1280W',l), color ='orange', label='F1280W filter')
-    plt.fill_between(l*1e6, quantum_efficiency('F1280W', l), color='orange', alpha=0.2)  # Fill under F1280W filter
-    plt.xlabel(r"Wavelength ($\mu m$)")
-    plt.ylabel(r"Flux ($mJy$)")
+    plt.errorbar(l_eff_F1280, flux_measured_12, yerr=flux_err_12, fmt='.', color='orange', markersize=5, elinewidth=2, capsize=5, label="F1280W measured flux", zorder=5)
+    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W'),color='green',marker='s',label='F1500W simulation (SPHINX)', zorder=5)
+    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W'),color='orange',marker='s',label='F1280W simulation (SPHINX)', zorder=5)
+    plt.scatter(l_eff_F1500,integrate_flux_model_mJy('F1500W',model='phoenix'),marker='x',color='green',label='F1500W simulation (PHOENIX)', zorder=5)
+    plt.scatter(l_eff_F1280,integrate_flux_model_mJy('F1280W',model='phoenix'),marker='x',color='orange',label='F1280W simulation (PHOENIX)', zorder=5)
+    plt.plot(l*1e6,quantum_efficiency('F1500W',l), color='green')
+    plt.fill_between(l*1e6, quantum_efficiency('F1500W', l), color='green', alpha=0.2,label='F1500W filter')  # Fill under F1500W filter
+    plt.plot(l*1e6,quantum_efficiency('F1280W',l), color ='orange')
+    plt.fill_between(l*1e6, quantum_efficiency('F1280W', l), color='orange', alpha=0.2, label='F1280W filter')  # Fill under F1280W filter
+    plt.xlabel(r"Wavelength ($\mu m$)", size=15)
+    plt.ylabel(r"Flux ($mJy$)", size=15)
     plt.xlim(10,20)
     plt.ylim(0,4.5)
-    plt.title("Flux of TRAPPIST-1 in mJy")
-    plt.legend()
+    plt.title("Comparisons of simulated and observed TRAPPIST-1 stellar fluxes", size=15)
+    plt.legend(ncols=2, fontsize=13)
+    plt.xticks(fontsize=13)
+    plt.yticks(fontsize=13)
     plt.grid()
-    plt.savefig("Flux_TRAPPIST1_mJy.png", bbox_inches='tight')
+    # plt.savefig("Flux_TRAPPIST1_mJy.png", bbox_inches='tight')
     plt.show()
 
 
