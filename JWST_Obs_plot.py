@@ -10,11 +10,26 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator
 from matplotlib import container
+import matplotlib as mpl
 from astropy.time import Time
 
 from Phase_curve_TTV import phase_curve_simulation
 from JWST_Obs_simu import phase_curve_visit
 
+# Set the style for the plots
+
+mpl.rcParams.update({
+    'font.size': 20,
+    'axes.labelsize': 20,
+    'axes.titlesize': 20,
+    'xtick.labelsize': 16,
+    'ytick.labelsize': 16,
+    'legend.fontsize': 16,
+    # 'figure.figsize': (16, 9),
+    # 'lines.linewidth': 2,
+    # 'grid.alpha': 0.5,
+    # 'grid.linestyle': '--',
+})
 
 # Parameters
 
@@ -22,15 +37,17 @@ nb_points = 100000
 
 Keplerian = True
 
-planets = 'defgh'
+planets = 'bcdefgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1500W'
+filter = 'F1280W'
 
-unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
+unit = 'ppm' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
-save_plots = False # Write True if you want to save the plots
+model = 'sphinx' # 'phoenix' or 'sphinx'
+
+save_plots = True # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
@@ -40,7 +57,7 @@ comparison = True # Write True if you want to compare the bare rock and thick at
 
 plot_obs_points = False # Write True if you want to plot the observations points (in mJy) on the phase curves
 
-model = 'sphinx' # 'phoenix' or 'sphinx'
+points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
 
 # Simulations
@@ -142,13 +159,25 @@ for i in range(len(t_start)):
         j+=1
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
-            plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)
-            errorbar_data.append((np.mean(t_visit), flux_obs[i], err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)))
+            if points_offset and program_ID[i] == 'GTO_1279':
+                offset = 0.02
+            elif points_offset and program_ID[i] == 'GO_5191':
+                offset = 0.04
+            else:
+                offset = 0
+            plt.errorbar(np.mean(t_visit), flux_obs[i]+offset, yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)
+            errorbar_data.append((np.mean(t_visit), flux_obs[i]+offset, err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)))
     else:
         plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
-            plt.errorbar(np.mean(t_visit), flux_obs[i], yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)
-            errorbar_data.append((np.mean(t_visit), flux_obs[i], err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)))
+            if points_offset and program_ID[i] == 'GTO_1279':
+                offset = 0.02
+            elif points_offset and program_ID[i] == 'GO_5191':
+                offset = 0.04
+            else:
+                offset = 0
+            plt.errorbar(np.mean(t_visit), flux_obs[i]+offset, yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)
+            errorbar_data.append((np.mean(t_visit), flux_obs[i]+offset, err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)))
     x_text = np.mean(t_visit)
     y_text = np.max(phase_curve_total_visit)
     plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
@@ -195,7 +224,12 @@ plt.show()
 
 # Close-up on the observations
 
-xlims = [(9879,9920),(10130,10150),(10270,10275),(10610,10651)] # Values found after looking at the first plot
+if filter == 'F1500W' and plot_obs_points:
+    xlims = [(9879,9920),(10270,10275)] # Values found after looking at the overall plot
+elif filter == 'F1280W' and plot_obs_points:
+    xlims = [(10130,10150),(10610,10651)]
+else:
+    xlims = [(9879,9920),(10130,10150),(10270,10275),(10610,10651)] # Values found after looking at the first plot
 widths = [xmax-xmin for (xmin, xmax) in xlims]
 fig = plt.figure(figsize=(32, 18))
 gs = gridspec.GridSpec(1, len(xlims), width_ratios=widths, wspace=0.05)
@@ -227,9 +261,9 @@ for i, (ax, (xmin, xmax)) in enumerate(zip(axes, xlims)):
             ax.text(x_txt, y_txt, txt.get_text(), fontsize=txt.get_fontsize(), fontstyle=txt.get_fontstyle(), ha='center', va='bottom', color=txt.get_color(), bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
     ax.set_xlim(xmin, xmax)
-    ax.xaxis.set_major_locator(MultipleLocator(2.5))
+    ax.xaxis.set_major_locator(MultipleLocator(5))
     ax.ticklabel_format(style='plain', axis='x',useOffset=False)
-    ax.xaxis.set_major_formatter(plt.FormatStrFormatter('%.1f'))
+    ax.xaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.tick_params(labelleft=False, left=False, labelrotation=45)
@@ -255,26 +289,26 @@ for i in range(len(axes)-1):
 handles, labels = axes[0].get_legend_handles_labels()
 
 if plot_obs_points == False:
-    fig.legend(handles, labels, loc='upper right', ncols = 2)
+    fig.legend(handles, labels, loc='upper right',  ncols = 2)
 else:
     fig.legend(handles, labels, ncols = 2)
 
-fig.text(0.5, 0.04, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
+fig.text(0.5, 0.02, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
 if unit == 'ppm':
-    fig.text(0.1, 0.5, r"$F_{planet}/F_{star}$ (ppm)", va="center", rotation="vertical")
+    fig.text(0.05, 0.5, r"$F_{planet}/F_{star}$ (ppm)", va="center", rotation="vertical")
 else:
-    fig.text(0.1, 0.5, r"$F_{star}+F_{planet}$ (mJy)", va="center", rotation="vertical")
+    fig.text(0.05, 0.5, r"$F_{star}+F_{planet}$ (mJy)", va="center", rotation="vertical")
 plt.subplots_adjust(wspace=0.05)
 
 if filter == None:
-    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
+    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
 else:
     if redistribution == 1:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
     elif comparison:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
     else:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
+        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
 
 # plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
