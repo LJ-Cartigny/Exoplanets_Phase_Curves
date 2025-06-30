@@ -37,11 +37,11 @@ nb_points = 100000
 
 Keplerian = True
 
-planets = 'bcdefgh'
+planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1280W'
+filter = 'F1500W'
 
 unit = 'ppm' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
