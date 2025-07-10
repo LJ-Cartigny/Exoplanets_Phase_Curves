@@ -41,13 +41,13 @@ planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1500W'
+filter = 'F1280W'
 
-unit = 'ppm' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
+unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
-model = 'sphinx' # 'phoenix' or 'sphinx'
+model = 'phoenix' # 'phoenix' or 'sphinx'
 
-save_plots = True # Write True if you want to save the plots
+save_plots = False # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
@@ -55,7 +55,7 @@ plot_individual_planets = True # Write True if you want to plot the individual p
 
 comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
 
-plot_obs_points = False # Write True if you want to plot the observations points (in mJy) on the phase curves
+plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
 
 points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
