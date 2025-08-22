@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transits module &mdash; Exoplanets_Phase_Curves 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="TTV module" href="TTV.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Exoplanets_Phase_Curves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Comparison_GO3077.html">Comparison_GO3077 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Comparisons_bare_rocks_atm.html">Comparisons_bare_rocks_atm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Flux_wavelength.html">Flux_wavelength module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_plot.html">JWST_Obs_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_simu.html">JWST_Obs_simu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MIRI_filter.html">MIRI_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orbital_motion.html">Orbital_motion module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_TTV.html">Phase_curve_TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_v1.html">Phase_curve_v1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curves_comparison.html">Phase_curves_comparison module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phoenix.html">Phoenix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Solar_System_constants.html">Solar_System_constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TRAPPIST1_parameters.html">TRAPPIST1_parameters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TTV.html">TTV module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Transits module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.transit_depth"><code class="docutils literal notranslate"><span class="pre">transit_depth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.transit_impact_parameter"><code class="docutils literal notranslate"><span class="pre">transit_impact_parameter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.eclipse_impact_parameter"><code class="docutils literal notranslate"><span class="pre">eclipse_impact_parameter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.total_transit_duration"><code class="docutils literal notranslate"><span class="pre">total_transit_duration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.flat_transit_duration"><code class="docutils literal notranslate"><span class="pre">flat_transit_duration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.total_eclipse_duration"><code class="docutils literal notranslate"><span class="pre">total_eclipse_duration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.flat_eclipse_duration"><code class="docutils literal notranslate"><span class="pre">flat_eclipse_duration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.eclipse_phase"><code class="docutils literal notranslate"><span class="pre">eclipse_phase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.eclipse"><code class="docutils literal notranslate"><span class="pre">eclipse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transits.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Exoplanets_Phase_Curves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Code_files</a></li>
+      <li class="breadcrumb-item active">Transits module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Transits.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Transits">
+<span id="transits-module"></span><h1>Transits module<a class="headerlink" href="#module-Transits" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.transit_depth">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">transit_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.transit_depth" title="Link to this definition"></a></dt>
+<dd><p>Determines the depth of an exoplanet transit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>R_planet</strong> – the radius of the planet (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>delta_F</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.transit_impact_parameter">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">transit_impact_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.transit_impact_parameter" title="Link to this definition"></a></dt>
+<dd><p>Determines the impact parameter of an exoplanet transit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>b</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.eclipse_impact_parameter">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">eclipse_impact_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.eclipse_impact_parameter" title="Link to this definition"></a></dt>
+<dd><p>Determines the impact parameter of an exoplanet eclipse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>b</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.total_transit_duration">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">total_transit_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.total_transit_duration" title="Link to this definition"></a></dt>
+<dd><p>Determines the total duration of an exoplanet transit (in s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the transit impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>t_total</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.flat_transit_duration">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">flat_transit_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.flat_transit_duration" title="Link to this definition"></a></dt>
+<dd><p>Determines the flat duration of an exoplanet transit (in s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the transit impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>t_flat</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.total_eclipse_duration">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">total_eclipse_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.total_eclipse_duration" title="Link to this definition"></a></dt>
+<dd><p>Determines the total duration of an exoplanet eclipse (in s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the eclipse impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>t_total</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.flat_eclipse_duration">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">flat_eclipse_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.flat_eclipse_duration" title="Link to this definition"></a></dt>
+<dd><p>Determines the flat duration of an exoplanet eclipse (in s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the eclipse impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>t_flat</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.eclipse_phase">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">eclipse_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.eclipse_phase" title="Link to this definition"></a></dt>
+<dd><p>Determines the phases of an exoplanet for which its secondary eclipse starts and ends (centered at 0 or 1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>phase_eclipse_start, phase_eclipse_end</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.eclipse">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">eclipse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_star</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_planet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Transits.eclipse" title="Link to this definition"></a></dt>
+<dd><p>Determines if an exoplanet is in eclipse or not at a given phase.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> (<em>float</em>) – the orbital period (in s)</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – the semimajor axis (in m)</p></li>
+<li><p><strong>R_star</strong> (<em>float</em>) – the radius of the star (in m)</p></li>
+<li><p><strong>R_planet</strong> (<em>float</em>) – the radius of the planet (in m)</p></li>
+<li><p><strong>i</strong> (<em>float</em>) – the inclination (in rad)</p></li>
+<li><p><strong>phase</strong> (<em>float</em>) – the phase of the exoplanet (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – the argument of pericentre (in rad)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – the impact parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>in_eclipse</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Transits.main">
+<span class="sig-prename descclassname"><span class="pre">Transits.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Transits.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="TTV.html" class="btn btn-neutral float-left" title="TTV module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Louis-Julien Cartigny.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

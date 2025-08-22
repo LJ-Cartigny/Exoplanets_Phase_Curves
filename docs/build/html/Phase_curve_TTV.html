@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phase_curve_TTV module &mdash; Exoplanets_Phase_Curves 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Phase_curve_v1 module" href="Phase_curve_v1.html" />
+    <link rel="prev" title="Orbital_motion module" href="Orbital_motion.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Exoplanets_Phase_Curves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Comparison_GO3077.html">Comparison_GO3077 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Comparisons_bare_rocks_atm.html">Comparisons_bare_rocks_atm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Flux_wavelength.html">Flux_wavelength module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_plot.html">JWST_Obs_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_simu.html">JWST_Obs_simu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MIRI_filter.html">MIRI_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orbital_motion.html">Orbital_motion module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Phase_curve_TTV module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Phase_curve_TTV.phase_TTV"><code class="docutils literal notranslate"><span class="pre">phase_TTV()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phase_curve_TTV.phase_curve_simulation"><code class="docutils literal notranslate"><span class="pre">phase_curve_simulation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phase_curve_TTV.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_v1.html">Phase_curve_v1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curves_comparison.html">Phase_curves_comparison module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phoenix.html">Phoenix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Solar_System_constants.html">Solar_System_constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TRAPPIST1_parameters.html">TRAPPIST1_parameters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TTV.html">TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Transits.html">Transits module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Exoplanets_Phase_Curves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Code_files</a></li>
+      <li class="breadcrumb-item active">Phase_curve_TTV module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Phase_curve_TTV.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Phase_curve_TTV">
+<span id="phase-curve-ttv-module"></span><h1>Phase_curve_TTV module<a class="headerlink" href="#module-Phase_curve_TTV" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Phase_curve_TTV.phase_TTV">
+<span class="sig-prename descclassname"><span class="pre">Phase_curve_TTV.</span></span><span class="sig-name descname"><span class="pre">phase_TTV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_TTV</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transit_peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Phase_curve_TTV.phase_TTV" title="Link to this definition"></a></dt>
+<dd><p>Computes the phase of the planet taking into account the modification of the period due to TTVs starting from the nearest transit peak from t0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P_TTV</strong> (<em>numpy.ndarray</em>) – the modified orbital periods of the planet due to the TTVs (in days)</p></li>
+<li><p><strong>t0</strong> (<em>float</em>) – the initial time (in BJD_TBD - 2450000)</p></li>
+<li><p><strong>t_end</strong> (<em>float</em>) – the final time (in BJD_TBD - 2450000)</p></li>
+<li><p><strong>transit_peaks</strong> (<em>numpy.ndarray</em>) – the peaks of the transits (in BJD_TBD - 2450000)</p></li>
+<li><p><strong>nb_points</strong> (<em>int</em>) – the number of points for the phase curve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>phases_TTV, t</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray, numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Phase_curve_TTV.phase_curve_simulation">
+<span class="sig-prename descclassname"><span class="pre">Phase_curve_TTV.</span></span><span class="sig-name descname"><span class="pre">phase_curve_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bcdefgh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redistribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sphinx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ppm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Keplerian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_txt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Phase_curve_TTV.phase_curve_simulation" title="Link to this definition"></a></dt>
+<dd><p>Simulates the phase curves of the planets of TRAPPIST-1 for a given number of days starting from t0 taking into account the modified periods due to TTVs.
+We assume circular orbits as otherwise the code does not manage to solve the Kepler equation to compute the true anomaly due to the modified periods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t0</strong> (<em>float</em>) – the initial time (in BJD_TBD - 2450000)</p></li>
+<li><p><strong>nb_days</strong> (<em>int</em>) – the number of days to simulate</p></li>
+<li><p><strong>nb_points</strong> (<em>int</em>) – the number of points for the phase curves (default: 10000)</p></li>
+<li><p><strong>planets</strong> (<em>str</em>) – the planets to simulate (default: ‘bcdefgh’)</p></li>
+<li><p><strong>redistribution</strong> (<em>float</em>) – the redistribution efficiency between the day side and night side (default: 0)</p></li>
+<li><p><strong>filter</strong> (<em>str</em><em> or </em><em>None</em>) – the filter to use (default: None). If None, the bolometric fluxes, expressed in ppm, are used relatively to the stellar flux with the planets considered as bare rocks.</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – the model to use for the stellar flux (default: ‘sphinx’). If ‘sphinx’, the flux is computed using the SPHINX model. If ‘phoenix’, the flux is computed using the PHOENIX model.</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – the unit of the phase curve (default: ‘ppm’). If ‘ppm’, the fluxes of the planets will be computed relatively to the stellar flux in ppm. If ‘mJy’, the planetary fluxes will be computed in absolute value in “mJy”. Will be set automatically to ‘mJy’ if the model is ‘phoenix’.</p></li>
+<li><p><strong>Keplerian</strong> (<em>bool</em>) – whether to use the Keplerian periods or not (default: False)</p></li>
+<li><p><strong>total</strong> (<em>bool</em>) – whether to plot the total phase curve or not (default: True)</p></li>
+<li><p><strong>plot</strong> (<em>bool</em>) – whether to plot the phase curves or not (default: True)</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em>) – whether to save the plot or not (default: False)</p></li>
+<li><p><strong>save_txt</strong> (<em>bool</em>) – whether to save the phase curves as txt files or not (default: False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Phase_curve_TTV.main">
+<span class="sig-prename descclassname"><span class="pre">Phase_curve_TTV.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Phase_curve_TTV.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Orbital_motion.html" class="btn btn-neutral float-left" title="Orbital_motion module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Phase_curve_v1.html" class="btn btn-neutral float-right" title="Phase_curve_v1 module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Louis-Julien Cartigny.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
