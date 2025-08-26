@@ -46,7 +46,17 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code_files</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Comparison_GO3077.html">Comparison_GO3077 module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Comparisons_bare_rocks_atm module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Comparisons_bare_rocks_atm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.nb_points"><code class="docutils literal notranslate"><span class="pre">nb_points</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.Keplerian"><code class="docutils literal notranslate"><span class="pre">Keplerian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.planets"><code class="docutils literal notranslate"><span class="pre">planets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.filter"><code class="docutils literal notranslate"><span class="pre">filter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.save_plots"><code class="docutils literal notranslate"><span class="pre">save_plots</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.do_simulation"><code class="docutils literal notranslate"><span class="pre">do_simulation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.plot_individual_planets"><code class="docutils literal notranslate"><span class="pre">plot_individual_planets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons_bare_rocks_atm.run_comparison"><code class="docutils literal notranslate"><span class="pre">run_comparison()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="Flux_wavelength.html">Flux_wavelength module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="JWST_Obs_plot.html">JWST_Obs_plot module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="JWST_Obs_simu.html">JWST_Obs_simu module</a></li>
@@ -89,8 +99,57 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="comparisons-bare-rocks-atm-module">
-<h1>Comparisons_bare_rocks_atm module<a class="headerlink" href="#comparisons-bare-rocks-atm-module" title="Link to this heading"></a></h1>
+  <section id="module-Comparisons_bare_rocks_atm">
+<span id="comparisons-bare-rocks-atm-module"></span><h1>Comparisons_bare_rocks_atm module<a class="headerlink" href="#module-Comparisons_bare_rocks_atm" title="Link to this heading"></a></h1>
+<p>This module is to compare the phase curves of TRAPPIST-1 planets with and without thick atmospheres.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.nb_points">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">nb_points</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100000</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.nb_points" title="Link to this definition"></a></dt>
+<dd><p>Number of points in the simulation</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.Keplerian">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">Keplerian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.Keplerian" title="Link to this definition"></a></dt>
+<dd><p>Set to True to use Keplerian orbital periods, False for periods modified because of TTVs (not working yet)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.planets">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">planets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'defgh'</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.planets" title="Link to this definition"></a></dt>
+<dd><p>Planets to simulate</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.filter">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'F1500W'</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.filter" title="Link to this definition"></a></dt>
+<dd><p>MIRI filter to use</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.save_plots">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">save_plots</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.save_plots" title="Link to this definition"></a></dt>
+<dd><p>Set to True if you want to save the plots, False otherwise</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.do_simulation">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">do_simulation</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.do_simulation" title="Link to this definition"></a></dt>
+<dd><p>Set to True if the simulation hasn’t been done yet, False if the phase curves were already saved and you don’t want to redo the simulation</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.plot_individual_planets">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">plot_individual_planets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#Comparisons_bare_rocks_atm.plot_individual_planets" title="Link to this definition"></a></dt>
+<dd><p>Set to True if you want to plot the individual planets as bare rocks to see their phases, False otherwise</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Comparisons_bare_rocks_atm.run_comparison">
+<span class="sig-prename descclassname"><span class="pre">Comparisons_bare_rocks_atm.</span></span><span class="sig-name descname"><span class="pre">run_comparison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Comparisons_bare_rocks_atm.run_comparison" title="Link to this definition"></a></dt>
+<dd><p>Runs the comparison of TRAPPIST-1 phase curves with and without thick atmospheres following the previous settings.</p>
+</dd></dl>
+
 </section>
 
 

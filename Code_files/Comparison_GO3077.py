@@ -5,6 +5,10 @@
 # June 2025
 # Comparison of the GO 3077 observations with the simulations
 
+"""
+This module compares the phase curves observed during the JWST GO 3077 program with the simulations.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -26,12 +30,12 @@ mpl.rcParams.update({
 
 def load_data(filename, key):
     """
-    Load the data from the HDF5 file.
+    Load the data from the .h5 file.
 
-    :param filename: The path to the HDF5 file.
+    :param filename: The path to the .h5 file.
     :type filename: str
 
-    :param key: The key to access the data in the HDF5 file.
+    :param key: The key to access the data in the .h5 file.
     :type key: str
 
     :return: The data loaded from the file.

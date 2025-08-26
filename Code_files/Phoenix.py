@@ -5,6 +5,10 @@
 # May 2025
 # Phoenix model
 
+"""
+Generates the PHOENIX spectrum of star TRAPPIST-1 using pysynphot.
+"""
+
 import pysynphot as S
 import math as math
 
