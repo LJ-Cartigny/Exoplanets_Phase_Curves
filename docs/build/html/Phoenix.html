@@ -55,7 +55,20 @@
 <li class="toctree-l2"><a class="reference internal" href="Phase_curve_TTV.html">Phase_curve_TTV module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Phase_curve_v1.html">Phase_curve_v1 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Phase_curves_comparison.html">Phase_curves_comparison module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Phoenix module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Phoenix module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.Teff"><code class="docutils literal notranslate"><span class="pre">Teff</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.Rs"><code class="docutils literal notranslate"><span class="pre">Rs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.Ms"><code class="docutils literal notranslate"><span class="pre">Ms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.logg"><code class="docutils literal notranslate"><span class="pre">logg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.dist"><code class="docutils literal notranslate"><span class="pre">dist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.Rp"><code class="docutils literal notranslate"><span class="pre">Rp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.a"><code class="docutils literal notranslate"><span class="pre">a</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.e"><code class="docutils literal notranslate"><span class="pre">e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.T14"><code class="docutils literal notranslate"><span class="pre">T14</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.P"><code class="docutils literal notranslate"><span class="pre">P</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phoenix.generate_phoenix_model"><code class="docutils literal notranslate"><span class="pre">generate_phoenix_model()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="Solar_System_constants.html">Solar_System_constants module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TRAPPIST1_parameters.html">TRAPPIST1_parameters module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TTV.html">TTV module</a></li>
@@ -89,8 +102,82 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="phoenix-module">
-<h1>Phoenix module<a class="headerlink" href="#phoenix-module" title="Link to this heading"></a></h1>
+  <section id="module-Phoenix">
+<span id="phoenix-module"></span><h1>Phoenix module<a class="headerlink" href="#module-Phoenix" title="Link to this heading"></a></h1>
+<p>PHOENIX Spectrum Generation for star TRAPPIST-1 using pysynphot</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.Teff">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">Teff</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2566</span></em><a class="headerlink" href="#Phoenix.Teff" title="Link to this definition"></a></dt>
+<dd><p>Teff = 2566 +/- 26 K from Agol et al. 2021</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.Rs">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">Rs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8292744000.0</span></em><a class="headerlink" href="#Phoenix.Rs" title="Link to this definition"></a></dt>
+<dd><p>Stellar radius planet from Agol et al. 2021 in cm</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.Ms">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">Ms</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5959799999999999e+32</span></em><a class="headerlink" href="#Phoenix.Ms" title="Link to this definition"></a></dt>
+<dd><p>Stellar mass in g</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.logg">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">logg</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.189952052020907</span></em><a class="headerlink" href="#Phoenix.logg" title="Link to this definition"></a></dt>
+<dd><p>cgs</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.dist">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">dist</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.8473162e+19</span></em><a class="headerlink" href="#Phoenix.dist" title="Link to this definition"></a></dt>
+<dd><p>stellar distance in pc, converted to cm</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.Rp">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">Rp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">711784800.0000001</span></em><a class="headerlink" href="#Phoenix.Rp" title="Link to this definition"></a></dt>
+<dd><p>cm b planet from Agol et al. 2021</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.a">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">172638400000.0</span></em><a class="headerlink" href="#Phoenix.a" title="Link to this definition"></a></dt>
+<dd><p>cm b planet from Agol et al. 2021</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.e">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.001</span></em><a class="headerlink" href="#Phoenix.e" title="Link to this definition"></a></dt>
+<dd><p>Wang et al. 2017 K2 (Note Luger et al. 2017 K2 data give e = 0.001)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.T14">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">T14</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1944.0000000000002</span></em><a class="headerlink" href="#Phoenix.T14" title="Link to this definition"></a></dt>
+<dd><p>transit duration (36 min x 0.9 eff)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="Phoenix.P">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">P</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.510826</span></em><a class="headerlink" href="#Phoenix.P" title="Link to this definition"></a></dt>
+<dd><p>days orbital period b planet from Agol et al. 2021</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Phoenix.generate_phoenix_model">
+<span class="sig-prename descclassname"><span class="pre">Phoenix.</span></span><span class="sig-name descname"><span class="pre">generate_phoenix_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Phoenix.generate_phoenix_model" title="Link to this definition"></a></dt>
+<dd><p>Generate and save the PHOENIX model spectrum for TRAPPIST-1 using pysynphot.</p>
+<ul class="simple">
+<li><p>Creates a PHOENIX stellar model for TRAPPIST-1 with specified parameters.</p></li>
+<li><p>Normalizes the model to the observed J-band magnitude.</p></li>
+<li><p>Converts the spectrum to wavelength in microns and flux in mJy (for JWST ETC).</p></li>
+<li><p>Saves the spectrum to ‘TRAPPIST1_Phoenix_model.txt’.</p></li>
+<li><p>Plots the spectrum between 10 and 20 microns.</p></li>
+</ul>
+</dd></dl>
+
 </section>
 
 
