@@ -8,7 +8,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from TRAPPIST1_parameters import *
-#from Phase_curve_v1 import phase_angle, phase_function, star_planet_separation, surface_sphere, phase_curve, flux_star, flux_planet
+# from Phase_curve_v1 import phase_planet
 
 def transit_depth(R_planet, R_star):
     """
@@ -313,12 +313,58 @@ def eclipse(P, a, R_star, R_planet, i, phase, e, omega, b):
 
     phase_eclipse_start, phase_eclipse_end = eclipse_phase(P, a, R_star, R_planet, i, e, omega, b)
 
-    # in_eclipse = (phase_eclipse_start < phase-np.trunc(phase)) + (phase-np.trunc(phase) < phase_eclipse_end)
-
     in_eclipse = (phase_eclipse_start < phase-np.trunc(phase)) + (phase-np.trunc(phase) < phase_eclipse_end)
+
+    # t_eclipse = total_transit_duration(P, a, R_star, R_planet, i, e, omega, b)
+
+    # in_eclipse = phase_planet(t, P) > 1 - phase_planet(t_eclipse/2, P)
 
     return in_eclipse
 
+
+def transit(P, a, R_star, R_planet, i, phase, e, omega, b, t):
+    """
+    Determines if an exoplanet is in transit or not at a given phase.
+
+    :param P: the orbital period (in s)
+    :type P: float
+
+    :param a: the semimajor axis (in m)
+    :type a: float
+
+    :param R_star: the radius of the star (in m)
+    :type R_star: float
+
+    :param R_planet: the radius of the planet (in m)
+    :type R_planet: float
+
+    :param i: the inclination (in rad)
+    :type i: float
+
+    :param phase: the phase of the exoplanet (in rad)
+    :type phase: function
+
+    :param e: the eccentricity
+    :type e: float
+
+    :param omega: the argument of pericentre (in rad)
+    :type omega: float
+
+    :param b: the impact parameter
+    :type b: float
+
+    :param t: time (in days)
+    :type t: float
+
+    :return: in_transit
+    :rtype: bool
+    """
+
+    t_transit = total_transit_duration(P, a, R_star, R_planet, i, e, omega, b)
+
+    in_transit = phase(t, P) < phase(t_transit/2, P)
+
+    return in_transit
 
 def main():
     print("TRAPPIST-1b")

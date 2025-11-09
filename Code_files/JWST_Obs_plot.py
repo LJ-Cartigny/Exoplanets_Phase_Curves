@@ -57,12 +57,13 @@ comparison = True # Write True if you want to compare the bare rock and thick at
 
 plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
 
-points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
+points_offset = False # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
 
 # Simulations
 
-program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+# program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", usecols=(0,1,2,3,4,7,8), delimiter=',', skiprows=2, unpack=True,dtype=str)
 
 flux_obs = flux_obs.astype(float)
 err_obs = err_obs.astype(float)

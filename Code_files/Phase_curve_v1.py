@@ -179,7 +179,7 @@ def phase_curve(L_star, L_planet, R_star, R_planet, phase_planet, eclipse):
 
 def main():
     
-    t_end = 30 # simulation duration in days
+    t_end = 20 # simulation duration in days
     nb_points = 10000 # number of points in the time array
 
     t = np.linspace(0,t_end,nb_points) # time array in days
@@ -194,6 +194,7 @@ def main():
     # phase_b = phase_planet(t,P_b,t0_b)
     b_b = eclipse_impact_parameter(a_b,i_b,e_b,R_star,omega_b)
     eclipse_b = eclipse(P_b,a_b,R_star,R_b,i_b,np.arccos(phase_b)/(2*np.pi),e_b,omega_b,b_b)
+    # eclipse_b = eclipse(P_b,a_b,R_star,R_b,i_b,e_b,omega_b,b_b,t)
 
     r_b = star_planet_separation(a_b,e_b,nu_b)
 
@@ -214,6 +215,7 @@ def main():
     # phase_c = phase_planet(t,P_c,t0_c)
     b_c = eclipse_impact_parameter(a_c,i_c,e_c,R_star,omega_c)
     eclipse_c = eclipse(P_c,a_c,R_star,R_c,i_c,np.arccos(phase_c)/(2*np.pi),e_c,omega_c,b_c)
+    # eclipse_c = eclipse(P_c,a_c,R_star,R_c,i_c,e_c,omega_c,b_c,t)
 
     r_c = star_planet_separation(a_c,e_c,nu_c)
 
@@ -234,6 +236,7 @@ def main():
     # phase_d = phase_planet(t,P_d,t0_d)
     b_d = eclipse_impact_parameter(a_d,i_d,e_d,R_star,omega_d)
     eclipse_d = eclipse(P_d,a_d,R_star,R_d,i_d,np.arccos(phase_d)/(2*np.pi), e_d, omega_d, b_d)
+    # eclipse_d = eclipse(P_d,a_d,R_star,R_d,i_d,e_d,omega_d,b_d,t)
 
     r_d = star_planet_separation(a_d,e_d,nu_d)
 
@@ -254,6 +257,7 @@ def main():
     # phase_e = phase_planet(t,P_e,t0_e)
     b_e = eclipse_impact_parameter(a_e,i_e,e_e,R_star,omega_e)
     eclipse_e = eclipse(P_e,a_e,R_star,R_e,i_e,np.arccos(phase_e)/(2*np.pi), e_e, omega_e, b_e)
+    # eclipse_e = eclipse(P_e,a_e,R_star,R_e,i_e,e_e,omega_e,b_e,t)
 
     r_e = star_planet_separation(a_e,e_e,nu_e)
 
@@ -274,6 +278,7 @@ def main():
     # phase_f = phase_planet(t,P_f,t0_f)
     b_f = eclipse_impact_parameter(a_f,i_f,e_f,R_star,omega_f)
     eclipse_f = eclipse(P_f,a_f,R_star,R_f,i_f,np.arccos(phase_f)/(2*np.pi), e_f, omega_f, b_f)
+    # eclipse_f = eclipse(P_f,a_f,R_star,R_f,i_f,e_f,omega_f,b_f,t)
 
     r_f = star_planet_separation(a_f,e_f,nu_f)
 
@@ -294,6 +299,7 @@ def main():
     # phase_g = phase_planet(t,P_g,t0_g)
     b_g = eclipse_impact_parameter(a_g,i_g,e_g,R_star,omega_g)
     eclipse_g = eclipse(P_g,a_g,R_star,R_g,i_g,np.arccos(phase_g)/(2*np.pi), e_g, omega_g, b_g)
+    # eclipse_g = eclipse(P_g,a_g,R_star,R_g,i_g,e_g,omega_g,b_g,t)
 
     r_g = star_planet_separation(a_g,e_g,nu_g)
 
@@ -314,6 +320,7 @@ def main():
     # phase_h = phase_planet(t,P_h,t0_h)
     b_h = eclipse_impact_parameter(a_h,i_h,e_h,R_star,omega_h)
     eclipse_h = eclipse(P_h,a_h,R_star,R_h,i_h,np.arccos(phase_h)/(2*np.pi), e_h, omega_h, b_h)
+    # eclipse_h = eclipse(P_h,a_h,R_star,R_h,i_h,e_h,omega_h,b_h,t)
     
     r_h = star_planet_separation(a_h,e_h,nu_h)
 
@@ -353,12 +360,13 @@ def main():
     plt.plot(t,phase_curve_g,label="g")
     plt.plot(t,phase_curve_h,label="h")
     plt.plot(t,phase_curve_total,label="Total")
-    plt.xlabel("Time (days)")
-    plt.ylabel("$F_{planet}/F_{star}$ (ppm)")
-    plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
-    plt.legend()
+    plt.xlabel("Time (days)", fontsize=20)
+    plt.ylabel("$F_{planet}/F_{star}$ (ppm)", fontsize=20)
+    plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes", fontsize=22)
+    plt.legend(fontsize=16)
     plt.grid()
-    plt.savefig("Phase_curve_v1_plots/Phase_curves_TRAPPIST1_bolometric.png", bbox_inches='tight')
+    # plt.savefig("Phase_curve_v1_plots/Phase_curves_TRAPPIST1_bolometric.png", bbox_inches='tight')
+    plt.savefig("Article_figures/Phase_curves_TRAPPIST1_bolometric.png", bbox_inches='tight')
     plt.show()
 
 
