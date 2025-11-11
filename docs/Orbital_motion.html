@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbital_motion module &mdash; Exoplanets_Phase_Curves 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Phase_curve_TTV module" href="Phase_curve_TTV.html" />
+    <link rel="prev" title="MIRI_filter module" href="MIRI_filter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Exoplanets_Phase_Curves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Comparison_GO3077.html">Comparison_GO3077 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Comparisons_bare_rocks_atm.html">Comparisons_bare_rocks_atm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Flux_wavelength.html">Flux_wavelength module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_plot.html">JWST_Obs_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_simu.html">JWST_Obs_simu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MIRI_filter.html">MIRI_filter module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Orbital_motion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Orbital_motion.kepler_equation"><code class="docutils literal notranslate"><span class="pre">kepler_equation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orbital_motion.solve_kepler"><code class="docutils literal notranslate"><span class="pre">solve_kepler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orbital_motion.true_anomaly"><code class="docutils literal notranslate"><span class="pre">true_anomaly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orbital_motion.compute_true_anomaly"><code class="docutils literal notranslate"><span class="pre">compute_true_anomaly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orbital_motion.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_TTV.html">Phase_curve_TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_v1.html">Phase_curve_v1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curves_comparison.html">Phase_curves_comparison module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phoenix.html">Phoenix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Solar_System_constants.html">Solar_System_constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TRAPPIST1_parameters.html">TRAPPIST1_parameters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TTV.html">TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Transits.html">Transits module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Exoplanets_Phase_Curves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Code_files</a></li>
+      <li class="breadcrumb-item active">Orbital_motion module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Orbital_motion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Orbital_motion">
+<span id="orbital-motion-module"></span><h1>Orbital_motion module<a class="headerlink" href="#module-Orbital_motion" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Orbital_motion.kepler_equation">
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">kepler_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.kepler_equation" title="Link to this definition"></a></dt>
+<dd><p>Returns the Kepler equation: M = E - e sin(E)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>float</em>) – the eccentric anomaly</p></li>
+<li><p><strong>M</strong> (<em>float</em>) – the mean anomaly</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>E - e*np.sin(E) - M</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Orbital_motion.solve_kepler">
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">solve_kepler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.solve_kepler" title="Link to this definition"></a></dt>
+<dd><p>Solve the Kepler equation to find the eccentric anomaly E.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>float</em>) – the eccentric anomaly</p></li>
+<li><p><strong>M</strong> (<em>float</em>) – the mean anomaly</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>E</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Orbital_motion.true_anomaly">
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.true_anomaly" title="Link to this definition"></a></dt>
+<dd><p>Computes the true anomaly from the eccentric anomaly and the eccentricity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> (<em>float</em>) – the eccentric anomaly</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nu</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Orbital_motion.compute_true_anomaly">
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">compute_true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.compute_true_anomaly" title="Link to this definition"></a></dt>
+<dd><p>Computes the true anomaly with respect to time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nu_0</strong> (<em>float</em>) – the initial true anomaly (in rad)</p></li>
+<li><p><strong>e</strong> (<em>float</em>) – the eccentricity</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – the orbital period</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – the time passed</p></li>
+<li><p><strong>t_0</strong> (<em>float</em>) – the initial time (default value: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nu_t</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Orbital_motion.main">
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MIRI_filter.html" class="btn btn-neutral float-left" title="MIRI_filter module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Phase_curve_TTV.html" class="btn btn-neutral float-right" title="Phase_curve_TTV module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Louis-Julien Cartigny.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

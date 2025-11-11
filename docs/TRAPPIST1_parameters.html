@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRAPPIST1_parameters module &mdash; Exoplanets_Phase_Curves 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TTV module" href="TTV.html" />
+    <link rel="prev" title="Solar_System_constants module" href="Solar_System_constants.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Exoplanets_Phase_Curves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Comparison_GO3077.html">Comparison_GO3077 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Comparisons_bare_rocks_atm.html">Comparisons_bare_rocks_atm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Flux_wavelength.html">Flux_wavelength module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_plot.html">JWST_Obs_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JWST_Obs_simu.html">JWST_Obs_simu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MIRI_filter.html">MIRI_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orbital_motion.html">Orbital_motion module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_TTV.html">Phase_curve_TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curve_v1.html">Phase_curve_v1 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phase_curves_comparison.html">Phase_curves_comparison module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phoenix.html">Phoenix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Solar_System_constants.html">Solar_System_constants module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TRAPPIST1_parameters module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.dist_system"><code class="docutils literal notranslate"><span class="pre">dist_system</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.T_eff_star"><code class="docutils literal notranslate"><span class="pre">T_eff_star</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_star"><code class="docutils literal notranslate"><span class="pre">R_star</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.M_star"><code class="docutils literal notranslate"><span class="pre">M_star</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.L_star"><code class="docutils literal notranslate"><span class="pre">L_star</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.wavelengths_T1_sphinx"><code class="docutils literal notranslate"><span class="pre">wavelengths_T1_sphinx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.flux_T1_sphinx"><code class="docutils literal notranslate"><span class="pre">flux_T1_sphinx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.wavelengths_T1_phoenix"><code class="docutils literal notranslate"><span class="pre">wavelengths_T1_phoenix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.flux_T1_phoenix_mJy"><code class="docutils literal notranslate"><span class="pre">flux_T1_phoenix_mJy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_b"><code class="docutils literal notranslate"><span class="pre">a_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_b"><code class="docutils literal notranslate"><span class="pre">P_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_b"><code class="docutils literal notranslate"><span class="pre">i_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_b"><code class="docutils literal notranslate"><span class="pre">omega_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_b"><code class="docutils literal notranslate"><span class="pre">e_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_b"><code class="docutils literal notranslate"><span class="pre">R_b</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_c"><code class="docutils literal notranslate"><span class="pre">a_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_c"><code class="docutils literal notranslate"><span class="pre">P_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_c"><code class="docutils literal notranslate"><span class="pre">i_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_c"><code class="docutils literal notranslate"><span class="pre">omega_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_c"><code class="docutils literal notranslate"><span class="pre">e_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_c"><code class="docutils literal notranslate"><span class="pre">R_c</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_d"><code class="docutils literal notranslate"><span class="pre">a_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_d"><code class="docutils literal notranslate"><span class="pre">P_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_d"><code class="docutils literal notranslate"><span class="pre">i_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_d"><code class="docutils literal notranslate"><span class="pre">omega_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_d"><code class="docutils literal notranslate"><span class="pre">e_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_d"><code class="docutils literal notranslate"><span class="pre">R_d</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_e"><code class="docutils literal notranslate"><span class="pre">a_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_e"><code class="docutils literal notranslate"><span class="pre">P_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_e"><code class="docutils literal notranslate"><span class="pre">i_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_e"><code class="docutils literal notranslate"><span class="pre">omega_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_e"><code class="docutils literal notranslate"><span class="pre">e_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_e"><code class="docutils literal notranslate"><span class="pre">R_e</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_f"><code class="docutils literal notranslate"><span class="pre">a_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_f"><code class="docutils literal notranslate"><span class="pre">P_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_f"><code class="docutils literal notranslate"><span class="pre">i_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_f"><code class="docutils literal notranslate"><span class="pre">omega_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_f"><code class="docutils literal notranslate"><span class="pre">e_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_f"><code class="docutils literal notranslate"><span class="pre">R_f</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_g"><code class="docutils literal notranslate"><span class="pre">a_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_g"><code class="docutils literal notranslate"><span class="pre">P_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_g"><code class="docutils literal notranslate"><span class="pre">i_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_g"><code class="docutils literal notranslate"><span class="pre">omega_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_g"><code class="docutils literal notranslate"><span class="pre">e_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_g"><code class="docutils literal notranslate"><span class="pre">R_g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.a_h"><code class="docutils literal notranslate"><span class="pre">a_h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.P_h"><code class="docutils literal notranslate"><span class="pre">P_h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.i_h"><code class="docutils literal notranslate"><span class="pre">i_h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.omega_h"><code class="docutils literal notranslate"><span class="pre">omega_h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.e_h"><code class="docutils literal notranslate"><span class="pre">e_h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TRAPPIST1_parameters.R_h"><code class="docutils literal notranslate"><span class="pre">R_h</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="TTV.html">TTV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Transits.html">Transits module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Exoplanets_Phase_Curves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Code_files</a></li>
+      <li class="breadcrumb-item active">TRAPPIST1_parameters module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TRAPPIST1_parameters.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-TRAPPIST1_parameters">
+<span id="trappist1-parameters-module"></span><h1>TRAPPIST1_parameters module<a class="headerlink" href="#module-TRAPPIST1_parameters" title="Link to this heading"></a></h1>
+<p>This module contains some parameters for the planets of the TRAPPIST-1 system.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.dist_system">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">dist_system</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.8358636856984774e+17</span></em><a class="headerlink" href="#TRAPPIST1_parameters.dist_system" title="Link to this definition"></a></dt>
+<dd><p>Distance between the TRAPPIST-1 system and the Solar system in meters (from NASA Exoplanet Archive)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.T_eff_star">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">T_eff_star</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2566</span></em><a class="headerlink" href="#TRAPPIST1_parameters.T_eff_star" title="Link to this definition"></a></dt>
+<dd><p>Effective temperature of star TRAPPIST-1 in Kelvin (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_star">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_star</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">83003966.4</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_star" title="Link to this definition"></a></dt>
+<dd><p>Radius of star TRAPPIST-1 in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.M_star">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">M_star</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.785673e+29</span></em><a class="headerlink" href="#TRAPPIST1_parameters.M_star" title="Link to this definition"></a></dt>
+<dd><p>Mass of star TRAPPIST-1 in kilograms (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.L_star">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">L_star</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.104741546874703e+23</span></em><a class="headerlink" href="#TRAPPIST1_parameters.L_star" title="Link to this definition"></a></dt>
+<dd><p>Luminosity of star TRAPPIST-1 in Watts (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.wavelengths_T1_sphinx">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">wavelengths_T1_sphinx</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([4.00000509e-07,</span> <span class="pre">4.00008509e-07,</span> <span class="pre">4.00016509e-07,</span> <span class="pre">...,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">3.00285286e-05,</span> <span class="pre">3.00291291e-05,</span> <span class="pre">3.00297297e-05])</span></em><a class="headerlink" href="#TRAPPIST1_parameters.wavelengths_T1_sphinx" title="Link to this definition"></a></dt>
+<dd><p>Wavelengths from the SPHINX model spectrum of star TRAPPIST-1 in meters</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.flux_T1_sphinx">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">flux_T1_sphinx</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([3.65209439e+10,</span> <span class="pre">4.45932637e+10,</span> <span class="pre">4.68980125e+10,</span> <span class="pre">...,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">5.16422631e+07,</span> <span class="pre">5.08248774e+07,</span> <span class="pre">0.00000000e+00])</span></em><a class="headerlink" href="#TRAPPIST1_parameters.flux_T1_sphinx" title="Link to this definition"></a></dt>
+<dd><p>Stellar flux of TRAPPIST-1 in W/m^2/m from the SPHINX spectrum model (corrected by 7% to better match observations)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.wavelengths_T1_phoenix">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">wavelengths_T1_phoenix</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([1.25892541e-09,</span> <span class="pre">1.26021668e-09,</span> <span class="pre">1.26150927e-09,</span> <span class="pre">...,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">7.76142810e-05,</span> <span class="pre">7.76194962e-05,</span> <span class="pre">7.76247117e-05])</span></em><a class="headerlink" href="#TRAPPIST1_parameters.wavelengths_T1_phoenix" title="Link to this definition"></a></dt>
+<dd><p>Wavelengths from the PHOENIX model spectrum of star TRAPPIST-1 in meters</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.flux_T1_phoenix_mJy">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">flux_T1_phoenix_mJy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([5.23820679e-107,</span> <span class="pre">5.24895784e-107,</span> <span class="pre">5.25973095e-107,</span> <span class="pre">...,</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">1.21781009e-001,</span> <span class="pre">1.16229755e-001,</span> <span class="pre">1.13663120e-001])</span></em><a class="headerlink" href="#TRAPPIST1_parameters.flux_T1_phoenix_mJy" title="Link to this definition"></a></dt>
+<dd><p>Stellar flux of TRAPPIST-1 in mJy from the PHOENIX spectrum model</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1670869843.632</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_b" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 b in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.51088432</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_b" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 b in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5582299561805375</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_b" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 b in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.879316118268099</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_b" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 b in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00622</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_b" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 b (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_b">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_b</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7118000.892000001</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_b" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 b in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2288419353.6480002</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_c" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 c in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.42179346</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_c" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 c in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5615460817593265</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_c" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 c in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.9296824722579835</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_c" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 c in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00654</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_c" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 c (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_c">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_c</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6996816.289</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_c" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 c in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3224704094.6400003</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_d" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 d in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.04978035</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_d" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 d in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5646876744129166</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_d" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 d in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-0.15236724369910498</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_d" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 d in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00837</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_d" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 d (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_d">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5025971.956</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_d" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 d in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4233202286.4</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_e" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 e in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.09956479</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_e" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 e in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5649145672156757</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_e" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 e in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.891413310386255</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_e" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 e in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00051</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_e" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 e (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_e">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_e</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5867886.04</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_e" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 e in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5569566145.44</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_f" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 f in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.20659399</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_f" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 f in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5649669270932354</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_f" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 f in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.436948814280287</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_f" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 f in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.01007</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_f" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 f (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_f">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_f</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6665153.164999999</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_f" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 f in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6781424054.880001</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_g" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 g in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12.3535557</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_g" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 g in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5655254324538737</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_g" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 g in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.33951299076595</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_g" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 g in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00208</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_g" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 g (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_g">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7200916.673</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_g" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 g in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.a_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">a_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8956127974.560001</span></em><a class="headerlink" href="#TRAPPIST1_parameters.a_h" title="Link to this definition"></a></dt>
+<dd><p>Semi-major axis of TRAPPIST-1 h in meters (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.P_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">P_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">18.7672745</span></em><a class="headerlink" href="#TRAPPIST1_parameters.P_h" title="Link to this definition"></a></dt>
+<dd><p>Orbital period of TRAPPIST-1 h in days (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.i_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">i_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.5666598964676701</span></em><a class="headerlink" href="#TRAPPIST1_parameters.i_h" title="Link to this definition"></a></dt>
+<dd><p>Orbital inclination of TRAPPIST-1 h in radians (Ducrot et al. 2020)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.omega_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">omega_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.915269900859182</span></em><a class="headerlink" href="#TRAPPIST1_parameters.omega_h" title="Link to this definition"></a></dt>
+<dd><p>Argument of periastron of TRAPPIST-1 h in radians (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.e_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">e_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.00567</span></em><a class="headerlink" href="#TRAPPIST1_parameters.e_h" title="Link to this definition"></a></dt>
+<dd><p>Orbital eccentricity of TRAPPIST-1 h (Grimm et al. 2018)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="TRAPPIST1_parameters.R_h">
+<span class="sig-prename descclassname"><span class="pre">TRAPPIST1_parameters.</span></span><span class="sig-name descname"><span class="pre">R_h</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4815493.435</span></em><a class="headerlink" href="#TRAPPIST1_parameters.R_h" title="Link to this definition"></a></dt>
+<dd><p>Radius of TRAPPIST-1 h in meters (Agol et al. 2021)</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Solar_System_constants.html" class="btn btn-neutral float-left" title="Solar_System_constants module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TTV.html" class="btn btn-neutral float-right" title="TTV module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Louis-Julien Cartigny.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
