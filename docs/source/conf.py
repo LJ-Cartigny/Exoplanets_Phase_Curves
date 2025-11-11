@@ -54,8 +54,14 @@ autodoc_default_options.update({
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+import sphinx_rtd_theme
+
 html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
+
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+html_baseurl = "https://lj-cartigny.github.io/Exoplanets_Phase_Curves/"
 
 # autodoc_mock_imports = [
 #     "numpy",
@@ -64,3 +70,4 @@ html_static_path = ['_static']
 
 #     "Code_files.TRAPPIST1_parameters",
 # ]
+
