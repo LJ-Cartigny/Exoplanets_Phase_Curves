@@ -12,6 +12,8 @@
 
   
     <link rel="canonical" href="https://lj-cartigny.github.io/Exoplanets_Phase_Curves/Orbital_motion.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=d45e8c67"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -26,7 +28,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
 
           
           
@@ -73,7 +75,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Exoplanets_Phase_Curves</a>
       </nav>
@@ -95,10 +97,10 @@
            <div itemprop="articleBody">
              
   <section id="module-Orbital_motion">
-<span id="orbital-motion-module"></span><h1>Orbital_motion module<a class="headerlink" href="#module-Orbital_motion" title="Link to this heading">¶</a></h1>
+<span id="orbital-motion-module"></span><h1>Orbital_motion module<a class="headerlink" href="#module-Orbital_motion" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="Orbital_motion.kepler_equation">
-<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">kepler_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.kepler_equation" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">kepler_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.kepler_equation" title="Link to this definition"></a></dt>
 <dd><p>Returns the Kepler equation: M = E - e sin(E)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -119,7 +121,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Orbital_motion.solve_kepler">
-<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">solve_kepler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.solve_kepler" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">solve_kepler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.solve_kepler" title="Link to this definition"></a></dt>
 <dd><p>Solve the Kepler equation to find the eccentric anomaly E.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -139,7 +141,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Orbital_motion.true_anomaly">
-<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.true_anomaly" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.true_anomaly" title="Link to this definition"></a></dt>
 <dd><p>Computes the true anomaly from the eccentric anomaly and the eccentricity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -159,7 +161,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Orbital_motion.compute_true_anomaly">
-<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">compute_true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.compute_true_anomaly" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">compute_true_anomaly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.compute_true_anomaly" title="Link to this definition"></a></dt>
 <dd><p>Computes the true anomaly with respect to time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -182,7 +184,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Orbital_motion.main">
-<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.main" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Orbital_motion.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Orbital_motion.main" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>

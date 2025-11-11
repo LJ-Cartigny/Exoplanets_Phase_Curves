@@ -57,11 +57,15 @@ autodoc_default_options.update({
 import sphinx_rtd_theme
 
 html_theme = "sphinx_rtd_theme"
+html_theme_options = {"style_nav_header_background": "#2980B9"}
 html_static_path = ['_static']
 
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+# html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 html_baseurl = "https://lj-cartigny.github.io/Exoplanets_Phase_Curves/"
+
+html_theme_path = []
+html_css_files = []
 
 # autodoc_mock_imports = [
 #     "numpy",
