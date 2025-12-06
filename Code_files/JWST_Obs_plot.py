@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator
-from matplotlib import container
+# from matplotlib import container
 import matplotlib as mpl
 from astropy.time import Time
 
@@ -25,7 +25,7 @@ mpl.rcParams.update({
     'xtick.labelsize': 16,
     'ytick.labelsize': 16,
     'legend.fontsize': 16,
-    # 'figure.figsize': (16, 9),
+    'figure.figsize': (16, 10),
     # 'lines.linewidth': 2,
     # 'grid.alpha': 0.5,
     # 'grid.linestyle': '--',
@@ -41,15 +41,15 @@ planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1280W'
+filter = 'F1500W'
 
 unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
-model = 'phoenix' # 'phoenix' or 'sphinx'
+model = 'sphinx' # 'phoenix' or 'sphinx'
 
 save_plots = False # Write True if you want to save the plots
 
-do_simulation = False # Write True if the simulation hasn't been done yet
+do_simulation = True # Write True if the simulation hasn't been done yet
 
 plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
 
@@ -60,10 +60,26 @@ plot_obs_points = True # Write True if you want to plot the observations points 
 points_offset = False # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
 
+# def plot_jwst_phase_curves(planets,
+#                            filter,
+#                            model,
+#                            nb_points=10000,
+#                            Keplerian=True,
+#                            redistribution=0,
+#                            unit='mJy',
+#                            save_plots=False,
+#                            do_simulation=False,
+#                            plot_individual_planets=True,
+#                            comparison=True,
+#                            plot_obs_points=True,
+#                            points_offset=False):
+#     pass
+
+
 # Simulations
 
 # program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
-program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", usecols=(0,1,2,3,4,7,8), delimiter=',', skiprows=2, unpack=True,dtype=str)
+program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", usecols=(0,1,2,3,4,7,8), delimiter=',', skiprows=2, unpack=True,dtype=str) # With new stellar flux values
 
 flux_obs = flux_obs.astype(float)
 err_obs = err_obs.astype(float)
@@ -107,7 +123,7 @@ if plot_obs_points:
 
 # Overall plot
 
-fig_overall = plt.figure(figsize=(32, 18))
+fig_overall = plt.figure()
 
 if plot_individual_planets:
     for p in planets:
@@ -232,7 +248,7 @@ elif filter == 'F1280W' and plot_obs_points:
 else:
     xlims = [(9879,9920),(10130,10150),(10270,10275),(10610,10651)] # Values found after looking at the first plot
 widths = [xmax-xmin for (xmin, xmax) in xlims]
-fig = plt.figure(figsize=(32, 18))
+fig = plt.figure()
 gs = gridspec.GridSpec(1, len(xlims), width_ratios=widths, wspace=0.05)
 
 axes = []

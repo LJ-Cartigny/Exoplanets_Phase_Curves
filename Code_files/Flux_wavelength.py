@@ -479,12 +479,12 @@ def integrate_flux_model_mJy(filter_name,model='sphinx'):
     # Normalize the flux
     F_miri /= norm_filter
 
-    # Applying correction for the PHOENIX model
-    if model == 'phoenix':
-        if filter_name=='F1280W':
-            F_miri /= 1.061
-        if filter_name=='F1500W':
-            F_miri /= 1.023
+    # Applying correction for the PHOENIX model (no longer needed with new data)
+    # if model == 'phoenix':
+    #     if filter_name=='F1280W':
+    #         F_miri /= 1.061
+    #     if filter_name=='F1500W':
+    #         F_miri /= 1.023
     
     return F_miri
 
@@ -524,12 +524,19 @@ def main():
 
     l_eff_F1280 = 12.62
     l_eff_F1500 = 14.79
-    flux_measured_12 = np.mean([3.425,3.428, 3.427, 3.428]) # From Ducrot et al. 2024
-    flux_err_12 = 0.12
-    flux_measured_15 = 2.589 # From Greene et al. 2023
-    flux_err_15 = 0.078
-
     l = np.linspace(1, 20, 10000)*1e-6  # Wavelength range from 1 to 20 microns
+
+
+    # flux_measured_12 = np.mean([3.425,3.428, 3.427, 3.428]) # From Ducrot et al. 2024
+    # flux_err_12 = 0.12
+    # flux_measured_15 = 2.589 # From Greene et al. 2023
+    # flux_err_15 = 0.078
+
+    # New values
+    flux_measured_12 = np.mean([3.82186,3.81667, 3.81662, 3.81975])
+    flux_err_12 = np.mean([0.00065,0.00068,0.00063,0.00048])
+    flux_measured_15 = np.mean([2.86903,2.86892,2.86849,2.87124,2.86736])
+    flux_err_15 = np.mean([0.00043,0.00050,0.00056,0.00053,0.00042])
 
 
     plt.figure(figsize=(16,9))

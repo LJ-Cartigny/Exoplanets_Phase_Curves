@@ -30,7 +30,7 @@ L_star = 10**(-3.26)*L_Sun  #: Luminosity of star TRAPPIST-1 in Watts (Ducrot et
 try:
     wavelengths_T1_sphinx, flux_T1_sphinx = np.loadtxt(DATA_DIR / "sphinx_spectrum_T-1_aisha.txt", unpack=True, skiprows=1)  #: Wavelengths (m) and flux from SPHINX model spectrum of star TRAPPIST-1
     wavelengths_T1_sphinx = wavelengths_T1_sphinx * 1e-6  #: Wavelengths from the SPHINX model spectrum of star TRAPPIST-1 in meters
-    flux_T1_sphinx = flux_T1_sphinx / 1.07  #: Stellar flux of TRAPPIST-1 in W/m^2/m from the SPHINX spectrum model (corrected by 7% to better match observations)
+    # flux_T1_sphinx = flux_T1_sphinx / 1.07  #: Stellar flux of TRAPPIST-1 in W/m^2/m from the SPHINX spectrum model (corrected by 7% to better match observations) - no longer necessary with new values for stellar flux
 except Exception:
     wavelengths_T1_sphinx = np.array([])  #: Wavelengths (m) from SPHINX model spectrum of star TRAPPIST-1 (empty during docs build)
     flux_T1_sphinx = np.array([])  #: Flux from SPHINX model spectrum of star TRAPPIST-1 (empty during docs build)

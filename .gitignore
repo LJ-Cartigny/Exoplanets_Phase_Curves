@@ -2,4 +2,6 @@
 
 .test_notebook.ipynb
 
-.__pycache__
+Code_files/__pycache__
+
+.vscode
