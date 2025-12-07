@@ -22,9 +22,9 @@ mpl.rcParams.update({
     'font.size': 20,
     'axes.labelsize': 20,
     'axes.titlesize': 20,
-    'xtick.labelsize': 16,
-    'ytick.labelsize': 16,
-    'legend.fontsize': 16,
+    'xtick.labelsize': 18,
+    'ytick.labelsize': 18,
+    'legend.fontsize': 18,
     'figure.figsize': (16, 10),
     # 'lines.linewidth': 2,
     # 'grid.alpha': 0.5,
@@ -47,17 +47,17 @@ unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or mo
 
 model = 'sphinx' # 'phoenix' or 'sphinx'
 
-save_plots = False # Write True if you want to save the plots
+save_plots = True # Write True if you want to save the plots
 
-do_simulation = True # Write True if the simulation hasn't been done yet
+do_simulation = False # Write True if the simulation hasn't been done yet
 
-plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
+plot_individual_planets = False # Write True if you want to plot the individual planets as bare rocks to see their phases
 
 comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
 
 plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
 
-points_offset = False # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
+points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
 
 # def plot_jwst_phase_curves(planets,
@@ -146,7 +146,7 @@ else:
 
 if comparison:
     t_total_simu_atm, phase_curve_total_simu_atm = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", delimiter=",",skiprows=1, unpack=True)
-    plt.plot(t_total_simu_atm, phase_curve_total_simu_atm, color='black', label="Total (atmospheres)")
+    plt.plot(t_total_simu_atm, phase_curve_total_simu_atm, '--', color='grey', label="Total (atmospheres)")
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink']
 j = -1
@@ -156,14 +156,14 @@ if comparison:
 else:
     label_total = "Total flux"
 
-line, = plt.plot(t_total_simu, phase_curve_total_simu, '--', color='grey', label=label_total)
+line, = plt.plot(t_total_simu, phase_curve_total_simu, '-', color='black', label=label_total)
 
 
 # Plot the visits
 
 for i in range(len(t_start)):
     t0 = t_start[i]
-
+    offset = 0
     if filter == None:
         t_visit, phase_curve_total_visit = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", delimiter=',',skiprows=1, unpack=True)
     else:
@@ -174,30 +174,69 @@ for i in range(len(t_start)):
 
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
-        plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
+        # plt.plot(t_visit, phase_curve_total_visit, color = colors[j], label=program_ID[i], linewidth=3)
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             if points_offset and program_ID[i] == 'GTO_1279':
-                offset = 0.02
+                if model == "phoenix":
+                    offset = 0.02
+                else:
+                    offset = 0.04
             elif points_offset and program_ID[i] == 'GO_5191':
-                offset = 0.04
+                if model == "phoenix":
+                    offset = 0.04
+                else:
+                    offset = 0.01
+            elif points_offset and (program_ID[i] == 'GTO_1177' or program_ID[i] == 'GO_2304'):
+                if model == "phoenix":
+                    offset = 0.0 # To be determined
+                else:
+                    offset = -0.13
+            elif points_offset and program_ID[i] == 'GO_3077':
+                if model == "phoenix":
+                    offset = 0.0 # To be determined
+                else:
+                    offset = -0.06
             else:
                 offset = 0
             plt.errorbar(np.mean(t_visit), flux_obs[i]+offset, yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)
             errorbar_data.append((np.mean(t_visit), flux_obs[i]+offset, err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, label=program_ID[i]+" (observed)", zorder=10)))
     else:
-        plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
+        # plt.plot(t_visit, phase_curve_total_visit, color = colors[j], linewidth=3)
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             if points_offset and program_ID[i] == 'GTO_1279':
-                offset = 0.02
+                if model == "phoenix":
+                    offset = 0.02
+                else:
+                    offset = 0.04
             elif points_offset and program_ID[i] == 'GO_5191':
-                offset = 0.04
+                if model == "phoenix":
+                    offset = 0.04
+                else:
+                    offset = 0.01
+            elif points_offset and (program_ID[i] == 'GTO_1177' or program_ID[i] == 'GO_2304'):
+                if model == "phoenix":
+                    offset = 0.0 # To be determined
+                else:
+                    offset = -0.13
+            elif points_offset and program_ID[i] == 'GO_3077':
+                if model == "phoenix":
+                    offset = 0.0 # To be determined
+                else:
+                    offset = -0.06
             else:
                 offset = 0
             plt.errorbar(np.mean(t_visit), flux_obs[i]+offset, yerr=err_obs[i], fmt='h', color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)
             errorbar_data.append((np.mean(t_visit), flux_obs[i]+offset, err_obs[i], dict(fmt='h',color=colors[j], markersize=5, elinewidth=2, capsize=5, zorder=10)))
-    x_text = np.mean(t_visit)
-    y_text = np.max(phase_curve_total_visit)
-    plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+    
+    # Add visit label
+    if plot_obs_points:
+        x_text = np.mean(t_visit)
+        y_text = flux_obs[i]+1.5*err_obs[i] + offset
+        plt.text(x_text, y_text, "Visit "+visit[i], fontsize=18, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+    else:
+        x_text = np.mean(t_visit)
+        y_text = np.max(phase_curve_total_visit)
+        plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=18, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
     # plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
@@ -206,15 +245,15 @@ if unit == 'ppm':
 else:
     plt.ylabel(r"$F_{star}+F_{planet}$ (mJy)")
 
-if filter == None:
-    plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
-else:
-    if redistribution == 1:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
-    elif comparison:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
-    else:
-        plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
+# if filter == None:  # No title for article figures
+#     plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with bolometric fluxes from Oct 2022 to Dec 2024")
+# else:
+#     if redistribution == 1:
+#         plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
+#     elif comparison:
+#         plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
+#     else:
+#         plt.title("JWST Observations over the phase curves of TRAPPIST-1 planets as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
 
 plt.legend(loc='lower right', ncol = 2)
 plt.grid()
@@ -224,11 +263,13 @@ if save_plots:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
     else:
         if plot_obs_points and comparison:
-            plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            # plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig("Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
         elif redistribution == 1:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
         elif comparison:
-            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            # plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig("Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
         else:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
@@ -303,6 +344,14 @@ for i in range(len(axes)-1):
     axes[i+1].plot((-d, +d), (-d, +d), **kwargs)
     axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
 
+# # Add dummy points for errorbar legend entries
+# for (_, _, _, fmt) in errorbar_data:
+#     label = fmt.get("label")
+#     if label:  # only once per label
+#         axes[0].plot([], [], fmt['fmt'], color=fmt['color'], label=label)
+#         fmt["label"] = None  # prevent duplicates
+
+
 handles, labels = axes[0].get_legend_handles_labels()
 
 if plot_obs_points == False:
@@ -310,22 +359,22 @@ if plot_obs_points == False:
 else:
     fig.legend(handles, labels, ncols = 2)
 
-fig.text(0.5, 0.02, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
+fig.text(0.5, 0.01, r"Time ($BJD_{TBD} - 2450000$)", ha="center")
 if unit == 'ppm':
-    fig.text(0.05, 0.5, r"$F_{planet}/F_{star}$ (ppm)", va="center", rotation="vertical")
+    fig.text(0.05, 0.5, r"$F_{p}/F_{s}$ (ppm)", va="center", rotation="vertical")
 else:
-    fig.text(0.05, 0.5, r"$F_{star}+F_{planet}$ (mJy)", va="center", rotation="vertical")
+    fig.text(0.05, 0.5, r"$F_{s}+F_{p}$ (mJy)", va="center", rotation="vertical")
 plt.subplots_adjust(wspace=0.05)
 
-if filter == None:
-    plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
-else:
-    if redistribution == 1:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
-    elif comparison:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
-    else:
-        plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
+# if filter == None: # No title for article figures
+#     plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with bolometric fluxes from Oct 2022 to Dec 2024", fontsize=20)
+# else:
+#     if redistribution == 1:
+#         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
+#     elif comparison:
+#         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n with and without thick atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024")
+#     else:
+#         plt.suptitle("Close-up on JWST Observations over the phase curves of TRAPPIST-1 planets\n as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model from Oct 2022 to Dec 2024", fontsize=20)
 
 # plt.tight_layout(rect=[0.05, 0.05, 1, 0.93])
 
@@ -334,11 +383,13 @@ if save_plots:
         plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
         if plot_obs_points and comparison:
-            plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
-        if redistribution == 1:
+            # plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig("Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
+        elif redistribution == 1:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         elif comparison:
-            plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            # plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig("Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
         else:
             plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
 
