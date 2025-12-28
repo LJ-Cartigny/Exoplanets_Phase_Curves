@@ -41,13 +41,13 @@ planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1500W'
+filter = 'F1280W'
 
 unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
-model = 'sphinx' # 'phoenix' or 'sphinx'
+model = 'phoenix' # 'phoenix' or 'sphinx'
 
-save_plots = True # Write True if you want to save the plots
+save_plots = False # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
@@ -178,22 +178,22 @@ for i in range(len(t_start)):
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             if points_offset and program_ID[i] == 'GTO_1279':
                 if model == "phoenix":
-                    offset = 0.02
+                    offset = -0.16
                 else:
                     offset = 0.04
             elif points_offset and program_ID[i] == 'GO_5191':
                 if model == "phoenix":
-                    offset = 0.04
+                    offset = -0.19
                 else:
                     offset = 0.01
             elif points_offset and (program_ID[i] == 'GTO_1177' or program_ID[i] == 'GO_2304'):
                 if model == "phoenix":
-                    offset = 0.0 # To be determined
+                    offset = -0.215 # To be determined
                 else:
                     offset = -0.13
             elif points_offset and program_ID[i] == 'GO_3077':
                 if model == "phoenix":
-                    offset = 0.0 # To be determined
+                    offset = -0.15 # To be determined
                 else:
                     offset = -0.06
             else:
@@ -205,22 +205,22 @@ for i in range(len(t_start)):
         if plot_obs_points and filter_obs[i]==filter and flux_obs[i] != np.nan:
             if points_offset and program_ID[i] == 'GTO_1279':
                 if model == "phoenix":
-                    offset = 0.02
+                    offset = -0.16
                 else:
                     offset = 0.04
             elif points_offset and program_ID[i] == 'GO_5191':
                 if model == "phoenix":
-                    offset = 0.04
+                    offset = -0.19
                 else:
                     offset = 0.01
             elif points_offset and (program_ID[i] == 'GTO_1177' or program_ID[i] == 'GO_2304'):
                 if model == "phoenix":
-                    offset = 0.0 # To be determined
+                    offset = -0.215
                 else:
                     offset = -0.13
             elif points_offset and program_ID[i] == 'GO_3077':
                 if model == "phoenix":
-                    offset = 0.0 # To be determined
+                    offset = -0.15
                 else:
                     offset = -0.06
             else:
@@ -344,12 +344,12 @@ for i in range(len(axes)-1):
     axes[i+1].plot((-d, +d), (-d, +d), **kwargs)
     axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
 
-# # Add dummy points for errorbar legend entries
-# for (_, _, _, fmt) in errorbar_data:
-#     label = fmt.get("label")
-#     if label:  # only once per label
-#         axes[0].plot([], [], fmt['fmt'], color=fmt['color'], label=label)
-#         fmt["label"] = None  # prevent duplicates
+# Add dummy points for errorbar legend entries
+for (_, _, _, fmt) in errorbar_data:
+    label = fmt.get("label")
+    if label:  # only once per label
+        axes[0].plot([], [], fmt['fmt'], color=fmt['color'], label=label)
+        fmt["label"] = None  # prevent duplicates
 
 
 handles, labels = axes[0].get_legend_handles_labels()

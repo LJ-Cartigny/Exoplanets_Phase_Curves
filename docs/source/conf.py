@@ -69,7 +69,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_static_path = ['_static']
 html_css_files = []
 
-html_baseurl = "https://lj-cartigny.github.io/Exoplanets_Phase_Curves/"
+# html_baseurl = "https://lj-cartigny.github.io/Exoplanets_Phase_Curves/"
 
 # html_theme_path = []
 # html_css_files = []
@@ -82,3 +82,5 @@ html_baseurl = "https://lj-cartigny.github.io/Exoplanets_Phase_Curves/"
 #     "Code_files.TRAPPIST1_parameters",
 # ]
 
+html_copy_source = False
+html_show_sourcelink = False
