@@ -1,68 +1,34 @@
-<<<<<<< HEAD:docs/source/conf.py
-=======
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('..'))
+
+# ---- Path setup ----
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
-# sys.path.insert(0, os.path.abspath("../.."))
-# print("DEBUG sys.path:", sys.path[:5])  # affiche les premiers chemins pour debug
-# print("DEBUG cwd:", os.getcwd())  # affiche le répertoire courant de compilation
-
->>>>>>> bdf0442cf6998161f224680417922763a7d2f26b:source/conf.py
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
+# ---- Project info ----
 project = 'Exoplanets_Phase_Curves'
 copyright = '2026, Louis-Julien Cartigny'
 author = 'Louis-Julien Cartigny'
 release = '0.1'
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+# ---- Extensions ----
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "myst_parser",
+]
 
-extensions = []
-
+# ---- Paths ----
 templates_path = ['_templates']
 exclude_patterns = []
 
-
-
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-html_theme = 'alabaster'
+# ---- HTML output ----
+html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
 
-
-<<<<<<< HEAD
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",  # Google / NumPy docstrings
-]
-
-import os
-import sys
-sys.path.insert(0, os.path.abspath("../.."))
-
-
-html_theme = "sphinx_rtd_theme"
-
+# ---- Autodoc ----
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
     "show-inheritance": True,
 }
-=======
-#     "Code_files.TRAPPIST1_parameters",
-# ]
-
-print("SYS PATH START:", sys.path[:3])
-print("PROJECT ROOT:", BASE_DIR)
->>>>>>> a2123c21df2fcd9b74867bbfb3c5e49923123a59
