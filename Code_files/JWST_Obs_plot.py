@@ -324,12 +324,10 @@ for i, (ax, (xmin, xmax)) in enumerate(zip(axes, xlims)):
     ax.xaxis.set_major_locator(MultipleLocator(5))
     ax.ticklabel_format(style='plain', axis='x',useOffset=False)
     ax.xaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_visible(False)
+    ax.spines['left'].set_visible(i == 0)
+    ax.spines['right'].set_visible(i == len(axes) - 1)
     ax.tick_params(labelleft=False, left=False, labelrotation=45)
     ax.grid(True)
-
-axes[0].spines['left'].set_visible(True)
 axes[0].tick_params(labelleft=True, left=True)
 
 ysticks = axes[0].get_yticks()

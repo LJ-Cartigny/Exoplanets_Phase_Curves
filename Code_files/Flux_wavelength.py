@@ -13,6 +13,10 @@ from scipy.constants import c, h, k, sigma
 # from tqdm import tqdm
 # import time
 
+from pathlib import Path
+# racine du projet (Exoplanets_Phase_Curves/)
+Code_files_DIR = Path(__file__).resolve().parents[1] / "Code_files"
+
 from Code_files.Orbital_motion import compute_true_anomaly
 from Code_files.Transits import eclipse
 from Code_files.Phase_curve_v1 import star_planet_separation, flux_star, flux_planet, luminosity_planet_dayside, phase_curve
@@ -307,31 +311,31 @@ def filter(filter_name):
     """
 
     if filter_name == "F560W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 1))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 1))
 
     elif filter_name == "F770W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 2))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 2))
 
     elif filter_name == "F1000W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 3))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 3))
 
     elif filter_name == "F1130W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 4))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 4))
 
     elif filter_name == "F1280W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 5))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 5))
 
     elif filter_name == "F1500W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 6))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 6))
 
     elif filter_name == "F1800W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 7))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 7))
 
     elif filter_name == "F2100W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 8))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 8))
 
     elif filter_name == "F2550W":
-        filter_band = np.loadtxt("miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 9))
+        filter_band = np.loadtxt(Code_files_DIR/"miri_filter.csv", delimiter=',', unpack=True, skiprows=1, usecols=(0, 9))
 
     else:
         raise ValueError("Invalid filter name. Choose from: F560W, F770W, F1000W, F1130W, F1280W, F1500W, F1800W, F2100W, F2550W.")

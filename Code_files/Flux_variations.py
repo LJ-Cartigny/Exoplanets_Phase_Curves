@@ -9,9 +9,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 
-from Phase_curve_TTV import phase_TTV
-from Flux_wavelength import flux_ratio_miri, planet_equilibirium_temperature
-from TRAPPIST1_parameters import *
+from pathlib import Path
+# racine du projet (Exoplanets_Phase_Curves/)
+Code_files_DIR = Path(__file__).resolve().parents[1] / "Code_files"
+
+from Code_files.Phase_curve_TTV import phase_TTV
+from Code_files.Flux_wavelength import flux_ratio_miri, planet_equilibirium_temperature
+from Code_files.TRAPPIST1_parameters import *
 
 def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_points=10000, save_output = True, output_path = "Flux_variations", show_plot=False):
     """
@@ -67,7 +71,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'b' in planets:
 
-        P_b_TTV, transit_peaks_b = np.loadtxt("Files_TTV/TTV_b.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_b_TTV, transit_peaks_b = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_b.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_b = a_b
 
         phase_b_TTV, t_b_TTV = phase_TTV(P_b_TTV,t0,t_end,transit_peaks_b,nb_points)
@@ -83,7 +87,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'c' in planets:
 
-        P_c_TTV, transit_peaks_c = np.loadtxt("Files_TTV/TTV_c.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_c_TTV, transit_peaks_c = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_c.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_c = a_c
 
         phase_c_TTV, t_c_TTV = phase_TTV(P_c_TTV,t0,t_end,transit_peaks_c,nb_points)
@@ -99,7 +103,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'd' in planets:
 
-        P_d_TTV, transit_peaks_d = np.loadtxt("Files_TTV/TTV_d.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_d_TTV, transit_peaks_d = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_d.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_d = a_d
 
         phase_d_TTV, t_d_TTV = phase_TTV(P_d_TTV,t0,t_end,transit_peaks_d,nb_points)
@@ -115,7 +119,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'e' in planets:
 
-        P_e_TTV, transit_peaks_e = np.loadtxt("Files_TTV/TTV_e.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_e_TTV, transit_peaks_e = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_e.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_e = a_e
 
         phase_e_TTV, t_e_TTV = phase_TTV(P_e_TTV,t0,t_end,transit_peaks_e,nb_points)
@@ -131,7 +135,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'f' in planets:
 
-        P_f_TTV, transit_peaks_f = np.loadtxt("Files_TTV/TTV_f.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_f_TTV, transit_peaks_f = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_f.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_f = a_f
 
         phase_f_TTV, t_f_TTV = phase_TTV(P_f_TTV,t0,t_end,transit_peaks_f,nb_points)
@@ -146,7 +150,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'g' in planets:
 
-        P_g_TTV, transit_peaks_g = np.loadtxt("Files_TTV/TTV_g.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_g_TTV, transit_peaks_g = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_g.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_g = a_g
 
         phase_g_TTV, t_g_TTV = phase_TTV(P_g_TTV,t0,t_end,transit_peaks_g,nb_points)
@@ -162,7 +166,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
 
     if 'h' in planets:
 
-        P_h_TTV, transit_peaks_h = np.loadtxt("Files_TTV/TTV_h.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_h_TTV, transit_peaks_h = np.loadtxt(Code_files_DIR/"Files_TTV/TTV_h.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         r_h = a_h
 
         phase_h_TTV, t_h_TTV = phase_TTV(P_h_TTV,t0,t_end,transit_peaks_h,nb_points)
@@ -224,7 +228,7 @@ def detect_flux_variations(t0, nb_days, planets, filter, t_lapse, min_var, nb_po
                 variations.append((t[maxima[i]],total_phase_curve[maxima[i]]-total_phase_curve[minima[i]],(t[minima[i]]-t[maxima[i]])*24))
 
     if save_output:
-        np.savetxt(f"{output_path}.txt", variations, delimiter=",", header = "t0 (BJD_TBD - 2450000), Variation (ppm), Duration (hours)")
+        np.savetxt(f"{output_path}.txt", variations, header = "t0 (BJD_TBD - 2450000), Variation (ppm), Duration (hours)", fmt="%f, %f, %f")
         
     variations = np.array(variations).T
 
@@ -257,7 +261,7 @@ def main():
 
     save_output = False
 
-    output_path = f"Flux_variations_output/Variations_{int(t0)}_{nb_days}d_{min_var}ppm"
+    output_path = Code_files_DIR/f"Flux_variations_output/Variations_{int(t0)}_{nb_days}d_{min_var}ppm"
 
     show_plot = False
 
