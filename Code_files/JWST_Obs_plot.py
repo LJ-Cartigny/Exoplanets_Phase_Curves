@@ -40,11 +40,11 @@ nb_points = 100000
 
 Keplerian = True
 
-planets = 'bcdefgh'
+planets = 'defgh'
 
 redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if comparison is True)
 
-filter = 'F1500W'
+filter = 'F1280W'
 
 unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
@@ -54,11 +54,11 @@ save_plots = False # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
-plot_individual_planets = False # Write True if you want to plot the individual planets as bare rocks to see their phases
+plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
 
 comparison = False # Write True if you want to compare the bare rock and thick atmosphere cases
 
-plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
+plot_obs_points = False # Write True if you want to plot the observations points (in mJy) on the phase curves
 
 points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
@@ -81,7 +81,7 @@ points_offset = True # Write True if you want to add an offset to the observatio
 
 # Simulations
 
-program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt(Code_files_DIR / "JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt(Code_files_DIR / "JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str, usecols=(0,1,2,3,4,7,8))
 
 flux_obs = flux_obs.astype(float)
 err_obs = err_obs.astype(float)
@@ -262,18 +262,18 @@ plt.grid()
 
 if save_plots:
     if filter == None:
-        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
+        plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024.png", bbox_inches='tight')
     else:
         if plot_obs_points and comparison:
             # plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight')
-            plt.savefig("Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
+            plt.savefig(Code_files_DIR/"Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
         elif redistribution == 1:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
         elif comparison:
             # plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
-            plt.savefig("Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
+            plt.savefig(Code_files_DIR/"Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight') # For article
         else:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
+            plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024.png", bbox_inches='tight')
 
 lines = plt.gca().get_lines()
 texts = plt.gca().texts
@@ -345,11 +345,12 @@ for i in range(len(axes)-1):
     axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
 
 # Add dummy points for errorbar legend entries
-for (_, _, _, fmt) in errorbar_data:
-    label = fmt.get("label")
-    if label:  # only once per label
-        axes[0].plot([], [], fmt['fmt'], color=fmt['color'], label=label)
-        fmt["label"] = None  # prevent duplicates
+if plot_obs_points:
+    for (_, _, _, fmt) in errorbar_data:
+        label = fmt.get("label")
+        if label:  # only once per label
+            axes[0].plot([], [], fmt['fmt'], color=fmt['color'], label=label)
+            fmt["label"] = None  # prevent duplicates
 
 
 handles, labels = axes[0].get_legend_handles_labels()
@@ -380,17 +381,17 @@ plt.subplots_adjust(wspace=0.05)
 
 if save_plots:
     if filter == None:
-        plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+        plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_bolometric_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
     else:
         if plot_obs_points and comparison:
             # plt.savefig("Comparisons_obs_JWST/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
-            plt.savefig("Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
+            plt.savefig(Code_files_DIR/"Article_figures/comparison_obs_"+planets+"_"+filter+"_"+model+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
         elif redistribution == 1:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
         elif comparison:
             # plt.savefig("Comparisons_bare_rock_atm/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
-            plt.savefig("Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
+            plt.savefig(Code_files_DIR/"Article_figures/comparison_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight') # For article
         else:
-            plt.savefig("JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
+            plt.savefig(Code_files_DIR/"JWST_Obs_plots/JWST_Obs_phase_curves_"+planets+"_"+filter+"_"+model+"_"+unit+"_Oct2022-Dec2024_zoom.png", bbox_inches='tight')
 
 plt.show()
