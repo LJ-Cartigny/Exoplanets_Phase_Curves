@@ -13,6 +13,10 @@ from tqdm import tqdm
 
 from Code_files.Phase_curve_TTV import phase_curve_simulation
 
+from pathlib import Path
+# racine du projet (Exoplanets_Phase_Curves/)
+Code_files_DIR = Path(__file__).resolve().parents[1] / "Code_files"
+
 def phase_curve_visit(planets, redistribution, filter, model, unit, nb_points=10000, Keplerian=True):
     """
     Simulates the phase curves of the TRAPPIST-1 planets during JWST visits.
@@ -41,7 +45,7 @@ def phase_curve_visit(planets, redistribution, filter, model, unit, nb_points=10
     :rtype: None
     """
 
-    program_ID, visit, t_start, t_end = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, usecols=(0,1,2,3), unpack=True,dtype=str)
+    program_ID, visit, t_start, t_end = np.loadtxt(Code_files_DIR / f"JWST_Obs_times.txt", delimiter=',', skiprows=2, usecols=(0,1,2,3), unpack=True,dtype=str)
 
     t_start = Time(t_start, format='isot', scale='tdb')
     t_end = Time(t_end, format='isot', scale='tdb')

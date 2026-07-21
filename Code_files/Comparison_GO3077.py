@@ -16,14 +16,14 @@ import h5py
 from astropy.time import Time
 
 mpl.rcParams.update({
-    'font.size': 20,
-    'axes.labelsize': 20,
-    'axes.titlesize': 20,
-    'xtick.labelsize': 16,
-    'ytick.labelsize': 16,
-    'legend.fontsize': 16,
-    # 'figure.figsize': (16, 9),
-    # 'lines.linewidth': 2,
+    'font.size': 35,#20,
+    'axes.labelsize': 35,#20,
+    'axes.titlesize': 35,#20,
+    'xtick.labelsize': 30,#16,
+    'ytick.labelsize': 30,#16,
+    'legend.fontsize': 30,#16,
+    'figure.figsize': (24,15),#(16, 10),
+    'lines.linewidth': 3,#2,
     # 'grid.alpha': 0.5,
     # 'grid.linestyle': '--',
 })
@@ -57,10 +57,12 @@ def main():
 
     # Load the simulated data
 
-    program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
+    # program_ID, visit, t_start, t_end, filter_obs, flux_obs, err_obs = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str)
 
-    flux_obs = flux_obs.astype(float)
-    err_obs = err_obs.astype(float)
+    program_ID, visit, t_start, t_end = np.loadtxt("JWST_Obs_times.txt", delimiter=',', skiprows=2, unpack=True,dtype=str,usecols=(0,1,2,3))
+
+    # flux_obs = flux_obs.astype(float)
+    # err_obs = err_obs.astype(float)
 
     t_start = Time(t_start, format='isot', scale='tdb')
     t_end = Time(t_end, format='isot', scale='tdb')
@@ -89,7 +91,7 @@ def main():
     visit1_time_sphinx -= 0.5
     visit2_time_sphinx -= 0.5
 
-    offset_sphinx = -0.19
+    offset_sphinx = -0.37
 
     model = 'phoenix'
     visit1_time_phoenix, visit1_flux_phoenix = np.loadtxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0_visit1)+".txt",unpack=True, skiprows=1, delimiter=',')
@@ -98,7 +100,7 @@ def main():
     visit1_time_phoenix -= 0.5
     visit2_time_phoenix -= 0.5
 
-    offset_phoenix = -0.225
+    offset_phoenix = -0.285
 
 
     # Load the GO 3077 observations
@@ -126,16 +128,16 @@ def main():
 
     # Plot the data
 
-    plt.figure(figsize=(16, 9))
+    plt.figure()
 
     # plt.errorbar(visit1_time_obs, visit1_flux_obs, yerr=visit1_flux_err_obs, fmt='o', label='Visit 1 observation', color='blue', markersize=2, capsize=3)
     # plt.errorbar(visit2_time_obs, visit2_flux_obs, yerr=visit2_flux_err_obs, fmt='o', label='Visit 2 observation', color='orange', markersize=2, capsize=3)
-    plt.errorbar(visit12_time_obs, visit12_flux_obs+offset, yerr=visit12_flux_err_obs, fmt='o', label='Visit 1 & 2 observations', color='green', markersize=2, capsize=3)
+    plt.errorbar(visit12_time_obs, visit12_flux_obs+offset, yerr=visit12_flux_err_obs, fmt='o', label='Visit 1 & 2 observations', color='green', markersize=4, capsize=6)
 
-    plt.plot(visit1_time_sphinx, visit1_flux_sphinx+offset_sphinx, label='Visit 1 simulation (corrected SPHINX - 0.19 mJy)', color='blue', linestyle=':',linewidth=2,zorder=10)
-    plt.plot(visit2_time_sphinx, visit2_flux_sphinx+offset_sphinx, label='Visit 2 simulation (corrected SPHINX - 0.19 mJy)', color='orange', linestyle=':',linewidth=2,zorder=10)
-    plt.plot(visit1_time_phoenix, visit1_flux_phoenix+offset_phoenix, label='Visit 1 simulation (corrected PHOENIX - 0.225 mJy)', color='blue', linestyle='-',linewidth=2,zorder=10)
-    plt.plot(visit2_time_phoenix, visit2_flux_phoenix+offset_phoenix, label='Visit 2 simulation (corrected PHOENIX - 0.225 mJy)', color='orange', linestyle='-',linewidth=2,zorder=10)
+    plt.plot(visit1_time_sphinx, visit1_flux_sphinx+offset_sphinx, label=f'Visit 1 simulation (corrected SPHINX - {np.abs(offset_sphinx)} mJy)', color='blue', linestyle='-',linewidth=3,zorder=10)
+    plt.plot(visit2_time_sphinx, visit2_flux_sphinx+offset_sphinx, label=f'Visit 2 simulation (corrected SPHINX - {np.abs(offset_sphinx)} mJy)', color='orange', linestyle='-',linewidth=3,zorder=10)
+    plt.plot(visit1_time_phoenix, visit1_flux_phoenix+offset_phoenix, label=f'Visit 1 simulation (corrected PHOENIX - {np.abs(offset_phoenix)} mJy)', color='blue', linestyle=':',linewidth=3,zorder=10)
+    plt.plot(visit2_time_phoenix, visit2_flux_phoenix+offset_phoenix, label=f'Visit 2 simulation (corrected PHOENIX - {np.abs(offset_phoenix)} mJy)', color='orange', linestyle=':',linewidth=3,zorder=10)
 
     plt.title('Phase curves comparison for the GO 3077 program')
     plt.xlabel(r'Time ($BMJD_{TBD}$)')
@@ -148,7 +150,7 @@ def main():
     ax = plt.gca()
     ax.xaxis.set_major_formatter(plt.FormatStrFormatter('%.1f'))
 
-    # plt.savefig('GO_3077_curve_comparison_v2_zoom.png', bbox_inches='tight')
+    # plt.savefig('GO_3077_curve_comparison_v3_zoom.pdf', bbox_inches='tight')
     plt.show()
 
 if __name__ == "__main__":

@@ -13,6 +13,10 @@ from Code_files.Flux_wavelength import flux_ratio_miri, planet_equilibirium_temp
 from Code_files.Transits import eclipse, eclipse_impact_parameter
 from Code_files.Orbital_motion import compute_true_anomaly
 
+from pathlib import Path
+# racine du projet (Exoplanets_Phase_Curves/)
+Code_files_DIR = Path(__file__).resolve().parents[1] / "Code_files"
+
 def phase_TTV(P_TTV,t0,t_end,transit_peaks,nb_points):
     """
     Computes the phase of the planet taking into account the modification of the period due to TTVs starting from the nearest transit peak from t0
@@ -122,14 +126,14 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
         flux_star_mJy = integrate_flux_model_mJy(filter,model=model) # Compute the flux of the star in mJy
     
     if redistribution != 0 and redistribution != 1:
-        raise ValueError("For now the code only supports a redistribution effciency equal to 0 or 1.")
+        raise ValueError("For now the code only supports a redistribution efficiency equal to 0 or 1.")
     
 
     # For TRAPPIST-1 b
 
     if 'b' in planets:
 
-        P_b_TTV, transit_peaks_b = np.loadtxt("Files_TTV/TTV_b.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_b_TTV, transit_peaks_b = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_b.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
         
         if Keplerian:
             P_b_TTV = P_b
@@ -176,23 +180,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_b_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_b/F_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_b_bolometric_{t0}.txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_b/F_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_b/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_b (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_b_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_b_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_b_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_b_TTV, phase_curve_b_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 c
 
     if 'c' in planets:
 
-        P_c_TTV, transit_peaks_c = np.loadtxt("Files_TTV/TTV_c.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_c_TTV, transit_peaks_c = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_c.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_c_TTV = P_c
@@ -234,23 +238,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_c_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_c/F_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_c_bolometric_{t0}.txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_c/F_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_c/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_c (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_c_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_c_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_c_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_c_TTV, phase_curve_c_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
       
 
     # For TRAPPIST-1 d
     
     if 'd' in planets:
 
-        P_d_TTV, transit_peaks_d = np.loadtxt("Files_TTV/TTV_d.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_d_TTV, transit_peaks_d = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_d.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_d_TTV = P_d
@@ -292,23 +296,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_d_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_d/F_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_d_bolometric_{t0}.txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_d/F_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_d/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_d (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_d_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_d_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_d_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_d_TTV, phase_curve_d_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
      
 
     # For TRAPPIST-1 e
 
     if 'e' in planets:
 
-        P_e_TTV, transit_peaks_e = np.loadtxt("Files_TTV/TTV_e.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_e_TTV, transit_peaks_e = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_e.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_e_TTV = P_e
@@ -350,23 +354,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_e_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_e/F_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_e_bolometric_{t0}.txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_e/F_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_e/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_e (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_e_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_e_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_e_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_e_TTV, phase_curve_e_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 f
 
     if 'f' in planets:
 
-        P_f_TTV, transit_peaks_f = np.loadtxt("Files_TTV/TTV_f.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_f_TTV, transit_peaks_f = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_f.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_f_TTV = P_f
@@ -409,23 +413,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_f_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_f/F_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_f_bolometric_{t0}.txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_f/F_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_f/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_f (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_f_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_f_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_f_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_f_TTV, phase_curve_f_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 g
 
     if 'g' in planets:
 
-        P_g_TTV, transit_peaks_g = np.loadtxt("Files_TTV/TTV_g.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_g_TTV, transit_peaks_g = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_g.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_g_TTV = P_g
@@ -467,23 +471,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
                 if filter==None:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_g_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_g/F_star (ppm)', comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_g_bolometric_{t0}.txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_g/F_star (ppm)', comments='')
                 else:
                     if unit == "ppm":
                         header_flux = "F_g/F_star (ppm)"
                     else:
                         header_flux = "F_star + F_g (mJy)"
                     if redistribution==0:
-                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                        np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_g_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                     else:
-                        np.savetxt("Phase_curve_TTV_output/phase_curve_g_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                        np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_g_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_g_TTV, phase_curve_g_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
 
 
     # For TRAPPIST-1 h
 
     if 'h' in planets:
 
-        P_h_TTV, transit_peaks_h = np.loadtxt("Files_TTV/TTV_h.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
+        P_h_TTV, transit_peaks_h = np.loadtxt(Code_files_DIR / f"Files_TTV/TTV_h.txt", delimiter=',',skiprows=1,usecols=(1,2),unpack=True)
 
         if Keplerian:
             P_h_TTV = P_h
@@ -525,16 +529,16 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_txt:
             if filter==None:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_h_"+"_bolometric_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_h/L_star (ppm)', comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_h_bolometric_{t0}.txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), F_h/L_star (ppm)', comments='')
             else:
                 if unit == "ppm":
                     header_flux = "F_h/F_star (ppm)"
                 else:
                     header_flux = "F_star + F_h (mJy)"
                 if redistribution==0:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_h_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
                 else:
-                    np.savetxt("Phase_curve_TTV_output/phase_curve_h_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                    np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_h_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t_h_TTV, phase_curve_h_TTV)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
     
 
     # Total signal
@@ -562,16 +566,16 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
     if save_txt:
         if filter==None:
-            np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_bolometric_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), F_total/F_star (ppm)', comments='')
+            np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_total_{planets}_bolometric_{t0}.txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), F_total/F_star (ppm)', comments='')
         else:
             if unit == "ppm":
                 header_flux = "F_planets/F_star (ppm)"
             else:
                 header_flux = "F_star + F_planets (mJy)"
             if redistribution==0:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_total_{planets}_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
             else:
-                np.savetxt("Phase_curve_TTV_output/phase_curve_total_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
+                np.savetxt(Code_files_DIR / f"Phase_curve_TTV_output/phase_curve_total_{planets}_atm_{filter}_{model}_{unit}_{t0}.txt", np.column_stack((t, phase_curve_total)), delimiter=',', header='Time (BJD_TBD - 2450000), '+header_flux, comments='')
         
 
     # Plotting the phase curves
@@ -614,12 +618,12 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
 
         if save_plot:
             if filter==None:
-                plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_bolometric_"+str(t0)+".png", bbox_inches='tight')
+                plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_bolometric_{t0}.png", bbox_inches='tight')
             else:
                 if redistribution==0:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_{filter}_{model}_{unit}_{t0}.png", bbox_inches='tight')
                 else:
-                    plt.savefig("Phase_curve_TTV_plots/phase_curve_TTV_"+planets+"_atm_"+filter+"_"+model+"_"+unit+"_"+str(t0)+".png", bbox_inches='tight')
+                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_atm_{filter}_{model}_{unit}_{t0}.png", bbox_inches='tight')
 
         if plot:
             plt.show()
