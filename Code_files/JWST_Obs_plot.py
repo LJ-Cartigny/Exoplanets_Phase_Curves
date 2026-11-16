@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator
+from adjustText import adjust_text
 # from matplotlib import container
 import matplotlib as mpl
 from astropy.time import Time
@@ -22,14 +23,14 @@ from Code_files.JWST_Obs_simu import phase_curve_visit
 # Set the style for the plots
 
 mpl.rcParams.update({
-    'font.size': 35,#20,
-    'axes.labelsize': 35,#20,
-    'axes.titlesize': 35,#20,
-    'xtick.labelsize': 30,#18,
-    'ytick.labelsize': 30,#18,
-    'legend.fontsize': 30,#18,
-    'figure.figsize': (24,15),#(16, 10),
-    'lines.linewidth': 3,#2,
+    'font.size': 20,
+    'axes.labelsize': 20,
+    'axes.titlesize': 20,
+    'xtick.labelsize': 18,
+    'ytick.labelsize': 18,
+    'legend.fontsize': 18,
+    'figure.figsize': (26,16),#(16, 10),
+    'lines.linewidth': 2,
     # 'grid.alpha': 0.5,
     # 'grid.linestyle': '--',
 })
@@ -46,21 +47,21 @@ redistribution = 0 # 0 for bare rocks, 1 for thick atmospheres (0 by default if 
 
 filter = 'F1280W'
 
-unit = 'mJy' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
+unit = 'ppm' # 'ppm' or 'mJy' ('mJy' by default if plot_obs_points is True or model is 'phoenix')
 
-model = 'phoenix' # 'phoenix' or 'sphinx'
+model = 'sphinx' # 'phoenix' or 'sphinx'
 
 save_plots = False # Write True if you want to save the plots
 
 do_simulation = False # Write True if the simulation hasn't been done yet
 
-plot_individual_planets = False # Write True if you want to plot the individual planets as bare rocks to see their phases
+plot_individual_planets = True # Write True if you want to plot the individual planets as bare rocks to see their phases
 
 comparison = True # Write True if you want to compare the bare rock and thick atmosphere cases
 
-plot_obs_curves = False # Write True if you want to plot the curve to show the observations times
+plot_obs_curves = True # Write True if you want to plot the curve to show the observations times
 
-plot_obs_points = True # Write True if you want to plot the observations points (in mJy) on the phase curves
+plot_obs_points = False # Write True if you want to plot the observations points (in mJy) on the phase curves
 
 points_offset = True # Write True if you want to add an offset to the observation points to place them closer to the phase curves (useful if the observations are too far from the phase curves)
 
@@ -166,6 +167,8 @@ line, = plt.plot(t_total_simu, phase_curve_total_simu, '-', color='black', label
 
 # Plot the visits
 
+visit_labels = []
+
 for i in range(len(t_start)):
     t0 = t_start[i]
     offset = 0
@@ -240,12 +243,40 @@ for i in range(len(t_start)):
     if plot_obs_points:
         x_text = np.mean(t_visit)
         y_text = flux_obs[i]+1.5*err_obs[i] + offset
-        plt.text(x_text, y_text, "Visit "+visit[i], fontsize=30, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+        fontsize = 30
+        # plt.text(x_text, y_text, "Visit "+visit[i], fontsize=30, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+        
     else:
         x_text = np.mean(t_visit)
-        y_text = np.max(phase_curve_total_visit)
-        plt.text(x_text, y_text + 0.2 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=30, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+        y_text = np.max(phase_curve_total_visit) + 25
+        if program_ID[i] == 'GTO_1177' and visit[i] == '3':
+            y_text += 10
+        fontsize = 25
+        # plt.text(x_text, y_text + 0.5 * np.ptp(phase_curve_total_visit), "Visit "+visit[i], fontsize=25, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+    
+    visit_labels.append(plt.text(
+        x_text,
+        # y_text + 0.5 * np.ptp(phase_curve_total_visit),
+        y_text,
+        "Visit "+visit[i],
+        fontsize=fontsize,
+        ha='center',
+        va='bottom',
+        color=colors[j],
+        bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'),
+        zorder=10
+    ))
     # plt.text(x_text, 1.05*y_text, "Visit "+visit[i], fontsize=12, ha='center', va='bottom', color = colors[j], bbox=dict(facecolor='white', alpha=0.6, edgecolor='white', boxstyle='square,pad=0.3'), zorder=10)
+
+# adjust_text(
+#     visit_labels,
+#     ax=plt.gca(),
+#     only_move={'text': 'y'}#,
+#     # force_text=(0.5, 1.0),
+#     # force_static=(0.5, 0.5),
+#     # expand=(1.2, 1.4),
+#     # arrowprops=dict(arrowstyle='-', color='grey', lw=0.8)
+# )
 
 plt.xlabel(r"Time ($BJD_{TBD} - 2450000$)")
 if unit == 'ppm':
@@ -343,13 +374,61 @@ for ax in axes[1:]:
 
 d = .015
 for i in range(len(axes)-1):
-    kwargs = dict(transform=axes[i].transAxes, color='k', clip_on=False)
-    axes[i].plot((1-d, 1+d), (-d, +d), **kwargs)
-    axes[i].plot((1-d, 1+d), (1-d, 1+d), **kwargs)
+    # kwargs = dict(transform=axes[i].transAxes, color='k', clip_on=False)
+    # axes[i].plot((1-d, 1+d), (-d, +d), **kwargs)
+    # axes[i].plot((1-d, 1+d), (1-d, 1+d), **kwargs)
 
+    # kwargs.update(transform=axes[i+1].transAxes)
+    # axes[i+1].plot((-d, +d), (-d, +d), **kwargs)
+    # axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
+
+    # --- Pour le bord droit de l'axe de gauche ---
+    bbox_i = axes[i].get_position()
+    ratio_i = bbox_i.height / bbox_i.width
+    
+    # On maintient un dy constant, on ajuste dx selon la largeur réelle de l'axe
+    dy = d
+    dx_i = d * ratio_i
+    
+    kwargs = dict(transform=axes[i].transAxes, color='k', clip_on=False)
+    axes[i].plot((1 - dx_i, 1 + dx_i), (-dy, +dy), **kwargs)
+    axes[i].plot((1 - dx_i, 1 + dx_i), (1 - dy, 1 + dy), **kwargs)
+
+    # --- Pour le bord gauche de l'axe de droite suivant ---
+    bbox_next = axes[i+1].get_position()
+    ratio_next = bbox_next.height / bbox_next.width
+    
+    dx_next = d * ratio_next
+    
     kwargs.update(transform=axes[i+1].transAxes)
-    axes[i+1].plot((-d, +d), (-d, +d), **kwargs)
-    axes[i+1].plot((-d, +d), (1-d, 1+d), **kwargs)
+    axes[i+1].plot((-dx_next, +dx_next), (-dy, +dy), **kwargs)
+    axes[i+1].plot((-dx_next, +dx_next), (1 - dy, 1 + dy), **kwargs)
+
+    # bbox = axes[i].get_position()
+    # ratio = bbox.height / bbox.width
+
+    # dx = d
+    # dy = d * ratio
+
+    # kwargs = dict(transform=axes[i].transAxes,
+    #               color='k',
+    #               clip_on=False)
+
+    # axes[i].plot((1-dx, 1+dx), (-dy, +dy), **kwargs)
+    # axes[i].plot((1-dx, 1+dx), (1-dy, 1+dy), **kwargs)
+
+    # bbox = axes[i+1].get_position()
+    # ratio = bbox.height / bbox.width
+
+    # dx = d
+    # dy = d * ratio
+
+    # kwargs = dict(transform=axes[i+1].transAxes,
+    #               color='k',
+    #               clip_on=False)
+
+    # axes[i+1].plot((-dx, +dx), (-dy, +dy), **kwargs)
+    # axes[i+1].plot((-dx, +dx), (1-dy, 1+dy), **kwargs)
 
 # Add dummy points for errorbar legend entries
 # if plot_obs_points:
