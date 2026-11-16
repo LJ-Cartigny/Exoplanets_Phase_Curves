@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator
-from adjustText import adjust_text
+# from adjustText import adjust_text
 # from matplotlib import container
 import matplotlib as mpl
 from astropy.time import Time

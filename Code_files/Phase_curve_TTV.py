@@ -607,23 +607,23 @@ def phase_curve_simulation(t0, nb_days, nb_points=10000, planets='bcdefgh', redi
             raise ValueError("The unit must be 'ppm' or 'mJy'.")
 
         if filter==None:
-            plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
+            plt.title("Simulation of phase curves of planets of TRAPPIST-1 as bare rocks with bolometric fluxes")
         else:
             if redistribution==0:
-                plt.title("Phase curves of planets of TRAPPIST-1 as bare rocks with MIRI "+filter+" filter using the "+model+" model")
+                plt.title("Simulation of phase curves of planets of TRAPPIST-1 as bare rocks with MIRI "+filter+" filter using the "+model.upper()+" model")
             else:
-                plt.title("Phase curves of planets of TRAPPIST-1 with atmospheres with MIRI "+filter+" filter using the "+model+" model")
+                plt.title("Simulation of phase curves of planets of TRAPPIST-1 with atmospheres with MIRI "+filter+" filter using the "+model.upper()+" model")
         plt.legend()
         plt.grid()
 
         if save_plot:
             if filter==None:
-                plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_bolometric_{t0}.png", bbox_inches='tight')
+                plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_bolometric_{t0}.pdf", bbox_inches='tight')
             else:
                 if redistribution==0:
-                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_{filter}_{model}_{unit}_{t0}.png", bbox_inches='tight')
+                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_{filter}_{model}_{unit}_{t0}.pdf", bbox_inches='tight')
                 else:
-                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_atm_{filter}_{model}_{unit}_{t0}.png", bbox_inches='tight')
+                    plt.savefig(Code_files_DIR / f"Phase_curve_TTV_plots/phase_curve_TTV_{planets}_atm_{filter}_{model}_{unit}_{t0}.pdf", bbox_inches='tight')
 
         if plot:
             plt.show()
@@ -637,7 +637,7 @@ def main():
     nb_days = 30 # simulation duration in days
 
     # Call the function to simulate the phase curves
-    phase_curve_simulation(t0, nb_days, planets='defgh', redistribution=1, filter="F1500W", Keplerian=True, total=True, plot=True, save_plot=False, save_txt=False)
+    phase_curve_simulation(t0, nb_days, planets='bcdefgh', redistribution=0, filter="F1500W", Keplerian=True, total=True, plot=True, save_plot=True, save_txt=False)
 
 
 
