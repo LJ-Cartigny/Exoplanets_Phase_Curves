@@ -172,13 +172,21 @@ visit_labels = []
 for i in range(len(t_start)):
     t0 = t_start[i]
     offset = 0
-    if filter == None:
-        t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_bolometric_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
-    else:
-        if redistribution == 0:
-            t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_{filter}_{model}_{unit}_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
-        else:
-            t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_atm_{filter}_{model}_{unit}_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
+
+    # To use simulation of the phase curves during the visits
+    # if filter == None:
+    #     t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_bolometric_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
+    # else:
+    #     if redistribution == 0:
+    #         t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_{filter}_{model}_{unit}_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
+    #     else:
+    #         t_visit, phase_curve_total_visit = np.loadtxt(Code_files_DIR / "Phase_curve_TTV_output" / f"phase_curve_total_{planets}_atm_{filter}_{model}_{unit}_{t0}.txt", delimiter=',',skiprows=1, unpack=True)
+
+
+    # To use a mask to color the overall phase curve during the visits
+    mask = (t_total_simu >= t_start[i]) & (t_total_simu <= t_end[i])
+    t_visit = t_total_simu[mask]
+    phase_curve_total_visit = phase_curve_total_simu[mask]
 
     if i == 0 or program_ID[i] != program_ID[i-1]:
         j+=1
